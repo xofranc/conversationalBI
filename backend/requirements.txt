@@ -1,1 +1,7 @@
 Django 
+Pandas
+numpy
+pytest-django
+sqlparse
+djangorestframework
+djangorestframework-simplejwt

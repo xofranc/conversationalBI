@@ -3,7 +3,7 @@ import uuid
 from django.conf import settings
 
 
-ALLOWED_EXTENSIONS = ['csv', 'xlsx', 'json']
+ALLOWED_EXTENSIONS = ['.csv', '.xlsx', '.json']
 MAX_FILE_SIZE = 50
 
 

@@ -145,5 +145,5 @@ AUTH_USER_MODEL = 'users.User'
 
 #! Testeos
 
-DJANGO_SETTINGS_MODULE = conversationalBI.settings
-python_files = test_*.py
+DJANGO_SETTINGS_MODULE = 'backend.config.settings'
+    

@@ -1,5 +1,4 @@
 import pandas as pd
-import pytest
 from apps.dataset.services import SchemaService
 
 def test_infer_dtype_float():
