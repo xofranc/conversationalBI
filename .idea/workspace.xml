@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8cfb3cd5-0e45-4f34-bcf6-8f4149ee56d2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/apps/inventario/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/inventario/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/ventas/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/ventas/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/django.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/django.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reportes/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reportes/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reportes/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reportes/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reportes/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reportes/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reportes/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "xofranc"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/xofranc/order_system.git",
+    "accountId": "b3ad5125-3e8e-44f4-b683-cd079ee88b4a"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="30vRGBNxAkJ4qdFTniT1xxQiqAg" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "f54e1894",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/Users/santiagovasquezfranco/Desktop/order_system",
+    "to.speed.mode.migration.done": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-b3ae9b5d7125-f0eec537fc84-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.23892.439" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8cfb3cd5-0e45-4f34-bcf6-8f4149ee56d2" name="Changes" comment="" />
+      <created>1754505962021</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1754505962021</updated>
+    </task>
+    <servers />
+  </component>
+</project>
