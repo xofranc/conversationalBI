@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .datasetTable import DatasetTableSerializer
-from .models import Dataset
+from ..models import Dataset
 
 
 

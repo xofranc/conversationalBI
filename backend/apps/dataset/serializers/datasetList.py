@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Dataset
+from ..models import Dataset
 
 
 class DatasetListSerializer(serializers.ModelSerializer):

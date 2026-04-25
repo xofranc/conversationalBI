@@ -1,5 +1,5 @@
 from .repositories import DatasetRepository
-from ..models import Dataset, DatasetTable
+from ..models import Dataset
 from .file_service import FileService
 from .schema_service import SchemaService
 
