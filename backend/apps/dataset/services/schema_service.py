@@ -10,7 +10,8 @@ class SchemaService:
     def extract(file_path: str) -> dict:
         
         """
-        Recibe ruta relativa, tetorna schema json completo
+        
+        Recibe ruta relativa, retorna schema json completo
         """
         
         abs_path = os.path.join(settings.MEDIA_ROOT, file_path)

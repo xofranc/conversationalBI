@@ -11,6 +11,7 @@ class Dataset(models.Model):
         INACTIVE = 'inactive', 'Inactive'
         ERROR = 'error', 'Error'
         PROCESSING = 'processing', 'Processing'
+        UPLOADED = 'uploaded', 'Uploaded'
         
         
     user = models.ForeignKey(

@@ -97,6 +97,9 @@ class Profile(models.Model):
     phone_number = models.CharField(max_length=10, blank=True, unique=True)
     birth_date = models.DateField(null=True, blank=True)
     entry_date = models.DateField(auto_now_add=True)
+
+    query_count = models.PositiveIntegerField(default=0)
+    query_limit = models.PositiveIntegerField(default=100)
     
     
     
@@ -107,11 +110,6 @@ class Profile(models.Model):
         
         elif self.phone_number and len(self.phone_number) != 10:
             raise ValueError('El número de teléfono debe tener exactamente 10 dígitos')
-        
-        if not self.mail and self.email and self.user.email:
-            self.mail = self.user.email
-        
-        
-        
+
         super().save(*args, **kwargs)
         

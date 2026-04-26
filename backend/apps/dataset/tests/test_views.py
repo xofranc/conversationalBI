@@ -116,3 +116,4 @@ class TestDatasetSchema:
         assert response.status_code == 200
         assert 'schema_json' in response.data
         assert 'id'          in response.data
+        
