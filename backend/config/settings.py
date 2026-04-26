@@ -11,16 +11,24 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import environ
+import os
 
+env = environ.Env(
+    # Define el tipo de variable y su valor por defecto
+    DEBUG=(bool, False)
+)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-91-!w9%$ry9^k=gpyl46_6fsl9*j(y(nov)78mp^w-zimszzoo'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -41,6 +49,7 @@ INSTALLED_APPS = [
     #! APPS
     'apps.users',
     'apps.dataset',
+    'apps.queries',
     
     #! API REST
     'rest_framework',
@@ -151,8 +160,16 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'users.User'
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
+
 
 #! Testeos
 
 DJANGO_SETTINGS_MODULE = 'backend.config.settings'
-    
+
+OLLAMA_HOST = os.getenv('OLLAMA_HOST', 'http://localhost:11434')
+OLLAMA_MODEL = os.getenv('OLLAMA_MODEL', "qwen2.5-coder:7b")

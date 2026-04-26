@@ -63,19 +63,19 @@ class DatasetViewSet(viewsets.GenericViewSet):
                 name        = serializer.validated_data['name'],
                 description = serializer.validated_data.get('description', ''),
             )
-        except ValueError as e:                          # ← errores de validación
+        except ValueError as e:                          
             return Response(
                 {'error': str(e)},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        except Exception as e:                           # ← errores inesperados
+        except Exception as e:                           
             return Response(
-                {'error': 'Error al procesar el archivo.'},
+                {'error': 'Error al procesar el archivo.' + str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
         return Response(
-            DatasetDetailSerializer(dataset).data,       # ← sin self.
+            DatasetDetailSerializer(dataset).data,       
             status=status.HTTP_201_CREATED
         )
         

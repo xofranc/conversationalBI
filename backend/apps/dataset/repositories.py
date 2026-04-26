@@ -1,4 +1,4 @@
-from ..models import Dataset, DatasetTable
+from apps.dataset.models import Dataset, DatasetTable
 
 
 class DatasetRepository:

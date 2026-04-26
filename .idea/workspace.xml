@@ -5,65 +5,162 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8cfb3cd5-0e45-4f34-bcf6-8f4149ee56d2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/apps/inventario/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/inventario/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/ventas/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/ventas/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/django.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/django.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reportes/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reportes/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reportes/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reportes/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reportes/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reportes/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reportes/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/conversationalBI.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/apps/queries/models/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/apps/queries/models/queryFeedback.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/apps/queries/models/queryHistory.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/apps/queries/models/queryResult.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/apps/queries/repositories.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/apps/queries/serializers/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/apps/queries/serializers/query_request.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/apps/queries/serializers/query_response.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/apps/queries/services/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/apps/queries/services/cache_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/apps/queries/services/query_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/apps/queries/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/apps/users/services/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/apps/users/services/user_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/services/ai/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/services/ai/ai_query_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/services/ai/chart_selector.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/services/ai/prompt_builder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/services/ai/sql_agent.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/services/ai/sql_executor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/services/ai/sql_validator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apps/dataset/services/dataset_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/dataset/services/dataset_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apps/dataset/services/repositories.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/dataset/repositories.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apps/dataset/tests/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/dataset/tests/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apps/dataset/tests/test_views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/dataset/tests/test_views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apps/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/users/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apps/users/services/auth_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/users/services/auth_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apps/users/views/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apps/users/views/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/backend/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="54" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="dataset-v.1.0" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "xofranc"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;xofranc&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
-    "url": "https://github.com/xofranc/order_system.git",
-    "accountId": "b3ad5125-3e8e-44f4-b683-cd079ee88b4a"
+    "url": "https://github.com/xofranc/conversationalBI.git",
+    "accountId": "30c10480-ab51-409c-bfab-f1631047fbce"
   }
 }]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="30vRGBNxAkJ4qdFTniT1xxQiqAg" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "f54e1894",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "queries-v.1.0",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/santiagovasquezfranco/Desktop/order_system",
-    "to.speed.mode.migration.done": "true"
+    "last_opened_file_path": "/Users/santiagovasquezfranco/Desktop/conversationalBI",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend" />
+      <recent name="$PROJECT_DIR$/backend/apps/dataset" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="conversationalBI" type="Python.DjangoServer" factoryName="Django server">
+      <module name="conversationalBI" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-b3ae9b5d7125-f0eec537fc84-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.23892.439" />
+        <option value="bundled-python-sdk-b63d5a1f7c97-b61e75351b1f-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-261.22158.340" />
       </set>
     </attachedChunks>
+  </component>
+  <component name="StructureViewState">
+    <option name="selectedTab" value="Logical" />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -72,7 +169,22 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1754505962021</updated>
+      <workItem from="1777096220562" duration="13234000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
