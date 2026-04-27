@@ -10,7 +10,6 @@ class SchemaService:
     def extract(file_path: str) -> dict:
         
         """
-        
         Recibe ruta relativa, retorna schema json completo
         """
         
