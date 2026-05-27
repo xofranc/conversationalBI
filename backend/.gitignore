@@ -1,7 +1,10 @@
 # Secrets
-.env
-.env.*
-!.env.example
+.venv
+.venv.*
+!.venv.example
+venv/
+env/
+.venv/
 
 # Database
 db.sqlite3
