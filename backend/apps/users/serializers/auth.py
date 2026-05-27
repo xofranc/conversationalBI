@@ -5,6 +5,10 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
 
 
+import logging
+logger = logging.getLogger(__name__)
+
+
 
 class RegisterSerializer(serializers.ModelSerializer):
     
@@ -72,5 +76,5 @@ class LogoutSerializer(serializers.Serializer):
             token = RefreshToken(self.validated_data["refresh"])
             token.blacklist()
         except TokenError as e: #? Es mejor capturar la excepción específica de token inválido o expirado, que usar Exception, para evitar capturar errores no relacionados con el token.
-            print(f"Error al invalidar el token: {str(e)}") #? Es útil imprimir el error para depuración, pero en producción se debería usar un sistema de logging adecuado.
+            logger.error(f"Error al invalidar el token: {str(e)}") #? Es útil imprimir el error para depuración, pero en producción se debería usar un sistema de logging adecuado.
             self.fail("bad_token")

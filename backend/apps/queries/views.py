@@ -62,14 +62,19 @@ class QueryViewSet(viewsets.GenericViewSet, CreateModelMixin):
         return Response(result, status=status.HTTP_200_OK)
 
     # ── GET /queries/ → historial ─────────────────────────────────────────
-    def list(self, request):
+    
+    def list(self,request):
         dataset_id = request.query_params.get('dataset_id')
-        qs         = self.get_queryset()
+        qs = self.get_queryset()
         if dataset_id:
             qs = qs.filter(dataset_id=dataset_id)
+            
+        page = self.paginate_queryset(qs)
+        if page is not None:
+            serializer = QueryHistorySerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
         serializer = QueryHistorySerializer(qs, many=True)
-        return Response(serializer.data)
-
+        
     # ── GET /queries/{id}/ → detalle ──────────────────────────────────────
     def retrieve(self, request, pk=None):
         try:

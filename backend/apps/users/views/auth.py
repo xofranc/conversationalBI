@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.throttling import AnonRateThrottle
 from ..models import User
 from ..serializers.auth import RegisterSerializer, LoginSerializer, LogoutSerializer
 from ..services import AuthService
@@ -18,24 +18,33 @@ class RegisterView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = []  # ← pública, no requiere auth
+    throttle_classes = [AnonRateThrottle]  # ← limitamos la tasa para evitar abusos
 
 
         #! Es posible que no necesitemos este método, pero lo dejamos por si queremos personalizar la respuesta
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
+        serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
+        user = AuthService.register(
+            email=serializer.validated_data['email'],
+            password=serializer.validated_data['password'],
+            first_name=serializer.validated_data['first_name'],
+            last_name=serializer.validated_data['last_name']
+        )
     
+        return Response({
+            "id": user.id,
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+        }, status=status.HTTP_201_CREATED)
+        
 #! Creamos una vista para iniciar sesión y obtener un token JWT
 class LoginView(APIView):
     permission_classes = []  # ← pública, no requiere auth
-
-    class LoginView(APIView):
-        permission_classes = []
-
+    throttle_classes = [AnonRateThrottle]  # ← limitamos la tasa para evitar abusos
+   
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -44,6 +53,7 @@ class LoginView(APIView):
     
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]  # ← esta sí requiere auth
+    throttle_classes = [AnonRateThrottle]  # ← limitamos la tasa para evitar abusos
 
     def post(self, request):
         serializer = LogoutSerializer(data=request.data)
