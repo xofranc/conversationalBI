@@ -70,7 +70,7 @@ class User(AbstractUser):
 
     def __str__(self) -> str:
         return f"{self.email} ({self.user_type.capitalize()})"
-```
+
 
 
 class Profile(models.Model):
