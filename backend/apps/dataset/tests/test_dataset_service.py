@@ -1,9 +1,9 @@
 from unittest.mock import patch, MagicMock
 from apps.dataset.services import DatasetService
 import pytest
-@patch("apps.datasets.services.dataset_service.SchemaService.extract")
-@patch("apps.datasets.services.dataset_service.FileService.save")
-@patch("apps.datasets.services.dataset_service.FileService.validate")
+@patch("apps.dataset.services.dataset_service.SchemaService.extract")
+@patch("apps.dataset.services.dataset_service.FileService.save")
+@patch("apps.dataset.services.dataset_service.FileService.validate")
 def test_create_marks_error_on_schema_failure(mock_validate, mock_save, mock_extract, db):
     mock_save.return_value = "datasets/test.csv"
     mock_extract.side_effect = Exception("Archivo corrupto")

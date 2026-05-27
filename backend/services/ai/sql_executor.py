@@ -6,6 +6,8 @@ from django.conf import settings
 
 class SQLExecutor:
 
+    MAX_ROWS = 1000  
+    
     @staticmethod
     def run(sql: str, dataset_id: int) -> tuple[list, list]:
         """
@@ -14,7 +16,11 @@ class SQLExecutor:
           - rows:    lista de dicts [{col: val}, ...]
           - columns: lista de dicts [{name, dtype}]
         """
+        
         from apps.dataset.repositories import DatasetRepository
+        
+        if 'limit' not in sql.strip().lower():
+            sql = f'{sql.rstrip(";")} LIMIT {SQLExecutor.MAX_ROWS};'
 
         dataset   = DatasetRepository.get_by_id(dataset_id)
         file_path = os.path.join(settings.MEDIA_ROOT, dataset.file_path)

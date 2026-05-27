@@ -65,7 +65,7 @@ class SchemaService:
             return mapping[kind]
         if series.dtype == object:
             try:
-                pd.to_datetime(series.dropna().head(20), infer_datetime_format=True)
+                pd.to_datetime(series.dropna().head(20))
                 return "date"
             except Exception:
                 pass

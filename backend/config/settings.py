@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     #! API REST
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
     
     
     
@@ -68,6 +69,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=[
+    'http://localhost:3000',
+    'http://localhost:5173',
+])
 
 ROOT_URLCONF = 'config.urls'
 
@@ -156,7 +162,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_THROTTLE_RATES': {
         'user': '100/hour',
-        'anonymous': '20/hour',
+        'anon': '20/hour',
         'login': '10/hour',  
     },
 }
@@ -172,7 +178,7 @@ CACHES = {
 
 #! Testeos
 
-DJANGO_SETTINGS_MODULE = 'backend.config.settings'
+
 
 OLLAMA_HOST = os.getenv('OLLAMA_HOST', 'http://localhost:11434')
 OLLAMA_MODEL = os.getenv('OLLAMA_MODEL', "qwen2.5-coder:7b")
