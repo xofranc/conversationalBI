@@ -74,6 +74,7 @@ class QueryViewSet(viewsets.GenericViewSet, CreateModelMixin):
             serializer = QueryHistorySerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
         serializer = QueryHistorySerializer(qs, many=True)
+        return Response(serializer.data)
         
     # ── GET /queries/{id}/ → detalle ──────────────────────────────────────
     def retrieve(self, request, pk=None):

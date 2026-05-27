@@ -64,14 +64,13 @@ class User(AbstractUser):
     
     
     #! Agregamos un campo para almacenar el ID del tipo de usuario, que puede ser útil para consultas rápidas
-@property
-def user_type_numeric(self):
-    return {'USER': 1, 'ADMIN': 2}.get(self.user_type, 0)  # Retorna un número para cada tipo de usuario, o 0 si no se reconoce 
-        
-def __str__(self):
-        
-    return f"{self.email} ({self.user_type.capitalize()} - ID: {self.user_type_id or 'N/A'})"
+    @property
+    def user_type_numeric(self) -> int:
+        return {'USER': 1, 'ADMIN': 2}.get(self.user_type, 0)
 
+    def __str__(self) -> str:
+        return f"{self.email} ({self.user_type.capitalize()})"
+```
 
 
 class Profile(models.Model):
