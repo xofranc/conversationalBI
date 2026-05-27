@@ -27,8 +27,13 @@ class SchemaService:
         
     @staticmethod
     def _read_file(abs_path: str, ext: str) -> dict:
-        if ext == ".csv":
+        if ext == '.csv':
             return {"main": pd.read_csv(abs_path)}
+        if ext =='.json':
+            df =pd.read_json(abs_path)
+            if isinstance(df, dict):
+                return {k: pd.DataFrame(v) for k, v in df.items()}
+            return {"main": df}
         xls = pd.ExcelFile(abs_path)
         return {name: xls.parse(name) for name in xls.sheet_names}
 

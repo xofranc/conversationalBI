@@ -13,5 +13,5 @@ def test_validate_rejects_oversized_file():
     file = MagicMock()
     file.name = "datos.csv"
     file.size = 60 * 1024 * 1024  # 60 MB
-    with pytest.raises(ValueError, match="pesa"):
+    with pytest.raises(ValueError, match="demasiado grande"):
         FileService.validate(file)

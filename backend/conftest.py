@@ -20,9 +20,10 @@ def test_user():
     from django.contrib.auth import get_user_model
     User = get_user_model()
     return User.objects.create_user(
-        username='testuser',
         email='test@example.com',
-        password='testpass123'
+        password='testpass123',
+        first_name='Test',
+        last_name='User'
     )
 
 @pytest.fixture

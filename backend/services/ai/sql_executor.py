@@ -51,12 +51,19 @@ class SQLExecutor:
             df = pd.read_csv(file_path)
             table_name = schema_json.get('tables', [{}])[0].get('name', 'main')
             df.to_sql(table_name, conn, index=False, if_exists='replace')
-        else:
+        elif ext == '.json':
+            df = pd.read_json(file_path)
+            if isinstance(df, dict):
+                for k, v in df.items():
+                    pd.DataFrame(v).to_sql(k, conn, index=False, if_exists='replace')
+            else:
+                df.to_sql('main', conn, index=False, if_exists='replace')
+                
+        else: 
             xls = pd.ExcelFile(file_path)
             for sheet in xls.sheet_names:
                 df = xls.parse(sheet)
                 df.to_sql(sheet, conn, index=False, if_exists='replace')
-
         return conn
 
     @staticmethod
