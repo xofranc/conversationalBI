@@ -64,29 +64,13 @@ class User(AbstractUser):
     
     
     #! Agregamos un campo para almacenar el ID del tipo de usuario, que puede ser útil para consultas rápidas
-    user_type_id = models.PositiveIntegerField(null=True, blank=True, db_index=True )
-    
-    USER_TYPE_ID_MAP = {
-        USER: 1,
-        ADMIN: 2,
-    }
-    
-    
-    
-    def save(self, *args, **kwargs):
+@property
+def user_type_numeric(self):
+    return {'USER': 1, 'ADMIN': 2}.get(self.user_type, 0)  # Retorna un número para cada tipo de usuario, o 0 si no se reconoce 
         
-        if self.user_type in self.USER_TYPE_ID_MAP:
-            self.user_type_id = self.USER_TYPE_ID_MAP[self.user_type]
+def __str__(self):
         
-        else:
-            self.user_type_id = None
-            
-        super().save(*args, **kwargs)
-        
-        
-    def __str__(self):
-        
-        return f"{self.email} ({self.user_type.capitalize()} - ID: {self.user_type_id or 'N/A'})"
+    return f"{self.email} ({self.user_type.capitalize()} - ID: {self.user_type_id or 'N/A'})"
 
 
 
@@ -97,6 +81,9 @@ class Profile(models.Model):
     phone_number = models.CharField(max_length=10, blank=True, unique=True)
     birth_date = models.DateField(null=True, blank=True)
     entry_date = models.DateField(auto_now_add=True)
+
+    query_count = models.PositiveIntegerField(default=0)
+    query_limit = models.PositiveIntegerField(default=100)
     
     
     
@@ -107,11 +94,6 @@ class Profile(models.Model):
         
         elif self.phone_number and len(self.phone_number) != 10:
             raise ValueError('El número de teléfono debe tener exactamente 10 dígitos')
-        
-        if not self.mail and self.email and self.user.email:
-            self.mail = self.user.email
-        
-        
-        
+
         super().save(*args, **kwargs)
         

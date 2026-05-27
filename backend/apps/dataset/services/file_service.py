@@ -3,7 +3,7 @@ import uuid
 from django.conf import settings
 
 
-ALLOWED_EXTENSIONS = ['csv', 'xlsx', 'json']
+ALLOWED_EXTENSIONS = ['.csv', '.xlsx', '.json']
 MAX_FILE_SIZE = 50
 
 
@@ -27,7 +27,7 @@ class FileService:
         '''
         
         ext = os.path.splitext(file.name)[1].lower()
-        filename = f"{uuid.uuid4*().hex}{ext}"
+        filename = f"{uuid.uuid4().hex}{ext}"
         rel_dir = os.path.join('datasets', str(user_id))
         abs_dir = os.path.join(settings.MEDIA_ROOT, rel_dir)
         

@@ -9,8 +9,9 @@ class Dataset(models.Model):
     class Status(models.TextChoices):
         READY = 'ready', 'Ready'
         INACTIVE = 'inactive', 'Inactive'
-        DELETED = 'deleted', 'Deleted'
+        ERROR = 'error', 'Error'
         PROCESSING = 'processing', 'Processing'
+        UPLOADED = 'uploaded', 'Uploaded'
         
         
     user = models.ForeignKey(
