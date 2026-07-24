@@ -2,6 +2,11 @@ import re
 import sqlparse
 from sqlparse.tokens import DML, Keyword
 
+
+class SecurityError(Exception):
+    """SQL rechazado por políticas de seguridad. No reintentable: fail-fast."""
+
+
 class SQLValidator:
     ALLOWED = {'SELECT'}
 
@@ -25,32 +30,32 @@ class SQLValidator:
     @classmethod
     def assert_safe(cls, sql: str) -> None:
         if not sql or not sql.strip():
-            raise ValueError('El SQL está vacío')
+            raise SecurityError('El SQL está vacío')
 
         # 1. Bloquear patrones peligrosos
         sql_upper = sql.upper()
         for pattern in cls.BLOCKED_PATTERNS:
             if re.search(pattern, sql_upper):
-                raise ValueError(
+                raise SecurityError(
                     'Operación no permitida. Solo se aceptan consultas SELECT simples.'
                 )
 
         # 2. Parsear y verificar que sea SELECT
         parsed = sqlparse.parse(sql.strip())
         if not parsed:
-            raise ValueError('SQL no parseable')
+            raise SecurityError('SQL no parseable')
 
         statement = parsed[0]
         first_token = statement.token_first(skip_cm=True, skip_ws=True)
 
         if first_token is None:
-            raise ValueError('No se encontró operación válida')
+            raise SecurityError('No se encontró operación válida')
 
         if first_token.ttype is DML:
             if first_token.normalized.upper() not in cls.ALLOWED:
-                raise ValueError(f'Operación no permitida: {first_token.normalized}')
+                raise SecurityError(f'Operación no permitida: {first_token.normalized}')
         elif first_token.ttype is Keyword:
             if first_token.normalized.upper() not in cls.ALLOWED:
-                raise ValueError(f'Operación no permitida: {first_token.normalized}')
+                raise SecurityError(f'Operación no permitida: {first_token.normalized}')
         else:
-            raise ValueError('No se encontró una operación SELECT válida')
+            raise SecurityError('No se encontró una operación SELECT válida')

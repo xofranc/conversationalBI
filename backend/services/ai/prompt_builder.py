@@ -19,6 +19,8 @@ SQL:"""
     CORRECTION_TEMPLATE = """\
 El SQL que generaste produjo un error. Corrígelo.
 
+PREGUNTA ORIGINAL: {question}
+
 SQL ANTERIOR:
 {previous_sql}
 
@@ -43,6 +45,7 @@ SQL:"""
     def build_correction(cls, question: str, schema: dict,
                          previous_sql: str, error: str) -> str:
         return cls.CORRECTION_TEMPLATE.format(
+            question     = question,
             schema_text  = cls._schema_to_text(schema),
             previous_sql = previous_sql,
             error        = error,

@@ -1,3 +1,6 @@
+import os
+from django.conf import settings
+
 from apps.dataset.repositories import DatasetRepository
 from ..models import Dataset
 from .file_service import FileService
@@ -27,14 +30,16 @@ class DatasetService:
             dataset.status = Dataset.Status.PROCESSING
             dataset.file_path = FileService.save(file, user.id)
             dataset.save(update_fields=["status", "file_path", "updated_at"])
-            
-            schema = SchemaService.extract(dataset.file_path)
+
+            abs_path = os.path.join(settings.MEDIA_ROOT, dataset.file_path)
+            schema = SchemaService.extract(abs_path)
             row_count = sum(t["row_count"] for t in schema["tables"])
-            
+            col_count = sum(len(t["columns"]) for t in schema["tables"])
+
             for tabla_data in schema["tables"]:
                 DatasetRepository.create_table(dataset, tabla_data)
-                
-            dataset.mark_ready(schema, row_count)
+
+            dataset.mark_ready(schema, row_count, col_count) 
             
         except Exception as exc:
             dataset.mark_error(str(exc))
@@ -45,7 +50,10 @@ class DatasetService:
     @staticmethod
     def delete(dataset_id: int, user) -> None:
         dataset = DatasetRepository.get_by_id(dataset_id)
-        if dataset.user!= user:
+        if dataset.user != user:
             raise PermissionError("No tienes permiso para eliminar este dataset.")
-        FileService.delete(dataset.file_path)
-        dataset.delete()
+        
+        file_path = dataset.file_path
+        dataset.delete()               # ← primero el registro
+        FileService.delete(file_path)  # ← luego el archivo (fallo aquí es recuperable)
+        

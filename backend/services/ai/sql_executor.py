@@ -18,9 +18,12 @@ class SQLExecutor:
         """
         
         from apps.dataset.repositories import DatasetRepository
-        
-        if 'limit' not in sql.strip().lower():
-            sql = f'{sql.rstrip(";")} LIMIT {SQLExecutor.MAX_ROWS};'
+
+        # Límite duro e ineludible: el SQL del LLM se envuelve como subquery.
+        # Funciona aunque el SQL interno tenga su propio LIMIT (gana el menor)
+        # y no depende de detectar la palabra "limit" como subcadena.
+        sql = sql.strip().rstrip(';')
+        sql = f'SELECT * FROM ({sql}) LIMIT {SQLExecutor.MAX_ROWS}'
 
         dataset   = DatasetRepository.get_by_id(dataset_id)
         file_path = os.path.join(settings.MEDIA_ROOT, dataset.file_path)
@@ -40,9 +43,23 @@ class SQLExecutor:
             {'name': col, 'dtype': SQLExecutor._dtype(df[col])}
             for col in df.columns
         ]
-        rows = df.to_dict(orient='records')
+        rows = [
+            {k: SQLExecutor._json_safe(v) for k, v in row.items()}
+            for row in df.to_dict(orient='records')
+        ]
 
         return rows, columns
+
+    @staticmethod
+    def _json_safe(val):
+        """Normaliza valores de pandas/numpy a tipos JSON-serializables."""
+        if val is None or pd.isna(val):
+            return None                      # NaN / NaT → null
+        if hasattr(val, 'isoformat'):        # Timestamp, datetime, date
+            return val.isoformat()
+        if hasattr(val, 'item'):             # numpy int64, float64, bool_
+            return val.item()
+        return val
 
     @staticmethod
     def _load_into_sqlite(file_path: str, ext: str,

@@ -1,11 +1,14 @@
+import logging
 import time
 from .prompt_builder import PromptBuilder
 from .sql_agent import SQLAgent
-from .sql_validator import SQLValidator
+from .sql_validator import SQLValidator, SecurityError
 from .sql_executor import SQLExecutor
 from .chart_selector import ChartSelector
 
 MAX_RETRIES = 3
+
+logger = logging.getLogger(__name__)
 
 
 class AIQueryService:
@@ -32,7 +35,7 @@ class AIQueryService:
             try:
                 sql = agent.run(prompt)
 
-                if sql.strip() == 'NO_SQL_POSSIBLE':
+                if sql.strip().startswith('NO_SQL_POSSIBLE'):
                     error_msg = 'El modelo indicó que no puede responder con el esquema dado.'
                     break
 
@@ -42,7 +45,15 @@ class AIQueryService:
                 retry_count = attempt
                 break
 
+            except SecurityError as e:
+                # Violación de seguridad: fail-fast, sin reintentos ni gasto de LLM
+                logger.warning('SQL rechazado por seguridad: %s', e)
+                error_msg   = str(e)
+                retry_count = attempt
+                break
+
             except Exception as e:
+                logger.warning('Intento %d/%d falló: %s', attempt + 1, MAX_RETRIES, e)
                 error_msg   = str(e)
                 retry_count = attempt + 1
                 prompt      = PromptBuilder.build_correction(

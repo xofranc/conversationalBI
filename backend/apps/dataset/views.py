@@ -1,3 +1,5 @@
+import logging
+
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -9,6 +11,8 @@ from .serializers.datasetDetail import DatasetDetailSerializer
 from .services import DatasetService
 from .permissions import IsDatasetOwner
 from .models import Dataset
+
+logger = logging.getLogger(__name__)
 
 
 class DatasetViewSet(viewsets.GenericViewSet):
@@ -68,9 +72,10 @@ class DatasetViewSet(viewsets.GenericViewSet):
                 {'error': str(e)},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        except Exception as e:                           
+        except Exception:
+            logger.exception('Error procesando upload de dataset (user_id=%s)', request.user.id)
             return Response(
-                {'error': 'Error al procesar el archivo.' + str(e)},
+                {'error': 'Error al procesar el archivo.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
@@ -97,9 +102,15 @@ class DatasetViewSet(viewsets.GenericViewSet):
 
         try: 
             DatasetService.delete(dataset.id, request.user)
-        except Exception as e:
+        except PermissionError as e:
             return Response(
                 {'error': str(e)},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        except Exception:
+            logger.exception('Error eliminando dataset %s', dataset.id)
+            return Response(
+                {'error': 'Error al eliminar el dataset.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
             

@@ -1,10 +1,16 @@
 
+import logging
+
+from django.db import IntegrityError
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from rest_framework.exceptions import APIException
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import QueryHistory, QueryFeedback
+
+logger = logging.getLogger(__name__)
 from .serializers import (
     QueryRequestSerializer,
     QueryHistorySerializer,
@@ -53,9 +59,14 @@ class QueryViewSet(viewsets.GenericViewSet, CreateModelMixin):
 
         try:
             result = QueryService.execute(question, dataset_id, user)
-        except Exception as e:
+        except APIException:
+            # Errores de dominio (404 dataset inexistente, 400 dataset no listo):
+            # los gestiona el exception handler de DRF con su status propio.
+            raise
+        except Exception:
+            logger.exception('Error interno ejecutando consulta (dataset_id=%s)', dataset_id)
             return Response(
-                {'error': str(e)},
+                {'error': 'Error interno al procesar la consulta.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
@@ -103,9 +114,16 @@ class QueryViewSet(viewsets.GenericViewSet, CreateModelMixin):
         serializer = FeedbackSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        QueryFeedback.objects.create(
-            query   = query,
-            score   = serializer.validated_data['score'],
-            comment = serializer.validated_data.get('comment', ''),
-        )
+        try:
+            QueryFeedback.objects.create(
+                query   = query,
+                score   = serializer.validated_data['score'],
+                comment = serializer.validated_data.get('comment', ''),
+            )
+        except IntegrityError:
+            # Race condition: otro request creó el feedback entre el check y el create
+            return Response(
+                {'error': 'Ya existe feedback para esta consulta.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         return Response(status=status.HTTP_201_CREATED)

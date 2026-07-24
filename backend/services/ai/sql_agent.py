@@ -6,9 +6,10 @@ class SQLAgent:
 
     def __init__(self):
         self.llm = OllamaLLM(
-            model       = getattr(settings, 'OLLAMA_MODEL', 'qwen2.5-coder:7b'),
-            base_url    = getattr(settings, 'OLLAMA_HOST', 'http://localhost:11434'),
-            temperature = 0,   # determinista — crítico para SQL consistente
+            model         = getattr(settings, 'OLLAMA_MODEL', 'qwen2.5-coder:7b'),
+            base_url      = getattr(settings, 'OLLAMA_HOST', 'http://localhost:11434'),
+            temperature   = 0,   # determinista — crítico para SQL consistente
+            client_kwargs = {'timeout': getattr(settings, 'OLLAMA_TIMEOUT', 60)},
         )
 
     def run(self, prompt: str) -> str:

@@ -5,6 +5,16 @@ import pytest
 from rest_framework.test import APIClient
 
 
+@pytest.fixture(autouse=True)
+def _clear_cache():
+    """LocMemCache es global al proceso y sobrevive entre tests (la BD no).
+    Sin esto, un CacheService.set() en un test contamina los siguientes."""
+    from django.core.cache import cache
+    cache.clear()
+    yield
+    cache.clear()
+
+
 @pytest.fixture
 def api_client():
     """Fixture que retorna un cliente API autenticado"""

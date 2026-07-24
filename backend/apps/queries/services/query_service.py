@@ -1,5 +1,9 @@
 # apps/queries/services/query_service.py
 from django.conf import settings
+from django.db import transaction
+from rest_framework.exceptions import NotFound, ValidationError
+
+from apps.dataset.models import Dataset
 from apps.dataset.repositories import DatasetRepository
 from services.ai import AIQueryService
 from ..repositories import QueryRepository
@@ -23,11 +27,20 @@ class QueryService:
         # 1. Caché
         cached = CacheService.get(question, dataset_id)
         if cached:
-            cached['cached'] = True
-            return cached
+            return {**cached, 'cached': True}   # copia: no mutar el objeto cacheado
 
-        # 2. Schema — solo el dict, sin objetos Django
-        schema = DatasetRepository.get_schema(dataset_id)
+        # 2. Dataset — debe existir y estar listo para consultas
+        try:
+            dataset = DatasetRepository.get_by_id(dataset_id)
+        except Dataset.DoesNotExist:
+            raise NotFound('Dataset no encontrado.')
+
+        if dataset.status != Dataset.Status.READY:
+            raise ValidationError(
+                {'dataset_id': f'El dataset no está listo para consultas (estado: {dataset.status}).'}
+            )
+
+        schema = dataset.schema_json
 
         # 3. AI engine — no sabe nada de Django
         ai_result = AIQueryService.execute(
@@ -36,28 +49,29 @@ class QueryService:
             schema     = schema,
         )
 
-        # 4. Persistencia
-        query = QueryRepository.save_query(
-            user           = user,
-            dataset_id     = dataset_id,
-            question       = question,
-            sql_generated  = ai_result['sql'],
-            execution_time = ai_result['execution_time'],
-            success        = ai_result['success'],
-            error_msg      = ai_result['error_msg'],
-            model_used     = getattr(settings, 'OLLAMA_MODEL', ''),
-            retry_count    = ai_result['retry_count'],
-            cached         = False,
-        )
-
-        result = None
-        if ai_result['success']:
-            result = QueryRepository.save_result(
-                query      = query,
-                rows       = ai_result['rows'],
-                columns    = ai_result['columns'],
-                chart_type = ai_result['chart_type'],
+        # 4. Persistencia atómica — nunca queda un QueryHistory sin su QueryResult
+        with transaction.atomic():
+            query = QueryRepository.save_query(
+                user           = user,
+                dataset_id     = dataset_id,
+                question       = question,
+                sql_generated  = ai_result['sql'],
+                execution_time = ai_result['execution_time'],
+                success        = ai_result['success'],
+                error_msg      = ai_result['error_msg'],
+                model_used     = getattr(settings, 'OLLAMA_MODEL', ''),
+                retry_count    = ai_result['retry_count'],
+                cached         = False,
             )
+
+            result = None
+            if ai_result['success']:
+                result = QueryRepository.save_result(
+                    query      = query,
+                    rows       = ai_result['rows'],
+                    columns    = ai_result['columns'],
+                    chart_type = ai_result['chart_type'],
+                )
 
         # 5. Cuota
         from apps.users.services import UserService
