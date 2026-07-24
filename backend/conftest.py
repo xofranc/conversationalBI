@@ -1,12 +1,8 @@
 # Fixtures
+# La configuración de Django la gestiona pytest-django vía pytest.ini
+# (DJANGO_SETTINGS_MODULE = config.settings)
 import pytest
 from rest_framework.test import APIClient
-import os
-import django
-
-# Configurar Django ANTES de cualquier import
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
-django.setup()
 
 
 @pytest.fixture

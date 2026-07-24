@@ -85,6 +85,48 @@ class TestDatasetUpload:
         assert response.status_code == 201
         assert response.data['name'] == 'Ventas Q1'
 
+    def test_upload_integracion_real(self, client, settings, tmp_path):
+        """Sin mocks: procesa un CSV real y verifica el estado final del dataset.
+
+        Este test habría detectado el P0-1 (firma de mark_ready).
+        """
+        settings.MEDIA_ROOT = tmp_path
+        from io import BytesIO
+        csv = BytesIO(b"id,valor\n1,100\n2,200\n3,300\n")
+        csv.name = "ventas.csv"
+
+        response = client.post('/api/v1/dataset/', {
+            'file': csv,
+            'name': 'Ventas Reales',
+        }, format='multipart')
+
+        assert response.status_code == 201, response.data
+        assert response.data['status'] == 'ready'
+        assert response.data['row_count'] == 3
+        assert response.data['column_count'] == 2
+        assert len(response.data['tables']) == 1
+        assert response.data['tables'][0]['row_count'] == 3
+
+        ds = Dataset.objects.get(name='Ventas Reales')
+        assert ds.status == Dataset.Status.READY
+        assert ds.column_count == 2
+        assert ds.schema_json['tables'][0]['name'] == 'main'
+
+    def test_upload_csv_con_fechas_marca_ready(self, client, settings, tmp_path):
+        """Las columnas fecha no deben romper la persistencia del schema (JSONField)."""
+        settings.MEDIA_ROOT = tmp_path
+        from io import BytesIO
+        csv = BytesIO(b"fecha,monto\n2024-01-15,100.5\n2024-02-03,200.75\n")
+        csv.name = "fechas.csv"
+
+        response = client.post('/api/v1/dataset/', {
+            'file': csv,
+            'name': 'Con Fechas',
+        }, format='multipart')
+
+        assert response.status_code == 201, response.data
+        assert response.data['status'] == 'ready'
+
     def test_upload_sin_archivo_retorna_400(self, client):
         response = client.post('/api/v1/dataset/', {'name': 'Sin archivo'}, format='multipart')
         assert response.status_code == 400

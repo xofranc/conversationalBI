@@ -55,12 +55,13 @@ class Dataset(models.Model):
     def __str__(self):
         return f"{self.name} ({self.status})"
     
-    def mark_ready(self, schema: dict, row_count: int) -> None:
+    def mark_ready(self, schema: dict, row_count: int, column_count: int = 0) -> None:
         """Transición atómica a estado ready."""
-        self.schema_json = schema
-        self.row_count   = row_count
-        self.status      = self.Status.READY
-        self.save(update_fields=["schema_json", "row_count", "status", "updated_at"])
+        self.schema_json  = schema
+        self.row_count    = row_count
+        self.column_count = column_count
+        self.status       = self.Status.READY
+        self.save(update_fields=["schema_json", "row_count", "column_count", "status", "updated_at"])
 
     def mark_error(self, message: str) -> None:
         """Transición atómica a estado error."""
@@ -71,6 +72,38 @@ class Dataset(models.Model):
     
 class DatasetTable(models.Model):
     
+    '''
+                Estructura esperada de schema_json en Dataset
+        SCHEMA_JSON_EXAMPLE = {
+            "tables": [
+                {
+                    "name": "ventas",
+                    "row_count": 12450,
+                    "columns": [
+                        {
+                            "name": "fecha",
+                            "dtype": "date",       # int | float | str | date | bool
+                            "nullable": False,
+                            "sample": ["2024-01-15", "2024-02-03", "2024-03-10"]
+                        },
+                        {
+                            "name": "monto",
+                            "dtype": "float",
+                            "nullable": False,
+                            "sample": [150000.0, 89000.5, 230000.0]
+                        },
+                        {
+                            "name": "region",
+                            "dtype": "str",
+                            "nullable": True,
+                            "sample": ["Bogota", "Medellin", "Cali"]
+                        },
+                    ]
+                }
+            ]
+        }
+    '''
+            
     '''
         Una hoja de excel o una tabla dentro de un dataset.
         para CSVs siempre habra exactamente una tabla
@@ -103,35 +136,3 @@ class DatasetTable(models.Model):
     
     
     
-        '''
-                    Estructura esperada de schema_json en Dataset
-            SCHEMA_JSON_EXAMPLE = {
-                "tables": [
-                    {
-                        "name": "ventas",
-                        "row_count": 12450,
-                        "columns": [
-                            {
-                                "name": "fecha",
-                                "dtype": "date",       # int | float | str | date | bool
-                                "nullable": False,
-                                "sample": ["2024-01-15", "2024-02-03", "2024-03-10"]
-                            },
-                            {
-                                "name": "monto",
-                                "dtype": "float",
-                                "nullable": False,
-                                "sample": [150000.0, 89000.5, 230000.0]
-                            },
-                            {
-                                "name": "region",
-                                "dtype": "str",
-                                "nullable": True,
-                                "sample": ["Bogota", "Medellin", "Cali"]
-                            },
-                        ]
-                    }
-                ]
-            }
-        '''
-                

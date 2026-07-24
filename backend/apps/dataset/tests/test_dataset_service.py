@@ -1,6 +1,11 @@
 from unittest.mock import patch, MagicMock
 from apps.dataset.services import DatasetService
 import pytest
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+
 @patch("apps.dataset.services.dataset_service.SchemaService.extract")
 @patch("apps.dataset.services.dataset_service.FileService.save")
 @patch("apps.dataset.services.dataset_service.FileService.validate")
@@ -11,7 +16,10 @@ def test_create_marks_error_on_schema_failure(mock_validate, mock_save, mock_ext
     file = MagicMock()
     file.name = "datos.csv"
     file.size = 1024
-    user = ...  # fixture de pytest-django
+    user = User.objects.create_user(
+        email="svc@bi.com", password="test1234",
+        first_name="Svc", last_name="User",
+    )
 
     with pytest.raises(Exception, match="Archivo corrupto"):
         DatasetService.create(file, user, "Test")
@@ -21,4 +29,3 @@ def test_create_marks_error_on_schema_failure(mock_validate, mock_save, mock_ext
     ds = Dataset.objects.get(name="Test")
     assert ds.status == "error"
     assert "corrupto" in ds.error_msg
-

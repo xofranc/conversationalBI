@@ -77,7 +77,7 @@ class Profile(models.Model):
     
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     bio = models.TextField(blank=True)
-    phone_number = models.CharField(max_length=10, blank=True, unique=True)
+    phone_number = models.CharField(max_length=10, null=True, blank=True, unique=True)
     birth_date = models.DateField(null=True, blank=True)
     entry_date = models.DateField(auto_now_add=True)
 
