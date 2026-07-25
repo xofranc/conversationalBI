@@ -1,6 +1,6 @@
 # Auditoría ConversationalBI
 
-> **Fecha:** 23/07/2026 · **Actualizada:** 24/07/2026 (P0 + P1-backend + P2 resueltos — ver [Historial](#10-historial))
+> **Fecha:** 23/07/2026 · **Actualizada:** 24/07/2026 (P0 + P1-backend + P2 + P3 resueltos — plan completado; ver [Historial](#10-historial))
 > **Stack:** Django 6.0 + DRF + SimpleJWT + Ollama + SQLite + Pandas · Vite + Vanilla JS + Tailwind (CDN) · Docker Compose
 > **Alcance:** Backend (`users`, `queries`, `dataset`, `services/ai`, `config`) + Frontend + Infra
 > **Método:** revisión línea por línea + verificación dinámica (`manage.py check`, `makemigrations --check`, ejecución de la suite de tests, introspección de firmas)
@@ -413,15 +413,21 @@
 | | 13. Decidir cuota (activar guard o eliminar `query_count`) | `users`, `queries` | ✅ **Decisión:** conteo consistente sin enforcement (queda para cuando se definan planes; el guard comentado se conserva en `queries/views.py`) |
 | | 14. Eliminar código muerto (AuthService.*, repos, ProfileSerializer, blacklist de palabras, MOCK MODE, scope `login`) | varios | ✅ backend (AuthService reducido a `register`, repos muertos, `RegisterSerializer.create`, blacklist, scope `login`, `CreateModelMixin`; `ProfileSerializer` ahora expuesto en `GET/PATCH /users/profile/` + check `is_active` en login) — ⏳ MOCK MODE es frontend (ítem 17) |
 | | 15. Serializer ligero para listado de historial (sin `result_json`) | `queries` | ✅ (`QueryHistoryListSerializer`) |
-| **P3 — Infra y calidad** | 16. Docker funcional: raíz, Dockerfiles, Postgres/Redis sí o no, gunicorn, healthchecks | infra | ⏳ |
-| | 17. Cablear frontend real (upload + chat + `import.meta.env` + Tailwind en build) | frontend | ⏳ |
-| | 18. Tests: `users`, `queries`, `services/ai` (hoy 0% en los módulos más críticos) | backend | 🔶 Parcial: 39 tests nuevos en `queries` + `services/ai`; falta `users` |
-| | 19. A11y, tree-shaking Chart.js, ESLint/Prettier, `es-co`, squash migraciones | varios | ⏳ |
+| **P3 — Infra y calidad** | 16. Docker funcional: raíz, Dockerfiles, Postgres/Redis sí o no, gunicorn, healthchecks | infra | ✅ (compose en raíz; Dockerfiles backend/frontend; **decisión:** SQLite + LocMem, que es lo que el código usa — Postgres/Redis/worker eliminados; gunicorn pineado; healthcheck; `pytest`→`requirements-dev.txt`; Ollama sin publicar; `.env.example` completo) |
+| | 17. Cablear frontend real (upload + chat + `import.meta.env` + Tailwind en build) | frontend | ✅ (MOCK MODE eliminado; upload/chat/eliminar contra API real; refresh automático + logout con blacklist —cierra ítem 6-; resultados reales con chart/tabla/KPIs; Tailwind en build; toasts en vez de `alert()`; proxy dev en Vite; build verificado 267 KB) |
+| | 18. Tests: `users`, `queries`, `services/ai` (hoy 0% en los módulos más críticos) | backend | ✅ 25 tests nuevos en P3 (auth register/login/refresh/logout, perfil, JSON multi-tabla) — suite total: **81 passed** (bug colateral corregido: email duplicado lanzaba `ValidationError` de Django → 500; ahora DRF → 400) |
+| | 19. A11y, tree-shaking Chart.js, ESLint/Prettier, `es-co`, squash migraciones | varios | ✅ excepto squash — **decisión: no hacerlo** (riesgo sin beneficio con BD existente; las migraciones ya son consistentes). `es-co` + `America/Bogota`; Chart.js con tree-shaking; drop-zone/chat/botones accesibles; ESLint flat + Prettier configurados y pasando |
 
 ---
 
 ## 10. Historial
 
+- **24/07/2026 (P3)** — **Fase P3 (Infra y calidad) resuelta** (ítems 16-19). **Plan de acción completado en su totalidad.**
+  - Infra: `docker-compose.yml` movido a la raíz con rutas corregidas; `backend/Dockerfile` (migrate + gunicorn) y `frontend/Dockerfile` (multi-stage Node→nginx con proxy `/api`); servicios Postgres/Redis/worker eliminados (decisión: SQLite + LocMem, que es lo que el código usa); healthcheck en django y `depends_on: service_healthy`; Ollama sin publicar al host; volumen para `MEDIA_ROOT`; `.env.example` completo sin duplicados; `gunicorn` añadido y `pytest*` movido a `requirements-dev.txt`; eliminado `version:` obsoleto.
+  - Frontend: MOCK MODE eliminado; `handleUpload`→`api.dataset.upload` (con `name`, `.json` soportado), `sendMessage`→`api.query.ask`, eliminar dataset real; guarda `access`+`refresh`, refresh automático en 401 con rotación, logout llama a blacklist; `API_BASE_URL` por `import.meta.env` con default `/api/v1` (proxy same-origin en dev y compose); Tailwind en el build de Vite (CDN eliminado); KPIs dinámicos (filas/tiempo/fuente), gráfico por `chart_type`+`chart_config` del backend, tabla real (máx. 50 filas); toasts en vez de `alert()`; botón enviar deshabilitado en vuelo; `min_length=5` client-side; a11y (drop-zone con teclado, `aria-live`, `aria-label`); favicon 404 eliminado; Chart.js con tree-shaking; ESLint flat + Prettier configurados (`npm run build` y `lint` verificados: 267 KB JS).
+  - Backend: `LANGUAGE_CODE='es-co'`, `TIME_ZONE='America/Bogota'`; `AuthService.register` ahora lanza `ValidationError` de DRF (email duplicado → 400, antes 500).
+  - **25 tests nuevos** (auth completo, perfil, JSON multi-tabla). Suite: **81 passed**.
+  - Squash de migraciones: **descartado** (riesgo sin beneficio con BD existente).
 - **24/07/2026 (P2)** — **Fase P2 (Consistencia) resuelta** (ítems 11-15):
   - Loader único `SchemaService.read_tables` (CSV/JSON multi-tabla/Excel, `ValueError` en extensión no soportada) usado también por `SQLExecutor` → el sandbox SQLite carga exactamente las tablas del schema (cierra bug de JSON multi-tabla del ejecutor). `infer_dtype` unificado → un `date` del schema sigue siendo `date` tras el roundtrip SQLite (los gráficos de línea ya funcionan). Contrato de `extract` aclarado a ruta absoluta.
   - Caché: clave con versión (`updated_at` del dataset, invalidación automática al reprocesar) + `sha256`; los hits persisten `QueryHistory(cached=True)` con `query_id` nuevo (feedback bien anclado, métricas del TFG correctas) y cuentan cuota; lock anti-stampede con `cache.add` + espera acotada.

@@ -1,0 +1,59 @@
+# ConversationalBI — stack completo
+#
+# Arquitectura real (decisión 24/07/2026, auditoría ítem 16):
+#   - Django sirve la API con gunicorn y persiste en **SQLite** (el código no usa Postgres).
+#   - Caché **LocMem** (el código no usa Redis). Servicios huérfanos eliminados.
+#   - El "worker de IA" no existe: el motor IA corre en-proceso vía Ollama.
+#   - Ollama solo es accesible desde la red interna (no se publica al host).
+#
+# Uso:
+#   cp backend/.env.example backend/.env   # primera vez
+#   docker compose up --build
+#   docker compose exec ollama ollama pull qwen2.5-coder:7b   # primera vez
+
+services:
+  django:
+    build: ./backend
+    env_file: ./backend/.env
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      ALLOWED_HOSTS: localhost,127.0.0.1,django
+    ports:
+      - "8000:8000"
+    volumes:
+      - media_data:/app/media        # uploads de datasets persisten
+    depends_on:
+      ollama:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/admin/login/')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"                    # nginx: SPA + proxy /api → django
+    depends_on:
+      django:
+        condition: service_healthy
+
+  ollama:
+    image: ollama/ollama:0.6.2
+    volumes:
+      - ollama_models:/root/.ollama
+    # Sin puertos publicados: la API de Ollama no tiene autenticación.
+    # Para GPU (opcional):
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+volumes:
+  media_data:
+  ollama_models:
