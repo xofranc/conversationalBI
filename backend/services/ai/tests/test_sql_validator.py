@@ -14,6 +14,11 @@ class TestSQlValido:
             'SELECT region, SUM(monto) FROM ventas GROUP BY region'
         )
 
+    def test_punto_y_coma_final_es_inofensivo(self):
+        # El LLM suele añadir ';' al final — no es multi-statement
+        SQLValidator.assert_safe('SELECT * FROM ventas;')
+        SQLValidator.assert_safe('SELECT * FROM ventas;\n')
+
 
 class TestSQLPeligroso:
     """Todo SQL rechazado lanza SecurityError (fail-fast, no reintentable)."""

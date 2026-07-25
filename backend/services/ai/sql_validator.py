@@ -32,6 +32,10 @@ class SQLValidator:
         if not sql or not sql.strip():
             raise SecurityError('El SQL está vacío')
 
+        # Normalizar: un único ';' final es inofensivo (el LLM lo suele añadir).
+        # Cualquier ';' que quede tras esto es multi-statement real.
+        sql = sql.strip().rstrip(';').strip()
+
         # 1. Bloquear patrones peligrosos
         sql_upper = sql.upper()
         for pattern in cls.BLOCKED_PATTERNS:
