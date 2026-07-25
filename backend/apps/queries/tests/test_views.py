@@ -84,6 +84,36 @@ class TestQueryCreate:
         assert 'sqlite3' not in response.content.decode()
 
 
+class TestQueryList:
+
+    def test_list_no_incluye_result_json(self, auth_client, test_user, test_dataset):
+        from apps.queries.models import QueryResult
+        query = QueryHistory.objects.create(
+            user=test_user, dataset=test_dataset, question=PREGUNTA, success=True,
+        )
+        QueryResult.objects.create(
+            query=query, result_json=[{'a': 1}] * 100, columns=[],
+            row_count=100, chart_type='table',
+        )
+
+        response = auth_client.get(QUERY_URL)
+
+        assert response.status_code == status.HTTP_200_OK
+        body = response.content.decode()
+        assert 'result_json' not in body
+        assert response.data['results'][0]['id'] == query.id
+
+    def test_list_solo_muestra_queries_propias(self, auth_client, test_user, test_dataset, otro_dataset):
+        from django.contrib.auth import get_user_model
+        otro = get_user_model().objects.get(email='otro@example.com')
+        QueryHistory.objects.create(user=test_user, dataset=test_dataset, question=PREGUNTA)
+        QueryHistory.objects.create(user=otro, dataset=otro_dataset, question='query ajena')
+
+        response = auth_client.get(QUERY_URL)
+
+        assert response.data['count'] == 1
+
+
 class TestFeedback:
 
     def _crear_query(self, test_user, test_dataset):

@@ -20,6 +20,17 @@ class QueryHistorySerializer(serializers.ModelSerializer):
         ]
 
 
+class QueryHistoryListSerializer(serializers.ModelSerializer):
+    """Versión ligera para el listado: sin result_json (evita payloads enormes)."""
+
+    class Meta:
+        model  = QueryHistory
+        fields = [
+            'id', 'question', 'success', 'execution_time',
+            'model_used', 'retry_count', 'cached', 'created_at',
+        ]
+
+
 class FeedbackSerializer(serializers.Serializer):
     score   = serializers.ChoiceField(choices=[1, -1])
     comment = serializers.CharField(required=False, allow_blank=True, default='')

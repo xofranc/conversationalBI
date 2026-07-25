@@ -47,19 +47,6 @@ class QueryRepository:
         )
 
     @staticmethod
-    def get_history(user, dataset_id: int = None) -> list:
-        qs = QueryHistory.objects.filter(user=user).select_related('result')
-        if dataset_id:
-            qs = qs.filter(dataset_id=dataset_id)
-        return qs
-
-    @staticmethod
-    def get_by_id(query_id: int, user) -> QueryHistory:
-        return QueryHistory.objects.select_related('result').get(
-            pk=query_id, user=user
-        )
-
-    @staticmethod
     def _build_chart_config(chart_type: str, rows: list, columns: list) -> dict:
         """
         Genera la config básica de Recharts según el tipo de gráfica.

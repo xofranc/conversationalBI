@@ -74,3 +74,33 @@ class TestNormalizacionJSON:
         rows, columns = SQLExecutor.run('SELECT * FROM main', csv_dataset.id)
         json.dumps(rows)      # no debe lanzar TypeError
         json.dumps(columns)
+
+
+class TestJSONMultiTabla:
+    """El sandbox carga las mismas tablas que promete el schema (loader compartido)."""
+
+    @pytest.fixture
+    def json_dataset(self, test_user, tmp_path, settings):
+        import json as json_lib
+        settings.MEDIA_ROOT = str(tmp_path)
+        (tmp_path / 'tienda.json').write_text(json_lib.dumps({
+            'ventas':    [{'ciudad': 'Bogota', 'monto': 100}, {'ciudad': 'Cali', 'monto': 50}],
+            'productos': [{'nombre': 'A', 'precio': 10}],
+        }))
+        return Dataset.objects.create(
+            user=test_user,
+            name='tienda',
+            file_path='tienda.json',
+            status=Dataset.Status.READY,
+            schema_json={'tables': [
+                {'name': 'ventas', 'row_count': 2, 'columns': []},
+                {'name': 'productos', 'row_count': 1, 'columns': []},
+            ]},
+        )
+
+    def test_ambas_tablas_son_consultables(self, json_dataset):
+        rows, _ = SQLExecutor.run('SELECT * FROM ventas WHERE ciudad = "Cali"', json_dataset.id)
+        assert rows == [{'ciudad': 'Cali', 'monto': 50}]
+
+        rows, _ = SQLExecutor.run('SELECT nombre FROM productos', json_dataset.id)
+        assert rows == [{'nombre': 'A'}]

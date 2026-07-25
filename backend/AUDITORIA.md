@@ -1,6 +1,6 @@
 # Auditoría ConversationalBI
 
-> **Fecha:** 23/07/2026 · **Actualizada:** 24/07/2026 (P0 + P1-backend resueltos — ver [Historial](#10-historial))
+> **Fecha:** 23/07/2026 · **Actualizada:** 24/07/2026 (P0 + P1-backend + P2 resueltos — ver [Historial](#10-historial))
 > **Stack:** Django 6.0 + DRF + SimpleJWT + Ollama + SQLite + Pandas · Vite + Vanilla JS + Tailwind (CDN) · Docker Compose
 > **Alcance:** Backend (`users`, `queries`, `dataset`, `services/ai`, `config`) + Frontend + Infra
 > **Método:** revisión línea por línea + verificación dinámica (`manage.py check`, `makemigrations --check`, ejecución de la suite de tests, introspección de firmas)
@@ -408,11 +408,11 @@
 | | 8. Normalizar NaN/Timestamp; timeout LLM; límite duro de filas; regex `\blimit\b` | motor IA | ✅ (límite duro vía subquery wrap — la regex ya no hace falta) |
 | | 9. Race condition en feedback (`IntegrityError`→400); `transaction.atomic()` en persistencia | `queries` | ✅ |
 | | 10. Incluir `{question}` en prompt de corrección; fail-fast en violaciones del validador | motor IA | ✅ (`SecurityError` + `startswith('NO_SQL_POSSIBLE')`) |
-| **P2 — Consistencia** | 11. Unificar carga de archivos y heurística de fechas entre SchemaService/Executor | motor IA | ⏳ |
-| | 12. Caché: persistir historial en hits, invalidar por versión de dataset, lock anti-stampede | `queries` | ⏳ (la mutación en sitio del objeto cacheado ya se corrigió) |
-| | 13. Decidir cuota (activar guard o eliminar `query_count`) | `users`, `queries` | ⏳ |
-| | 14. Eliminar código muerto (AuthService.*, repos, ProfileSerializer, blacklist de palabras, MOCK MODE, scope `login`) | varios | ⏳ (prints de debug ya eliminados) |
-| | 15. Serializer ligero para listado de historial (sin `result_json`) | `queries` | ⏳ |
+| **P2 — Consistencia** | 11. Unificar carga de archivos y heurística de fechas entre SchemaService/Executor | motor IA | ✅ (`SchemaService.read_tables` compartido + `infer_dtype` unificado; sandbox ahora carga las tablas que promete el schema) |
+| | 12. Caché: persistir historial en hits, invalidar por versión de dataset, lock anti-stampede | `queries` | ✅ (+ `sha256`, hits cuentan cuota, `query_id` nuevo por hit) |
+| | 13. Decidir cuota (activar guard o eliminar `query_count`) | `users`, `queries` | ✅ **Decisión:** conteo consistente sin enforcement (queda para cuando se definan planes; el guard comentado se conserva en `queries/views.py`) |
+| | 14. Eliminar código muerto (AuthService.*, repos, ProfileSerializer, blacklist de palabras, MOCK MODE, scope `login`) | varios | ✅ backend (AuthService reducido a `register`, repos muertos, `RegisterSerializer.create`, blacklist, scope `login`, `CreateModelMixin`; `ProfileSerializer` ahora expuesto en `GET/PATCH /users/profile/` + check `is_active` en login) — ⏳ MOCK MODE es frontend (ítem 17) |
+| | 15. Serializer ligero para listado de historial (sin `result_json`) | `queries` | ✅ (`QueryHistoryListSerializer`) |
 | **P3 — Infra y calidad** | 16. Docker funcional: raíz, Dockerfiles, Postgres/Redis sí o no, gunicorn, healthchecks | infra | ⏳ |
 | | 17. Cablear frontend real (upload + chat + `import.meta.env` + Tailwind en build) | frontend | ⏳ |
 | | 18. Tests: `users`, `queries`, `services/ai` (hoy 0% en los módulos más críticos) | backend | 🔶 Parcial: 39 tests nuevos en `queries` + `services/ai`; falta `users` |
@@ -422,6 +422,13 @@
 
 ## 10. Historial
 
+- **24/07/2026 (P2)** — **Fase P2 (Consistencia) resuelta** (ítems 11-15):
+  - Loader único `SchemaService.read_tables` (CSV/JSON multi-tabla/Excel, `ValueError` en extensión no soportada) usado también por `SQLExecutor` → el sandbox SQLite carga exactamente las tablas del schema (cierra bug de JSON multi-tabla del ejecutor). `infer_dtype` unificado → un `date` del schema sigue siendo `date` tras el roundtrip SQLite (los gráficos de línea ya funcionan). Contrato de `extract` aclarado a ruta absoluta.
+  - Caché: clave con versión (`updated_at` del dataset, invalidación automática al reprocesar) + `sha256`; los hits persisten `QueryHistory(cached=True)` con `query_id` nuevo (feedback bien anclado, métricas del TFG correctas) y cuentan cuota; lock anti-stampede con `cache.add` + espera acotada.
+  - Código muerto eliminado: `AuthService.{login,logout,get_user_by_email,deactivate_user,change_password}`, `RegisterSerializer.create`, `QueryRepository.{get_history,get_by_id}`, blacklist de palabras en `validate_question`, scope `login` huérfano, `CreateModelMixin`. Export de `services/__init__` corregido.
+  - `ProfileSerializer` deja de ser código muerto: `GET/PATCH /api/v1/users/profile/` (+ check `is_active` en login).
+  - `QueryHistoryListSerializer` sin `result_json` para el listado.
+  - **14 tests nuevos** (caché, listado, JSON multi-tabla, perfil). Suite: **71 passed**.
 - **24/07/2026** — Ejecución del plan: **P0 (1-4) y P1 backend (5-10) resueltos**. Detalle:
   - Errores al cliente sanitizados con `logger.exception` interno (`queries/views.py`, `dataset/views.py`); `PermissionError`→403 en destroy.
   - `POST /api/v1/users/token/refresh/` publicado + `SIMPLE_JWT` (access 30 min, refresh 7 días, rotación con blacklist).

@@ -9,18 +9,18 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import QueryHistory, QueryFeedback
-
-logger = logging.getLogger(__name__)
 from .serializers import (
     QueryRequestSerializer,
     QueryHistorySerializer,
+    QueryHistoryListSerializer,
     FeedbackSerializer,
 )
 from .services import QueryService
 from apps.users.services import UserService
-from rest_framework.mixins import CreateModelMixin
 
-class QueryViewSet(viewsets.GenericViewSet, CreateModelMixin):
+logger = logging.getLogger(__name__)
+
+class QueryViewSet(viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -82,9 +82,9 @@ class QueryViewSet(viewsets.GenericViewSet, CreateModelMixin):
             
         page = self.paginate_queryset(qs)
         if page is not None:
-            serializer = QueryHistorySerializer(page, many=True)
+            serializer = QueryHistoryListSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
-        serializer = QueryHistorySerializer(qs, many=True)
+        serializer = QueryHistoryListSerializer(qs, many=True)
         return Response(serializer.data)
         
     # ── GET /queries/{id}/ → detalle ──────────────────────────────────────

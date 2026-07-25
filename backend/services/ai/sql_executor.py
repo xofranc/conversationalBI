@@ -3,6 +3,8 @@ import sqlite3
 import os
 from django.conf import settings
 
+from apps.dataset.services.schema_service import SchemaService
+
 
 class SQLExecutor:
 
@@ -65,32 +67,17 @@ class SQLExecutor:
     def _load_into_sqlite(file_path: str, ext: str,
                            schema_json: dict) -> sqlite3.Connection:
         """
-        Lee el archivo con Pandas y lo carga en SQLite en memoria.
-        Cada hoja/tabla del schema se convierte en una tabla SQLite.
+        Carga las tablas del archivo en SQLite en memoria usando el
+        loader compartido (SchemaService.read_tables): las tablas del
+        sandbox coinciden exactamente con las del schema_json.
         """
         conn = sqlite3.connect(':memory:')
-
-        if ext == '.csv':
-            df = pd.read_csv(file_path)
-            table_name = schema_json.get('tables', [{}])[0].get('name', 'main')
-            df.to_sql(table_name, conn, index=False, if_exists='replace')
-        elif ext == '.json':
-            df = pd.read_json(file_path)
-            if isinstance(df, dict):
-                for k, v in df.items():
-                    pd.DataFrame(v).to_sql(k, conn, index=False, if_exists='replace')
-            else:
-                df.to_sql('main', conn, index=False, if_exists='replace')
-                
-        else: 
-            xls = pd.ExcelFile(file_path)
-            for sheet in xls.sheet_names:
-                df = xls.parse(sheet)
-                df.to_sql(sheet, conn, index=False, if_exists='replace')
+        for name, df in SchemaService.read_tables(file_path, ext).items():
+            df.to_sql(name, conn, index=False, if_exists='replace')
         return conn
 
     @staticmethod
     def _dtype(series: pd.Series) -> str:
-        kind = series.dtype.kind
-        return {'i': 'int', 'u': 'int', 'f': 'float',
-                'b': 'bool', 'M': 'date'}.get(kind, 'str')
+        # Misma heurística que el schema (incluye detección de fechas):
+        # un `date` del schema sigue siendo `date` tras el roundtrip por SQLite
+        return SchemaService.infer_dtype(series)

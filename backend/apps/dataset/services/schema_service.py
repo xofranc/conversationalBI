@@ -1,24 +1,22 @@
 import json
+import os
 
 import pandas as pd
-import os
-from django.conf import settings
 
 
 class SchemaService:
     
     @staticmethod
     
-    def extract(file_path: str) -> dict:
+    def extract(abs_path: str) -> dict:
         
         """
-        Recibe ruta relativa, retorna schema json completo
+        Recibe ruta absoluta, retorna schema json completo
         """
         
-        abs_path = os.path.join(settings.MEDIA_ROOT, file_path)
-        ext = os.path.splitext(file_path)[1].lower()
+        ext = os.path.splitext(abs_path)[1].lower()
         
-        sheets = SchemaService._read_file(abs_path, ext)
+        sheets = SchemaService.read_tables(abs_path, ext)
         
         return {
             "tables": [
@@ -28,7 +26,13 @@ class SchemaService:
         
         
     @staticmethod
-    def _read_file(abs_path: str, ext: str) -> dict:
+    def read_tables(abs_path: str, ext: str) -> dict:
+        """
+        Única función de carga de archivos del sistema.
+        Compartida por SchemaService (extracción de schema) y
+        SQLExecutor (carga al sandbox SQLite) — nunca divergen.
+        Retorna {nombre_tabla: DataFrame}.
+        """
         if ext == '.csv':
             return {"main": pd.read_csv(abs_path)}
 
@@ -43,9 +47,11 @@ class SchemaService:
             # JSON con array de registros: [{"col": val}, ...]
             return {"main": pd.DataFrame(raw)}
 
-        # Excel — sin cambios
-        xls = pd.ExcelFile(abs_path)
-        return {name: xls.parse(name) for name in xls.sheet_names}
+        if ext in ('.xlsx', '.xls'):
+            xls = pd.ExcelFile(abs_path)
+            return {name: xls.parse(name) for name in xls.sheet_names}
+
+        raise ValueError(f"Extensión no soportada: {ext}")
 
     @staticmethod
     def _parse_table(name: str, df: pd.DataFrame) -> dict:
@@ -62,7 +68,7 @@ class SchemaService:
     def _parse_column(col_name: str, series: pd.Series) -> dict:
         return {
             "name":     str(col_name),
-            "dtype":    SchemaService._infer_dtype(series),
+            "dtype":    SchemaService.infer_dtype(series),
             "nullable": bool(series.isnull().any()),
             "sample":   SchemaService._safe_sample(series),
         }
@@ -82,7 +88,7 @@ class SchemaService:
         return result
     
     @staticmethod
-    def _infer_dtype(series: pd.Series) -> str:
+    def infer_dtype(series: pd.Series) -> str:
         kind = series.dtype.kind
         mapping = {"i": "int", "u": "int", "f": "float", "b": "bool", "M": "date"}
         if kind in mapping:
