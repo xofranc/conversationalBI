@@ -1,0 +1,44 @@
+{
+  "id": "backend_services_ai_prompt_builder",
+  "type": "Service",
+  "name": "prompt_builder.py",
+  "summary": "Constructs and formats LLM prompts by assembling templates, context, and user input for the AI query service.",
+  "purpose": "Encapsulates prompt construction logic to separate prompt formatting concerns from query execution, enabling reusable, maintainable, and testable prompt generation across AI interactions.",
+  "responsibilities": [
+    "Assembling structured prompts from templates and dynamic data",
+    "Injecting conversation context, system instructions, and user inputs into prompt templates",
+    "Enforcing prompt formatting standards and output schemas",
+    "Decoupling prompt generation logic from LLM query execution"
+  ],
+  "inputs": [
+    "Raw user queries or intent objects",
+    "Context data, conversation history, or retrieval-augmented generation (RAG) chunks",
+    "Template identifiers or system instruction configurations"
+  ],
+  "outputs": [
+    "Formatted prompt strings or structured message arrays (e.g., system/user/assistant roles)",
+    "Prompt metadata such as token estimates or template version used"
+  ],
+  "dependencies": [],
+  "used_by": [
+    "ai_query_service.py"
+  ],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/services/ai/prompt_builder.py",
+  "language": "python",
+  "tags": [
+    "service",
+    "promptbuilder"
+  ],
+  "architecture_notes": "Implements the Builder pattern to isolate prompt composition from the AIQueryService, following Separation of Concerns (SoC). This prevents query execution logic from being polluted by string manipulation and allows prompts to be versioned, tested, and reused independently. Typically acts as a factory for prompt objects consumed synchronously by the query service.",
+  "improvements": [
+    "Introduce a prompt template registry with versioning to track changes and enable rollbacks",
+    "Add token-budget awareness and truncation strategies to prevent context window overflows",
+    "Implement prompt caching for recurring template-context combinations to reduce latency",
+    "Add observability hooks to log prompt inputs/outputs for debugging and compliance",
+    "Support A/B testing framework to evaluate prompt performance against business metrics"
+  ],
+  "code_hash": "493372e91b985953f1fb308c90e564e2479cd9e52efdc89faabb74c375ff5943",
+  "last_updated": "2026-07-24T10:17:16.418798"
+}

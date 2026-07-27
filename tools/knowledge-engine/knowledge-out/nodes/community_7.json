@@ -1,0 +1,26 @@
+{
+  "id": "community_7",
+  "type": "Architecture",
+  "name": "Community 7",
+  "summary": "Community with 17 nodes across 1 files",
+  "purpose": "",
+  "responsibilities": [],
+  "inputs": [],
+  "outputs": [],
+  "dependencies": [
+    "package.json"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "",
+  "language": "",
+  "tags": [
+    "Frontend",
+    "Function"
+  ],
+  "architecture_notes": "Composition: {'Frontend': 1, 'Function': 16}",
+  "improvements": [],
+  "code_hash": "",
+  "last_updated": ""
+}

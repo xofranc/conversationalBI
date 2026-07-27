@@ -1,0 +1,25 @@
+{
+  "id": "community_24",
+  "type": "Architecture",
+  "name": "Community 24",
+  "summary": "Community with 2 nodes across 1 files",
+  "purpose": "",
+  "responsibilities": [],
+  "inputs": [],
+  "outputs": [],
+  "dependencies": [
+    "0003_remove_user_user_type_id.py"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "",
+  "language": "",
+  "tags": [
+    "Migration"
+  ],
+  "architecture_notes": "Composition: {'Migration': 2}",
+  "improvements": [],
+  "code_hash": "",
+  "last_updated": ""
+}

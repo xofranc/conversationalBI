@@ -1,0 +1,50 @@
+{
+  "id": "backend_apps_queries_models_queryresult",
+  "type": "Model",
+  "name": "queryResult.py",
+  "summary": "Django ORM model that persists the output data of executed queries and links results to their corresponding query execution history.",
+  "purpose": "Provides a persistent storage layer for query execution outcomes, enabling retrieval, auditing, and serialization of query results independently from the execution metadata stored in QueryHistory.",
+  "responsibilities": [
+    "Store query execution output data and metadata",
+    "Maintain a relationship to QueryHistory for traceability",
+    "Support repository and serializer layers for data access and API presentation",
+    "Enable administrative visibility via Django admin integration"
+  ],
+  "inputs": [
+    "QueryHistory instance (foreign key relationship)",
+    "Query execution output (e.g., result sets, status, format)",
+    "Django ORM model field definitions and migrations"
+  ],
+  "outputs": [
+    "Persisted QueryResult database records",
+    "Serialized query response data via query_response.py",
+    "Domain objects for the queries repository layer"
+  ],
+  "dependencies": [
+    "queryHistory.py",
+    "QueryHistory"
+  ],
+  "used_by": [
+    "queries/admin.py",
+    "queries/repositories.py",
+    "query_response.py"
+  ],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/queries/models/queryResult.py",
+  "language": "python",
+  "tags": [
+    "model",
+    "queryresult"
+  ],
+  "architecture_notes": "Implements the Active Record pattern via Django's ORM. It is positioned in the domain/data layer of a layered architecture, decoupled from presentation logic through the repository and serializer neighbors. The explicit separation between QueryHistory (execution metadata/audit) and QueryResult (output payload) suggests a design favoring single-responsibility storage, though it introduces a required join or relationship traversal for full context.",
+  "improvements": [
+    "Add database indexes on foreign keys and frequently filtered fields (e.g., created_at, query_history_id) to improve retrieval performance",
+    "Consider extracting large result payloads to object storage or a separate JSONB/NoSQL store if result sizes grow significantly",
+    "Implement a custom manager or repository method to avoid N+1 queries when fetching results alongside their history",
+    "Add explicit ordering (Meta.ordering) and verbose names for better admin and API usability",
+    "Evaluate whether the model should be immutable (e.g., prevent updates) if query results are meant to be historical snapshots"
+  ],
+  "code_hash": "b565d7b044503da2a3a8fead88aec2bc70f2730063e868b76679987cadae505d",
+  "last_updated": "2026-07-24T10:15:27.560615"
+}

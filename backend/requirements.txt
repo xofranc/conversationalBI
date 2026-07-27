@@ -44,3 +44,11 @@ uuid_utils==0.16.0
 xxhash==3.7.0
 zstandard==0.25.0
 gunicorn==23.0.0
+
+# Analítica: pronósticos y ML (services/analysis)
+statsmodels==0.14.6
+scikit-learn==1.9.0
+scipy==1.18.0
+patsy==1.0.2
+joblib==1.5.3
+threadpoolctl==3.6.0

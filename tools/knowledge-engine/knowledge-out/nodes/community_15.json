@@ -1,0 +1,26 @@
+{
+  "id": "community_15",
+  "type": "Architecture",
+  "name": "Community 15",
+  "summary": "Community with 3 nodes across 1 files",
+  "purpose": "",
+  "responsibilities": [],
+  "inputs": [],
+  "outputs": [],
+  "dependencies": [
+    "users/apps.py"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "",
+  "language": "",
+  "tags": [
+    "App",
+    "Unknown"
+  ],
+  "architecture_notes": "Composition: {'App': 2, 'Unknown': 1}",
+  "improvements": [],
+  "code_hash": "",
+  "last_updated": ""
+}

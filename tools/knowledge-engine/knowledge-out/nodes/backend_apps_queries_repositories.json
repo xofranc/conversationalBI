@@ -1,0 +1,48 @@
+{
+  "id": "backend_apps_queries_repositories",
+  "type": "Repository",
+  "name": "queries/repositories.py",
+  "summary": "Repository abstraction for query history and result persistence operations",
+  "purpose": "Isolates data access logic for query-related entities, decoupling the service layer from direct database dependencies and providing a centralized, testable interface for QueryHistory and QueryResult storage and retrieval.",
+  "responsibilities": [
+    "Encapsulate database CRUD operations for QueryHistory and QueryResult models",
+    "Abstract persistence details from the service layer",
+    "Provide query-specific data retrieval methods and filters",
+    "Ensure transactional consistency for query record operations"
+  ],
+  "inputs": [
+    "QueryHistory and QueryResult model instances or identifiers",
+    "Search filters and pagination parameters",
+    "Database session or unit of work context"
+  ],
+  "outputs": [
+    "Persisted QueryHistory and QueryResult entities",
+    "Queried collections or single records of query data",
+    "Operation status indicators (e.g., row counts, booleans)"
+  ],
+  "dependencies": [
+    "queryHistory.py",
+    "queryResult.py"
+  ],
+  "used_by": [
+    "query_service.py"
+  ],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/queries/repositories.py",
+  "language": "python",
+  "tags": [
+    "repository",
+    "queryrepository"
+  ],
+  "architecture_notes": "Implements the Repository Pattern within a layered architecture, acting as the anti-corruption layer between the domain/service layer (query_service.py) and the ORM/data models. It centralizes all query-related data access logic, promoting separation of concerns, testability through mocking, and adherence to the Dependency Inversion Principle. The direct coupling to concrete models (QueryHistory, QueryResult) suggests an active record or data mapper context.",
+  "improvements": [
+    "Define an abstract repository interface to enable dependency injection and simplify mocking in unit tests",
+    "Add explicit pagination and sorting support for history retrieval methods",
+    "Implement async database operations if the stack supports high-concurrency workloads",
+    "Introduce a Unit of Work pattern to coordinate transactions across multiple repositories",
+    "Add input validation or specification objects to prevent leaking database concerns into the service layer"
+  ],
+  "code_hash": "6e07f0392be7f221f7ba2c6f12ec23e2376f9b6c50011676a2071ebec09560ef",
+  "last_updated": "2026-07-24T10:15:29.360002"
+}

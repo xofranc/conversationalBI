@@ -95,7 +95,9 @@ class SchemaService:
             return mapping[kind]
         if series.dtype == object:
             try:
-                pd.to_datetime(series.dropna().head(20))
+                # format='mixed': parseo elemento a elemento explícito;
+                # evita el UserWarning "Could not infer format" de pandas 2.x
+                pd.to_datetime(series.dropna().head(20), format='mixed')
                 return "date"
             except Exception:
                 pass

@@ -1,0 +1,39 @@
+{
+  "id": "vault_obsidian_app",
+  "type": "Unknown",
+  "name": "app.json",
+  "summary": "Obsidian workspace application configuration file storing core UI, editor, and behavioral preferences.",
+  "purpose": "Persists user-specific application settings for the Obsidian knowledge base client, ensuring consistent behavior, appearance, and editing experience across sessions and synchronized devices.",
+  "responsibilities": [
+    "Store editor preferences such as auto-pairing, live preview, and line length",
+    "Persist UI state flags including theme mode, sidebar visibility, and tab behavior",
+    "Define default file system behaviors like new note location and attachment folder paths",
+    "Serialize application-level feature toggles for consumption by the Obsidian runtime"
+  ],
+  "inputs": [
+    "User settings changes via the Obsidian Settings UI",
+    "Default application schema shipped with Obsidian updates"
+  ],
+  "outputs": [
+    "Parsed configuration object consumed by the Obsidian client runtime",
+    "Serialized JSON state written to disk for persistence across restarts"
+  ],
+  "dependencies": [],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "vault/.obsidian/app.json",
+  "language": "unknown",
+  "tags": [
+    "unknown"
+  ],
+  "architecture_notes": "Acts as a simple key-value persistence layer using JSON serialization within the workspace metadata boundary. Follows a convention-over-configuration pattern with internal fallback defaults. Coexists with sibling workspace state files (workspace.json, appearance.json, hotkeys.json) to separate concerns. Should be treated as mutable user state rather than infrastructure; include in backups but evaluate whether to version-control based on team synchronization needs.",
+  "improvements": [
+    "Introduce a JSON schema or validation layer to prevent runtime errors from manual edits or sync conflicts",
+    "Split into environment-specific overlays (e.g., local-only vs. vault-shared settings) to reduce merge noise",
+    "Document setting keys explicitly to improve discoverability for vault administrators and plugin developers",
+    "Implement automated migration logic for backward compatibility when Obsidian versions introduce breaking setting changes"
+  ],
+  "code_hash": "9048a6fc08496dddc5531795ea97dbd1a963448cdfb629fee081ec5075841b37",
+  "last_updated": "2026-07-24T10:17:43.950182"
+}

@@ -1,0 +1,29 @@
+{
+  "id": "community_8",
+  "type": "Architecture",
+  "name": "Community 8",
+  "summary": "Community with 13 nodes across 2 files",
+  "purpose": "",
+  "responsibilities": [],
+  "inputs": [],
+  "outputs": [],
+  "dependencies": [
+    "users/urls.py",
+    "views/auth.py"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "",
+  "language": "",
+  "tags": [
+    "Serializer",
+    "URL",
+    "View",
+    "Unknown"
+  ],
+  "architecture_notes": "Composition: {'Serializer': 5, 'URL': 1, 'View': 6, 'Unknown': 1}",
+  "improvements": [],
+  "code_hash": "",
+  "last_updated": ""
+}

@@ -1,0 +1,26 @@
+{
+  "id": "community_28",
+  "type": "Architecture",
+  "name": "Community 28",
+  "summary": "Community with 2 nodes across 2 files",
+  "purpose": "",
+  "responsibilities": [],
+  "inputs": [],
+  "outputs": [],
+  "dependencies": [
+    "wsgi.py",
+    "WSGI config for conversationalBI project.  It exposes the WSGI callable as a mod"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "",
+  "language": "",
+  "tags": [
+    "Config"
+  ],
+  "architecture_notes": "Composition: {'Config': 2}",
+  "improvements": [],
+  "code_hash": "",
+  "last_updated": ""
+}

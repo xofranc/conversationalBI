@@ -1,0 +1,28 @@
+{
+  "id": "community_9",
+  "type": "Architecture",
+  "name": "Community 9",
+  "summary": "Community with 13 nodes across 3 files",
+  "purpose": "",
+  "responsibilities": [],
+  "inputs": [],
+  "outputs": [],
+  "dependencies": [
+    "queries/services/__init__.py",
+    "cache_service.py",
+    "query_service.py"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "",
+  "language": "",
+  "tags": [
+    "Repository",
+    "Service"
+  ],
+  "architecture_notes": "Composition: {'Repository': 2, 'Service': 11}",
+  "improvements": [],
+  "code_hash": "",
+  "last_updated": ""
+}

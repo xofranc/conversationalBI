@@ -1,0 +1,46 @@
+{
+  "id": "backend_apps_dataset_serializers_datasetupload",
+  "type": "Serializer",
+  "name": "datasetUpload.py",
+  "summary": "DRF serializer that validates and processes incoming dataset file uploads before persistence.",
+  "purpose": "To encapsulate dataset upload validation logic, ensuring only valid files and metadata reach the view and model layers, while shielding the application from malformed or malicious upload payloads.",
+  "responsibilities": [
+    "Validate incoming multipart upload data and file metadata",
+    "Perform file-level checks (extension, size, existence) using os utilities",
+    "Serialize and deserialize between Dataset model instances and native Python types",
+    "Transform and sanitize upload paths before storage",
+    "Raise structured validation errors back to the view layer"
+  ],
+  "inputs": [
+    "Multipart form-data containing the dataset file",
+    "Dataset metadata (name, description, format type)",
+    "Request context for user/tenant scoping"
+  ],
+  "outputs": [
+    "Validated native Python dictionary ready for model creation",
+    "Dataset model instance on successful save/update",
+    "DRF ValidationError with field-level error messages on failure"
+  ],
+  "dependencies": [],
+  "used_by": [
+    "dataset/views.py"
+  ],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/dataset/serializers/datasetUpload.py",
+  "language": "python",
+  "tags": [
+    "serializer",
+    "datasetuploadserializer"
+  ],
+  "architecture_notes": "Implements the DRF Serializer pattern to enforce a strict validation boundary between the view (dataset/views.py) and the persistence layer. The use of the os module suggests direct filesystem path manipulation, indicating a thin abstraction over local storage rather than a pluggable storage backend. This design centralizes upload rules in one class, making it easier to maintain consistent validation across multiple views or API versions.",
+  "improvements": [
+    "Replace direct os.path usage with Django's default_storage or a dedicated storage backend abstraction to improve portability and testability",
+    "Extract file validation (size, magic bytes, virus scan) into a reusable validator class or service layer",
+    "Add asynchronous task offloading for large dataset ingestion to prevent request-blocking",
+    "Introduce explicit file type whitelisting via MIME-type detection rather than relying solely on extensions",
+    "Remove file path construction from the serializer and delegate it to the model's upload_to callable or a dedicated file service"
+  ],
+  "code_hash": "a5e56257b5015dafc76b539feb2296da211e58aed7722c69a8bc2451b97c7f47",
+  "last_updated": "2026-07-24T10:14:36.724122"
+}

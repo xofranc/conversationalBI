@@ -1,0 +1,44 @@
+{
+  "id": "backend_apps_queries_serializers_query_request",
+  "type": "Serializer",
+  "name": "query_request.py",
+  "summary": "DRF serializer for validating and transforming incoming query request payloads",
+  "purpose": "Provides a structured validation layer between the API view and the query execution domain, ensuring that all incoming query requests conform to expected schema and business rules before processing",
+  "responsibilities": [
+    "Validate incoming query request data against defined schema",
+    "Deserialize JSON payload into Python native types",
+    "Serialize query request models or instances for API responses",
+    "Enforce business rules and input sanitization",
+    "Act as a contract between the client and the query domain"
+  ],
+  "inputs": [
+    "HTTP request body (JSON payload)",
+    "Query parameters",
+    "Raw user input for query execution"
+  ],
+  "outputs": [
+    "Validated Python dictionaries",
+    "Serialized query request representations",
+    "Validation error responses"
+  ],
+  "dependencies": [],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/queries/serializers/query_request.py",
+  "language": "python",
+  "tags": [
+    "serializer",
+    "queryrequestserializer"
+  ],
+  "architecture_notes": "Implements the Serializer pattern from Django REST Framework to decouple API representation from internal domain models. Located in the queries app serializers layer, it enforces the Single Responsibility Principle by isolating request validation logic from views and models. Typically used as part of a layered architecture where the view delegates input parsing to the serializer before passing clean data to a service or repository layer for actual query execution.",
+  "improvements": [
+    "Add explicit type hints and docstrings to improve maintainability",
+    "Implement custom validators for security-sensitive inputs (e.g., SQL injection prevention if applicable)",
+    "Add comprehensive unit tests covering edge cases and invalid inputs",
+    "Consider splitting read and write responsibilities into separate List/Detail serializers if complexity grows",
+    "Add logging for validation failures to support monitoring and debugging"
+  ],
+  "code_hash": "105220be8f1b8861b564b9f57b569b083855018d4ee45d0d22e2cd982f7f3d12",
+  "last_updated": "2026-07-24T10:15:37.589143"
+}

@@ -1,0 +1,27 @@
+{
+  "id": "community_11",
+  "type": "Architecture",
+  "name": "Community 11",
+  "summary": "Community with 7 nodes across 1 files",
+  "purpose": "",
+  "responsibilities": [],
+  "inputs": [],
+  "outputs": [],
+  "dependencies": [
+    "conftest.py"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "",
+  "language": "",
+  "tags": [
+    "Module",
+    "Function",
+    "Class"
+  ],
+  "architecture_notes": "Composition: {'Module': 1, 'Function': 3, 'Class': 3}",
+  "improvements": [],
+  "code_hash": "",
+  "last_updated": ""
+}

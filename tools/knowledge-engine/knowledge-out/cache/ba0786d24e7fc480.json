@@ -1,0 +1,42 @@
+{
+  "id": "opencode_opencode",
+  "type": "Unknown",
+  "name": "opencode.json",
+  "summary": "Central configuration manifest for the OpenCode environment that declares schema validation and plugin registration",
+  "purpose": "Provides a single, schema-validated source of truth for configuring OpenCode tooling behavior, enabling extensibility through plugins while ensuring structural correctness via JSON Schema",
+  "responsibilities": [
+    "Declare and enforce JSON Schema validation rules via the $schema reference",
+    "Register and configure runtime plugins through the plugin function neighbor",
+    "Define core environment settings, preferences, and tooling parameters",
+    "Act as the composition root for the OpenCode runtime configuration"
+  ],
+  "inputs": [
+    "JSON Schema URI ($schema) for structural validation",
+    "Plugin function definitions and metadata references",
+    "User-defined settings and environment-specific parameters"
+  ],
+  "outputs": [
+    "Schema-validated configuration object consumed by OpenCode runtime",
+    "Plugin initialization instructions and registry mappings",
+    "Normalized environment settings for consistent tooling behavior"
+  ],
+  "dependencies": [],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": ".opencode/opencode.json",
+  "language": "unknown",
+  "tags": [
+    "unknown"
+  ],
+  "architecture_notes": "This file follows a declarative configuration pattern, separating static metadata from executable logic. Located in a hidden .opencode directory, it functions as tooling-specific infrastructure rather than application code. The co-location of $schema and plugin neighbors indicates a design that prioritizes strict validation alongside extensibility: the schema prevents configuration drift, while the plugin reference enables a modular, function-driven extension model. This is consistent with modern IDE and CLI tooling manifests (e.g., tsconfig.json, vscode settings).",
+  "improvements": [
+    "Add schema version pinning to protect against breaking changes from remote schema updates",
+    "Introduce environment-specific configuration overlays (e.g., opencode.local.json) to avoid committing local developer settings",
+    "Implement pre-commit or CI validation to catch schema violations before runtime",
+    "Externalize sensitive values to environment variables or a secrets manager instead of plain JSON",
+    "Add a $comment or description field to document the purpose of each plugin registration"
+  ],
+  "code_hash": "f6ae02a184c6b12631b74b0ae664be0737c17cc865420deff8240abb14de29ab",
+  "last_updated": "2026-07-24T10:14:00.794622"
+}

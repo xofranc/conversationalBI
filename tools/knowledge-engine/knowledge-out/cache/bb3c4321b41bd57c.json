@@ -1,0 +1,31 @@
+{
+  "id": "backend_apps_users_migrations_init",
+  "type": "Migration",
+  "name": "users/migrations/__init__.py",
+  "summary": "Package initializer for the users application's Django migrations module",
+  "purpose": "Marks the migrations directory as a Python package, enabling Django's migration framework to discover, import, and execute database migration modules for the users app",
+  "responsibilities": [
+    "Declare the migrations directory as a valid Python package",
+    "Enable Django's migration loader to identify and import migration modules",
+    "Serve as a namespace anchor for migration-related utilities if custom bases or helpers are provided"
+  ],
+  "inputs": [],
+  "outputs": [],
+  "dependencies": [],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/users/migrations/__init__.py",
+  "language": "python",
+  "tags": [
+    "migration"
+  ],
+  "architecture_notes": "Standard Python package marker required by Django's migration architecture. Django expects each app with models to contain a migrations package so the autodetector, loader, and executor can manage schema evolution. The file is typically empty but essential for Python's import system, sitting within the backend/apps/users/ module hierarchy following Django's co-location convention.",
+  "improvements": [
+    "Add a module-level docstring clarifying the package role to reduce onboarding friction",
+    "Ensure the file is committed to version control so the migrations package exists in fresh clones",
+    "If custom migration base classes or shared utilities are used, centralize and document them here rather than scattering across individual migration files"
+  ],
+  "code_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "last_updated": "2026-07-24T10:16:08.086713"
+}

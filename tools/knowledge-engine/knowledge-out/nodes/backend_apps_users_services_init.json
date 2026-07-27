@@ -1,0 +1,42 @@
+{
+  "id": "backend_apps_users_services_init",
+  "type": "Service",
+  "name": "users/services/__init__.py",
+  "summary": "Package-level facade that exposes AuthService and UserService to provide a unified import interface for the users domain services.",
+  "purpose": "Decouples consumers from internal module file structure by aggregating user domain services at the package boundary, enabling stable and simplified imports throughout the application.",
+  "responsibilities": [
+    "Expose AuthService as a public package-level symbol",
+    "Expose UserService as a public package-level symbol",
+    "Provide a stable import interface independent of internal submodule organization",
+    "Aggregate user domain services under a single namespace"
+  ],
+  "inputs": [
+    "auth_service module",
+    "user_service module"
+  ],
+  "outputs": [
+    "AuthService class",
+    "UserService class"
+  ],
+  "dependencies": [
+    "AuthService",
+    "UserService"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/users/services/__init__.py",
+  "language": "python",
+  "tags": [
+    "service"
+  ],
+  "architecture_notes": "Implements a package-level Facade pattern to create a clean public API for the services layer. This abstraction insulates upstream consumers from internal file restructuring and centralizes the service surface area. It aligns with the Dependency Inversion Principle by allowing higher-level modules to depend on a stable package interface rather than concrete implementation modules.",
+  "improvements": [
+    "Define __all__ to explicitly control public exports and prevent namespace leakage",
+    "Add a module-level docstring clarifying the service aggregation intent",
+    "Consider lazy import patterns if service classes trigger heavy side effects or circular dependencies",
+    "Add explicit re-export type annotations for improved static analysis and IDE support"
+  ],
+  "code_hash": "5bba672218201c52a6e4d2408a7d229c08da79f4664a0f9a21b1c61b1193444f",
+  "last_updated": "2026-07-24T10:16:20.437718"
+}

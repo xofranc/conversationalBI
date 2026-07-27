@@ -1,0 +1,42 @@
+{
+  "id": "opencode_plugins_graphify",
+  "type": "Frontend",
+  "name": "graphify.js",
+  "summary": "Plugin that generates graph representations of code relationships and structure",
+  "purpose": "Extends the OpenCode system with graph visualization capabilities, enabling developers to understand codebase topology, dependencies, and module relationships by transforming source metadata into navigable graph structures",
+  "responsibilities": [
+    "Implement the OpenCode plugin contract via the GraphifyPlugin class",
+    "Access and resolve file system paths using Node.js fs and path modules",
+    "Parse and transform code relationships into graph data structures",
+    "Expose generated graph data for frontend visualization consumption"
+  ],
+  "inputs": [
+    "File system paths and source code locations",
+    "Code dependency and relationship metadata",
+    "Plugin configuration and graph generation options"
+  ],
+  "outputs": [
+    "Structured graph data representing code relationships",
+    "Visualization-ready node and edge mappings",
+    "Plugin status and processing results"
+  ],
+  "dependencies": [],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": ".opencode/plugins/graphify.js",
+  "language": "javascript",
+  "tags": [
+    "frontend"
+  ],
+  "architecture_notes": "Operates as a plugin within the OpenCode extensibility layer, utilizing Node.js core modules (fs, path) to bridge static analysis with frontend visualization. The architecture suggests a build-time or hybrid runtime pattern where the plugin reads source topology and emits graph structures consumed by a frontend renderer. Located in a hidden .opencode/plugins directory, indicating internal infrastructure rather than userland extensions. The class-based design follows a standard plugin factory pattern.",
+  "improvements": [
+    "Introduce an abstraction layer for file system operations to enable unit testing without mocking Node.js core modules",
+    "Add schema validation for generated graph data to ensure frontend contract compatibility",
+    "Implement streaming or incremental graph generation to handle large codebases efficiently",
+    "Add structured logging and error boundaries around file system access",
+    "Consider TypeScript interfaces to formalize the plugin contract and graph data types"
+  ],
+  "code_hash": "ca230c9bcd12dce7cba5107e5ec751023bd1c3a34e920b348bf2c7f9d79f0ccd",
+  "last_updated": "2026-07-24T10:14:00.795162"
+}

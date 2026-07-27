@@ -1,0 +1,51 @@
+{
+  "id": "backend_apps_users_services_user_service",
+  "type": "Service",
+  "name": "user_service.py",
+  "summary": "Encapsulates user domain business logic and orchestrates operations between User, Profile, and Dataset models.",
+  "purpose": "To centralize user-related business rules and workflows, decoupling domain logic from presentation and data layers while coordinating cross-domain interactions with datasets.",
+  "responsibilities": [
+    "Manage user lifecycle and business rules",
+    "Orchestrate profile creation and updates",
+    "Coordinate cross-domain dataset associations",
+    "Execute optimized database queries using Django ORM F expressions",
+    "Provide an abstraction layer for user domain operations"
+  ],
+  "inputs": [
+    "User identifiers and credentials",
+    "Profile attributes",
+    "Dataset references",
+    "Business rule parameters"
+  ],
+  "outputs": [
+    "User model instances or querysets",
+    "Profile model instances",
+    "Dataset associations",
+    "Operation status or aggregated user data"
+  ],
+  "dependencies": [
+    "Dataset",
+    "users/models.py",
+    "User",
+    "Profile"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/users/services/user_service.py",
+  "language": "python",
+  "tags": [
+    "service",
+    "userservice"
+  ],
+  "architecture_notes": "Implements the Service Layer pattern to isolate domain logic from Django views and models. Imports F expressions indicating server-side computed updates or annotations. Cross-imports of the Dataset model suggest potential tight coupling between the users and datasets domains; consider whether this should be inverted or mediated via an application service or domain events to respect bounded context boundaries.",
+  "improvements": [
+    "Introduce an abstract interface or protocol for UserService to improve testability and inversion of control",
+    "Decouple from the Dataset model by using a repository or application service to mediate cross-domain logic",
+    "Add comprehensive type hints and input validation",
+    "Document public methods with docstrings and establish a clear API contract",
+    "Evaluate if F-expression usage should be encapsulated within a repository or query object"
+  ],
+  "code_hash": "9de3fe517d35bc3bd80a8ff2356aea23fbcaa02d6475438aeecbe5ee0a1a9dbf",
+  "last_updated": "2026-07-24T10:16:30.335662"
+}

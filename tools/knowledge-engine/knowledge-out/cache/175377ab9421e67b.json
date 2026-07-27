@@ -1,0 +1,53 @@
+{
+  "id": "backend_apps_users_models",
+  "type": "Model",
+  "name": "users/models.py",
+  "summary": "Defines the core user domain models including a custom user entity, its manager, and an associated profile model.",
+  "purpose": "Provides the foundational data layer for user authentication and identity management, separating authentication concerns from extended user profile attributes to support a clean, modular user subsystem.",
+  "responsibilities": [
+    "Define the custom User model extending Django's AbstractUser",
+    "Encapsulate user and superuser creation logic via CustomUserManager",
+    "Store extended user attributes in a separate Profile model",
+    "Establish database relationships, constraints, and schema for user data",
+    "Serve as the primary persistence contract for the users bounded context"
+  ],
+  "inputs": [
+    "User registration and authentication data (e.g., email, password, profile fields)",
+    "ORM queries and manager method invocations from services and admin layers",
+    "Database migration commands"
+  ],
+  "outputs": [
+    "User and Profile model instances",
+    "QuerySets for user lookups, filtering, and relationships",
+    "Database schema definitions (tables, indexes, constraints)"
+  ],
+  "dependencies": [],
+  "used_by": [
+    "users/admin.py",
+    "serializers/auth.py",
+    "profile.py",
+    "auth_service.py",
+    "user_service.py"
+  ],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/users/models.py",
+  "language": "python",
+  "tags": [
+    "model",
+    "customusermanager",
+    "user",
+    "profile"
+  ],
+  "architecture_notes": "Implements Django's custom user model pattern with AbstractUser to future-proof against evolving identity requirements. Separates authentication identity (User) from auxiliary profile data (Profile) to adhere to the Single Responsibility Principle. The CustomUserManager centralizes object creation logic and enforces invariant rules. Located in a dedicated 'users' app within a modular backend structure, promoting bounded context separation. Adjacent serializers and services indicate a layered architecture (Model -> Service -> Serializer -> Admin) with clear dependency direction inward toward the models.",
+  "improvements": [
+    "Add explicit type hints to CustomUserManager methods and model fields for better static analysis and developer experience",
+    "Define database indexes on frequently queried fields (e.g., email, username) to optimize authentication and lookup performance",
+    "Add __str__ representations and Meta ordering to User and Profile models for improved debugging and API consistency",
+    "Implement model-level validation (clean methods or field validators) for business rules such as email normalization",
+    "Ensure the Profile model references settings.AUTH_USER_MODEL using a string lazy reference to prevent circular imports and improve app reusability",
+    "Add verbose_name and verbose_name_plural Meta options to enhance the Django admin interface readability"
+  ],
+  "code_hash": "ff1a46298d3c336c9d4c6cac63e95add673cbe76e140971d4f68a4eb61a30bfa",
+  "last_updated": "2026-07-24T10:16:17.082524"
+}

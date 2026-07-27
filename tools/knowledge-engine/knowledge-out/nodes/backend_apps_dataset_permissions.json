@@ -1,0 +1,41 @@
+{
+  "id": "backend_apps_dataset_permissions",
+  "type": "Permission",
+  "name": "permissions.py",
+  "summary": "Custom DRF permission class that grants access only to the dataset's owner.",
+  "purpose": "Enforces object-level authorization to ensure users can only read or modify datasets they own, preventing unauthorized cross-tenant data access.",
+  "responsibilities": [
+    "Evaluate whether the requesting user owns the target dataset object",
+    "Integrate with Django REST Framework's permission framework by subclassing BasePermission",
+    "Provide reusable, declarable authorization logic for dataset views"
+  ],
+  "inputs": [
+    "request (DRF Request object containing the authenticated user)",
+    "view (DRF View handling the request)",
+    "obj (Dataset model instance to authorize against)"
+  ],
+  "outputs": [
+    "boolean (True if the user is the dataset owner, False otherwise)"
+  ],
+  "dependencies": [],
+  "used_by": [
+    "dataset/views.py"
+  ],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/dataset/permissions.py",
+  "language": "python",
+  "tags": [
+    "permission",
+    "isdatasetowner"
+  ],
+  "architecture_notes": "Implements the Access Control / Authorization layer using the Django REST Framework object-level permission pattern. By inheriting from BasePermission and isolating ownership checks, it keeps authorization concerns decoupled from view business logic and enables declarative composition through permission_classes. It assumes the dataset model exposes an ownership attribute (e.g., owner, user, or created_by) that is compared against request.user.",
+  "improvements": [
+    "Add support for shared or team-based ownership beyond a single user",
+    "Allow superusers or staff members to bypass ownership checks for administrative operations",
+    "Add explicit logging or monitoring for permission denials to improve security observability",
+    "Add configurability for the ownership field name to avoid tight coupling to a specific model attribute"
+  ],
+  "code_hash": "7f23f7254ea08b6793e5a43c57d6a82a745ddd8e601c5eb1aa20ddc8bb1fd18b",
+  "last_updated": "2026-07-24T10:14:23.206429"
+}

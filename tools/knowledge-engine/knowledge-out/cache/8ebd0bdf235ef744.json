@@ -1,0 +1,43 @@
+{
+  "id": "backend_apps_queries_urls",
+  "type": "URL",
+  "name": "queries/urls.py",
+  "summary": "Configures RESTful URL routing for the queries application by registering QueryViewSet with DRF's DefaultRouter.",
+  "purpose": "To provide a declarative, centralized mapping between HTTP endpoints and the QueryViewSet, separating routing concerns from view logic and leveraging automatic URL pattern generation.",
+  "responsibilities": [
+    "Instantiate and configure DRF DefaultRouter for the queries app",
+    "Register QueryViewSet to generate standard RESTful URL patterns",
+    "Export urlpatterns for Django's root URL configuration",
+    "Maintain app-level URL isolation and modularity"
+  ],
+  "inputs": [
+    "rest_framework.routers.DefaultRouter",
+    "queries.views.QueryViewSet"
+  ],
+  "outputs": [
+    "urlpatterns list for Django URL resolution",
+    "Auto-generated REST endpoint paths (list, detail, etc.)"
+  ],
+  "dependencies": [
+    "queries/views.py",
+    "QueryViewSet"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/queries/urls.py",
+  "language": "python",
+  "tags": [
+    "url"
+  ],
+  "architecture_notes": "Follows Django's app-centric modularity by confining query-related routes to their own urls.py. Uses DRF's DefaultRouter to apply Convention Over Configuration, automatically deriving CRUD URL patterns from ViewSet methods. This decouples endpoint definitions from view implementation, supports reverse URL lookups, and keeps the URL layer thin and declarative.",
+  "improvements": [
+    "Explicitly specify basename='query' in router.register() to ensure stable URL reverse names regardless of ViewSet internals",
+    "Define app_name to enforce URL namespacing (e.g., app_name = 'queries')",
+    "Add docstrings or comments documenting the registered routes and any custom actions",
+    "Consider versioning the URL prefix (e.g., api/v1/) at the project level if not already handled",
+    "Add trailing_slash configuration consistency (router = DefaultRouter(trailing_slash=False)) if the API design requires it"
+  ],
+  "code_hash": "a3628d2415c718df3d5a4602169eef75faf9728b670d6491b05f086ea85e915b",
+  "last_updated": "2026-07-24T10:15:49.130049"
+}

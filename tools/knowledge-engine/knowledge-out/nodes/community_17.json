@@ -1,0 +1,26 @@
+{
+  "id": "community_17",
+  "type": "Architecture",
+  "name": "Community 17",
+  "summary": "Community with 3 nodes across 1 files",
+  "purpose": "",
+  "responsibilities": [],
+  "inputs": [],
+  "outputs": [],
+  "dependencies": [
+    "graphify.js"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "",
+  "language": "",
+  "tags": [
+    "Frontend",
+    "Class"
+  ],
+  "architecture_notes": "Composition: {'Frontend': 1, 'Class': 2}",
+  "improvements": [],
+  "code_hash": "",
+  "last_updated": ""
+}

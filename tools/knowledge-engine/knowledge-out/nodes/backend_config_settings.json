@@ -1,0 +1,46 @@
+{
+  "id": "backend_config_settings",
+  "type": "Config",
+  "name": "settings.py",
+  "summary": "Django settings module centralizing runtime configuration, environment variable ingestion, and project-wide constants for the conversationalBI backend.",
+  "purpose": "Separates configuration from code to support multiple deployment environments while keeping secrets and environment-specific parameters out of version control, leveraging django-environ for type-safe parsing.",
+  "responsibilities": [
+    "Ingest and validate environment variables via django-environ and os.environ",
+    "Define Django core settings including INSTALLED_APPS, MIDDLEWARE, DATABASES, and TEMPLATES",
+    "Establish base project paths using pathlib.Path",
+    "Configure security controls (SECRET_KEY, DEBUG, ALLOWED_HOSTS, CSRF/TRUSTED origins)",
+    "Set up static and media file handling, including storage backends",
+    "Define logging, timezone, and internationalization defaults",
+    "Expose third-party service credentials (databases, caches, APIs)"
+  ],
+  "inputs": [
+    "Operating system environment variables",
+    "Optional .env file entries parsed by django-environ",
+    "Filesystem layout via pathlib.Path and os"
+  ],
+  "outputs": [
+    "Fully populated Django settings namespace imported by the WSGI/ASGI application",
+    "Typed configuration values consumed by Django and third-party packages",
+    "Resolved absolute paths for static, media, and template directories"
+  ],
+  "dependencies": [],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/config/settings.py",
+  "language": "python",
+  "tags": [
+    "config"
+  ],
+  "architecture_notes": "Implements the 12-Factor App config principle by externalizing configuration into the environment. The module serves as the composition root for the Django framework, translating the external deployment context into a strongly typed internal representation. Co-locating Path, environ, and os imports indicates a hybrid approach to path resolution and env-var management; placing settings under backend/config/ hints at a dedicated configuration package that could be extended into a split-settings hierarchy (base/local/production).",
+  "improvements": [
+    "Decompose the monolithic file into a settings package with base.py, local.py, and production.py to eliminate conditional environment logic",
+    "Implement mandatory environment variable validation that fails fast with actionable messages when required variables are absent",
+    "Remove any hardcoded secrets or default fallback values for SECRET_KEY and database credentials",
+    "Adopt pathlib.Path exclusively and remove os.path usage for consistency",
+    "Add a __all__ or typed Settings class to improve IDE autocompletion and static analysis",
+    "Introduce a SETTINGS_SCHEMA or JSON Schema export for DevOps validation and documentation"
+  ],
+  "code_hash": "dbe210f983835895bd5b0d5ca321f651cfc93a2ac1c393a58f9db856d81e694d",
+  "last_updated": "2026-07-24T10:16:44.026838"
+}

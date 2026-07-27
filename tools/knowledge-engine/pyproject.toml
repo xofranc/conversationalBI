@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "knowledge-engine"
+version = "0.1.0"
+description = "Transform any software repository into an intelligent knowledge base"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Knowledge Engine Contributors" },
+]
+requires-python = ">=3.11"
+keywords = ["knowledge", "documentation", "graph", "architecture", "obsidian"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "openai>=1.0.0",
+    "anthropic>=0.30.0",
+]
+
+[project.optional-dependencies]
+openai = ["openai>=1.0.0"]
+anthropic = ["anthropic>=0.30.0"]
+all = [
+    "openai>=1.0.0",
+    "anthropic>=0.30.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/anomalyco/knowledge-engine"
+Repository = "https://github.com/anomalyco/knowledge-engine"
+
+[project.scripts]
+ke = "main:main"
+
+[tool.setuptools]
+packages = ["core", "renderers", "knowledge"]
+py-modules = ["main", "config"]

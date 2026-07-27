@@ -1,0 +1,50 @@
+{
+  "id": "backend_apps_queries_services_cache_service",
+  "type": "Service",
+  "name": "cache_service.py",
+  "summary": "Django service that provides a centralized caching layer for query results using deterministic key generation and Django's core cache framework.",
+  "purpose": "Exists to decouple caching logic from query execution, reducing database load and improving response times by storing and retrieving expensive query results via Django's cache backend.",
+  "responsibilities": [
+    "Generate deterministic cache keys from query parameters using hashlib and json serialization",
+    "Store and retrieve serialized query results via django.core.cache",
+    "Abstract cache backend interactions behind a service interface",
+    "Handle cache invalidation logic for query-related data",
+    "Serialize/deserialize complex objects for cache storage"
+  ],
+  "inputs": [
+    "Query parameters or query objects (for key generation)",
+    "Query result data (for storage)",
+    "Optional TTL/timeout values",
+    "Cache namespace or prefix identifiers"
+  ],
+  "outputs": [
+    "Cached query results on cache hits",
+    "None or default values on cache misses",
+    "Generated cache key strings",
+    "Boolean status for cache write/delete operations"
+  ],
+  "dependencies": [],
+  "used_by": [
+    "query_service.py"
+  ],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/queries/services/cache_service.py",
+  "language": "python",
+  "tags": [
+    "service",
+    "cacheservice"
+  ],
+  "architecture_notes": "Implements the Adapter/Facade pattern over Django's low-level cache API to provide domain-specific caching for the queries module. Uses hashlib (likely SHA256/MD5) combined with json.dumps to create stable, deterministic cache keys from dynamic query inputs, ensuring consistent key generation across distributed instances. Isolates caching cross-cutting concerns from QueryService, adhering to Single Responsibility Principle. Likely acts as a decorator or collaborator to QueryService rather than being invoked directly by views.",
+  "improvements": [
+    "Add explicit type hints and dataclasses for cache key inputs to improve maintainability",
+    "Implement cache warming or background refresh strategies for high-traffic queries",
+    "Add cache hit/miss metrics and logging for observability",
+    "Introduce cache versioning or tag-based invalidation instead of manual key management",
+    "Add circuit breaker or fallback logic when cache backend is unavailable",
+    "Consider using django-redis specific features (like Redis hashes or pipelines) if Redis is the backend",
+    "Add configurable per-query TTL policies rather than global timeout values"
+  ],
+  "code_hash": "a678696e0ca3bba38bb3d4e706fa143a83f2c6b3fe817baa1b3721a8e6fd04f5",
+  "last_updated": "2026-07-24T10:15:42.363530"
+}

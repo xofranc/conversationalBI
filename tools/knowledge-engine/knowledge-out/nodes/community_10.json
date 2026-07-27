@@ -1,0 +1,28 @@
+{
+  "id": "community_10",
+  "type": "Architecture",
+  "name": "Community 10",
+  "summary": "Community with 11 nodes across 3 files",
+  "purpose": "",
+  "responsibilities": [],
+  "inputs": [],
+  "outputs": [],
+  "dependencies": [
+    "animations.js",
+    "api.js",
+    "main.js"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "",
+  "language": "",
+  "tags": [
+    "Frontend",
+    "Function"
+  ],
+  "architecture_notes": "Composition: {'Frontend': 3, 'Function': 8}",
+  "improvements": [],
+  "code_hash": "",
+  "last_updated": ""
+}

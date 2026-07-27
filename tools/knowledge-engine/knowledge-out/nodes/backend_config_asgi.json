@@ -1,0 +1,39 @@
+{
+  "id": "backend_config_asgi",
+  "type": "Config",
+  "name": "asgi.py",
+  "summary": "Django ASGI configuration file that exposes the ASGI application entry point for the conversationalBI project.",
+  "purpose": "This element exists to bootstrap Django in an asynchronous server context and expose the standard ASGI callable. It solves the deployment problem of connecting the conversationalBI project to ASGI-compatible servers (e.g., Uvicorn, Daphne, Hypercorn) to handle concurrent and async protocols such as HTTP/2, WebSockets, and long-polling.",
+  "responsibilities": [
+    "Configure the DJANGO_SETTINGS_MODULE environment variable",
+    "Initialize Django for asynchronous request handling",
+    "Expose the ASGI application callable as the module-level variable named application",
+    "Act as the standardized entry point for ASGI web servers"
+  ],
+  "inputs": [
+    "DJANGO_SETTINGS_MODULE environment variable (or its default value)",
+    "Django settings module path"
+  ],
+  "outputs": [
+    "ASGI application callable (application) consumed by ASGI servers"
+  ],
+  "dependencies": [],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/config/asgi.py",
+  "language": "python",
+  "tags": [
+    "config"
+  ],
+  "architecture_notes": "This file serves as a minimal bootstrap adapter following Django conventions and the 12-Factor App methodology. It isolates deployment infrastructure concerns from domain logic by residing in the project-level config package. The use of django.core.asgi.get_asgi_application() delegates protocol handling to the framework, avoiding custom middleware logic at the entry point and ensuring vendor-neutral compatibility with any ASGI server. For future async expansion (e.g., Django Channels, WebSockets), this file would become the integration point for custom routing or protocol-type routers.",
+  "improvements": [
+    "Add explicit try/except and structured logging around application initialization to surface startup failures clearly",
+    "Add type hints (e.g., ASGIApp) to the application variable for better static analysis and IDE support",
+    "If async features or WebSockets are planned, integrate a protocol-type router (e.g., Django Channels) here instead of the default synchronous-only application",
+    "Wrap the application with observability middleware (request ID, tracing, or metrics) at the ASGI level for cross-cutting concerns",
+    "Add a startup validation check to confirm critical settings are loaded before the server accepts traffic"
+  ],
+  "code_hash": "064c418121d3307154a8523afa02cfe8ce803d92191952bc2f738196a5129190",
+  "last_updated": "2026-07-24T10:16:35.623009"
+}

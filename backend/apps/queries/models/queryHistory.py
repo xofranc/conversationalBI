@@ -10,6 +10,10 @@ class QueryHistory(models.Model):
         PIE = 'pie', 'Torta'
         SCATTER = 'scatter', 'Dispersion'
         TABLE = 'table', 'Tabla'
+        FORECAST = 'forecast', 'Pronostico'
+        ANOMALY = 'anomaly', 'Anomalias'
+        SEGMENT = 'segment', 'Segmentacion'
+        DRIVERS = 'drivers', 'Factores'
 
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL,

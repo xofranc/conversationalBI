@@ -1,0 +1,46 @@
+{
+  "id": "backend_services_ai_chart_selector",
+  "type": "Service",
+  "name": "chart_selector.py",
+  "summary": "AI-driven service that selects optimal chart types and visualization configurations based on data characteristics and query intent.",
+  "purpose": "Automates the decision-making process for data visualization by bridging raw data semantics and user intent, eliminating manual chart selection and ensuring consistent, meaningful visual representations across the analytics platform.",
+  "responsibilities": [
+    "Analyze dataset schema, cardinality, and statistical distributions",
+    "Interpret natural language query intent from ai_query_service",
+    "Map data characteristics to appropriate chart types and encodings",
+    "Generate chart specifications including axes, dimensions, and measures",
+    "Validate chart feasibility against data constraints"
+  ],
+  "inputs": [
+    "Dataset metadata and statistical profile",
+    "Parsed user query intent",
+    "Business domain context or visualization constraints"
+  ],
+  "outputs": [
+    "Recommended chart type and rationale",
+    "Structured chart configuration (Vega-Lite, ECharts, or internal spec)",
+    "Fallback alternatives when data is ambiguous"
+  ],
+  "dependencies": [],
+  "used_by": [
+    "ai_query_service.py"
+  ],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/services/ai/chart_selector.py",
+  "language": "python",
+  "tags": [
+    "service",
+    "chartselector"
+  ],
+  "architecture_notes": "Operates as a domain service within the AI backend layer, likely implementing a Strategy or Rules-Engine pattern to decouple chart selection logic from rendering. It consumes intent from ai_query_service and acts as a decision authority before the presentation layer. Should remain stateless and rely on pure functions or lightweight ML inference for scalability.",
+  "improvements": [
+    "Introduce a pluggable chart-strategy registry to support custom visualization types",
+    "Add confidence scores and explanation traces for each recommendation",
+    "Implement caching for recurring schema-to-chart mappings to reduce latency",
+    "Add adversarial testing for edge cases (empty datasets, high cardinality, single-column data)",
+    "Expose a feedback endpoint to capture user corrections and enable model refinement"
+  ],
+  "code_hash": "901c975bf1d37f12f1f3c3d52e522a23a5407212c20fada89f4ae4d99a65e38d",
+  "last_updated": "2026-07-24T10:17:14.935726"
+}

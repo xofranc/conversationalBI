@@ -1,0 +1,40 @@
+{
+  "id": "backend_apps_dataset_admin",
+  "type": "Admin",
+  "name": "dataset/admin.py",
+  "summary": "Django admin configuration module for the dataset application",
+  "purpose": "Enables management of dataset application models through Django's built-in administrative interface by registering models and optionally customizing their admin presentation and behavior",
+  "responsibilities": [
+    "Register dataset models with the Django admin site",
+    "Define and configure ModelAdmin classes for admin UI customization",
+    "Specify admin-visible fields, filters, search behavior, and permissions",
+    "Control which dataset models are exposed to administrative users"
+  ],
+  "inputs": [
+    "Dataset model classes from the dataset app",
+    "django.contrib.admin framework"
+  ],
+  "outputs": [
+    "Registered admin interfaces for dataset models",
+    "Customized admin site behavior and presentation rules"
+  ],
+  "dependencies": [],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/dataset/admin.py",
+  "language": "python",
+  "tags": [
+    "admin"
+  ],
+  "architecture_notes": "Follows Django's convention-over-configuration app structure by colocating admin registrations within the app. This module acts as a thin integration layer with Django's admin framework, leveraging its built-in CRUD capabilities to avoid custom internal management views. If the file contains only imports with no registrations, it may be an unused placeholder that should be cleaned up.",
+  "improvements": [
+    "Explicitly register models with tailored ModelAdmin classes rather than relying on default bare registrations",
+    "Remove the file if no admin functionality is required to reduce maintenance overhead and attack surface",
+    "Configure readonly_fields and granular permissions for sensitive or immutable dataset attributes",
+    "Optimize list_display queries using list_select_related or prefetch_related to prevent N+1 issues in the admin list view",
+    "Add custom admin actions for bulk dataset operations such as export, validation, or reprocessing"
+  ],
+  "code_hash": "b2e328e31f08dc907100505521d13ee6a9ea67a240655d051120011ce49cfaf8",
+  "last_updated": "2026-07-24T10:14:00.795014"
+}

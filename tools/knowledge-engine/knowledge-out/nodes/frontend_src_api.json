@@ -1,0 +1,50 @@
+{
+  "id": "frontend_src_api",
+  "type": "Frontend",
+  "name": "api.js",
+  "summary": "Frontend HTTP client module that centralizes API communication with backend services",
+  "purpose": "Provides a unified, reusable interface for making authenticated HTTP requests from the frontend to backend APIs, abstracting away fetch/axios complexity, handling auth tokens, and normalizing request/response formats",
+  "responsibilities": [
+    "Define and manage the base API URL configuration",
+    "Construct complete request URLs from endpoint paths",
+    "Attach standard and authentication headers to requests",
+    "Retrieve and inject authentication tokens",
+    "Execute HTTP requests and handle responses",
+    "Serialize JSON and FormData payloads",
+    "Normalize error handling and response parsing"
+  ],
+  "inputs": [
+    "API endpoint paths",
+    "HTTP methods and request payloads",
+    "Authentication tokens",
+    "FormData or JSON body content"
+  ],
+  "outputs": [
+    "Parsed response data",
+    "HTTP error objects",
+    "Promise-based async results"
+  ],
+  "dependencies": [],
+  "used_by": [
+    "main.js"
+  ],
+  "calls": [],
+  "called_from": [],
+  "source_file": "frontend/src/api.js",
+  "language": "javascript",
+  "tags": [
+    "frontend"
+  ],
+  "architecture_notes": "Serves as an API Gateway / Facade pattern at the frontend boundary, isolating the application from direct fetch/axios usage. Centralizes cross-cutting concerns such as authentication header injection, base URL resolution, and payload serialization. This design prevents duplication across feature modules and allows global changes to networking behavior (e.g., adding interceptors, switching HTTP libraries) without refactoring consumer code.",
+  "improvements": [
+    "Add request and response interceptors for logging and global error handling",
+    "Implement request deduplication or cancellation using AbortController",
+    "Add exponential backoff retry logic for transient network failures",
+    "Introduce TypeScript interfaces for type-safe API contracts",
+    "Extract API_BASE_URL into environment-specific configuration files",
+    "Add comprehensive request/response validation schemas (e.g., Zod)",
+    "Implement circuit breaker pattern for resilience against backend outages"
+  ],
+  "code_hash": "8eb3ca7d987874052756122d5b1f322747910129e34c0a003af4b32fdbf21005",
+  "last_updated": "2026-07-24T10:17:34.860207"
+}

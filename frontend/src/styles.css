@@ -2,74 +2,159 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom styles for ConversationalBI */
-:root {
-  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-}
+/* ── ConversationalBI · "El informe que conversa" ───────────────────── */
 
-.bg-dark-gradient {
-  background: var(--bg-gradient);
+/* Scrollbar sobrio (WebKit + Firefox) */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(30, 107, 79, 0.35) transparent;
 }
-
-.glassmorphism {
-  background: rgba(30, 41, 59, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-/* Background grid pattern */
-.bg-grid-pattern {
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 30px 30px;
-}
-
-/* Custom scrollbar for chat */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
-
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  background: transparent;
 }
-
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(20, 184, 166, 0.3);
+  background: rgba(30, 107, 79, 0.3);
   border-radius: 10px;
 }
-
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(20, 184, 166, 0.6);
+  background: rgba(30, 107, 79, 0.55);
 }
 
-/* Chat message bubbles */
+/* Burbujas de conversación */
 .chat-message {
-  max-width: 80%;
-  padding: 12px 16px;
-  border-radius: 16px;
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 12px;
   font-size: 0.9rem;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .chat-message.user {
-  background: #14b8a6;
-  color: #0f172a;
-  align-self: flex-end;
+  background: #1e6b4f;
+  color: #ffffff;
   border-bottom-right-radius: 4px;
 }
 
 .chat-message.ai {
-  background: #1e293b;
-  color: #e2e8f0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  align-self: flex-start;
+  background: #ffffff;
+  color: #1b1e23;
+  border: 1px solid #e3e5df;
   border-bottom-left-radius: 4px;
 }
 
 .message-wrapper {
   display: flex;
   flex-direction: column;
+}
+
+/* ── Recibo SQL (firma del producto) ────────────────────────────────── */
+.sql-receipt {
+  margin-top: 6px;
+  max-width: 85%;
+  font-size: 0.75rem;
+  border: 1px dashed #cbd3cc;
+  border-radius: 8px;
+  background: #f7f8f5;
+  overflow: hidden;
+}
+
+.sql-receipt summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 6px 10px;
+  cursor: pointer;
+  list-style: none;
+  color: #5a6068;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  user-select: none;
+}
+
+.sql-receipt summary::-webkit-details-marker {
+  display: none;
+}
+
+.sql-receipt summary::before {
+  content: '▸';
+  color: #1e6b4f;
+  transition: transform 0.15s ease;
+}
+
+.sql-receipt[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.sql-receipt summary:hover {
+  color: #1b1e23;
+}
+
+.sql-receipt pre {
+  margin: 0;
+  padding: 10px 12px;
+  border-top: 1px dashed #cbd3cc;
+  background: #ffffff;
+  color: #1b1e23;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.sql-badge {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.sql-badge.cache {
+  background: #f7eeda;
+  color: #b97a0f;
+}
+
+.sql-badge.model {
+  background: #e4efe9;
+  color: #1e6b4f;
+}
+
+/* ── Chips de ejemplo (empty state): mismo lenguaje punteado del recibo ── */
+.example-chip {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.72rem;
+  padding: 6px 12px;
+  border: 1px dashed #cbd3cc;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #5a6068;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.example-chip:hover {
+  color: #1e6b4f;
+  border-color: #1e6b4f;
+  background: #e4efe9;
+}
+
+/* Foco visible consistente */
+:focus-visible {
+  outline: 2px solid #1e6b4f;
+  outline-offset: 2px;
+}
+
+/* Moción reducida: el informe no se mueve */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

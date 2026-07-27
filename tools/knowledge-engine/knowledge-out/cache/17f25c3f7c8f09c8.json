@@ -1,0 +1,41 @@
+{
+  "id": "backend_apps_queries_migrations_0001_initial",
+  "type": "Migration",
+  "name": "queries/migrations/0001_initial.py",
+  "summary": "Initial database migration that establishes the foundational schema and tables for the queries application.",
+  "purpose": "Provides the baseline database structure required to persist query-related entities, ensuring the queries app can store and retrieve data within the Django project while maintaining schema versioning and reproducibility across environments.",
+  "responsibilities": [
+    "Provision initial database tables corresponding to the queries app's models",
+    "Define columns, data types, indexes, and constraints",
+    "Establish foreign key relationships, likely including references to the swappable user model via settings.AUTH_USER_MODEL",
+    "Serve as the immutable baseline for all future schema evolutions in the app"
+  ],
+  "inputs": [
+    "Current queries app model definitions",
+    "Django project settings (e.g., AUTH_USER_MODEL)",
+    "Django migration framework state and commands"
+  ],
+  "outputs": [
+    "Forward-applied database schema changes (tables, columns, relationships)",
+    "Reversible migration operations for baseline table creation"
+  ],
+  "dependencies": [],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/queries/migrations/0001_initial.py",
+  "language": "python",
+  "tags": [
+    "migration",
+    "migration"
+  ],
+  "architecture_notes": "This is an auto-generated Django initial migration following the framework's declarative migration pattern. It uses django.db.migrations to codify schema state, imports django.conf.settings to support swappable user model references (avoiding hard dependencies on a concrete User model), and leverages django.db.models.deletion for foreign key cascade behaviors. As the 0001_initial migration, it acts as the root of the migration graph for the queries app, enabling deterministic schema builds and rollback capabilities.",
+  "improvements": [
+    "Verify all ForeignKeys reference settings.AUTH_USER_MODEL rather than a hardcoded User model to preserve swappability",
+    "Keep the migration purely declarative; avoid embedding business logic or data manipulation unless using a separate data migration",
+    "Ensure the migration is tested for reversibility on the target database engine before deployment",
+    "Add inline comments if any manual edits are made to explain deviations from the auto-generated baseline"
+  ],
+  "code_hash": "3df7dd0f57671a5c9d3cc83af5ee5c5cf3a10059dacc3d813ca262118a0460f1",
+  "last_updated": "2026-07-24T10:15:18.604507"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "community_25",
+  "type": "Architecture",
+  "name": "Community 25",
+  "summary": "Community with 2 nodes across 2 files",
+  "purpose": "",
+  "responsibilities": [],
+  "inputs": [],
+  "outputs": [],
+  "dependencies": [
+    "asgi.py",
+    "ASGI config for conversationalBI project.  It exposes the ASGI callable as a mod"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "",
+  "language": "",
+  "tags": [
+    "Config"
+  ],
+  "architecture_notes": "Composition: {'Config': 2}",
+  "improvements": [],
+  "code_hash": "",
+  "last_updated": ""
+}

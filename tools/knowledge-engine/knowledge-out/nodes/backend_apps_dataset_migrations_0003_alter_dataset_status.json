@@ -1,0 +1,41 @@
+{
+  "id": "backend_apps_dataset_migrations_0003_alter_dataset_status",
+  "type": "Migration",
+  "name": "0003_alter_dataset_status.py",
+  "summary": "Django migration that alters the status field on the Dataset model to update its constraints, choices, or default value.",
+  "purpose": "Ensures the database schema reflects the current definition of the Dataset model's status field, supporting the application's business logic for dataset lifecycle states while maintaining data integrity across environments.",
+  "responsibilities": [
+    "Modify the dataset table's status column definition",
+    "Preserve existing data during schema alteration",
+    "Provide forward and backward migration paths",
+    "Maintain sequential dependency chain within the dataset app"
+  ],
+  "inputs": [
+    "Current database schema state",
+    "Dataset model status field definition",
+    "Dependency chain from previous migrations"
+  ],
+  "outputs": [
+    "Updated database schema",
+    "Altered status column in the dataset table"
+  ],
+  "dependencies": [],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/dataset/migrations/0003_alter_dataset_status.py",
+  "language": "python",
+  "tags": [
+    "migration",
+    "migration"
+  ],
+  "architecture_notes": "Implements Django's migration framework pattern using an AlterField operation within the sequential migration chain for the dataset app. Altering status fields can impact application behavior if choices are removed or defaults change; the migration should be reversible and may need to be paired with data migrations when semantic changes require value remapping. Table locking behavior should be considered depending on the database backend.",
+  "improvements": [
+    "Add explicit comments documenting the business reason for the status field change",
+    "Include a data migration step if old status values are incompatible with new constraints or choices",
+    "Add database-level check constraints to enforce valid status values beyond Django's application-layer validation",
+    "Test rollback procedures in a staging environment to ensure reversibility before production deployment"
+  ],
+  "code_hash": "5e7437478ee079f9299b92eeb27d51ff3f79b6c18a8bd7a11de329fd0937d1c2",
+  "last_updated": "2026-07-24T10:14:17.063590"
+}

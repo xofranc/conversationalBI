@@ -1,0 +1,44 @@
+{
+  "id": "backend_config_urls",
+  "type": "URL",
+  "name": "config/urls.py",
+  "summary": "Root URL configuration module for the conversationalBI Django project that maps incoming HTTP request paths to their corresponding view handlers and application sub-routers.",
+  "purpose": "Acts as the central routing table for the Django backend, defining how incoming HTTP requests are dispatched to the appropriate views or included app-level URL configurations. It ensures a single, maintainable entry point for all web traffic and enforces separation between request routing and business logic.",
+  "responsibilities": [
+    "Define the top-level urlpatterns list that Django's URL resolver traverses",
+    "Route incoming HTTP request paths to the correct application views or sub-URL configurations",
+    "Include and mount app-specific URL modules using django.urls.include for modularity",
+    "Expose the Django admin interface via django.contrib.admin",
+    "Provide named URL patterns to support reverse URL resolution throughout the project"
+  ],
+  "inputs": [
+    "Incoming HTTP request paths and methods from the WSGI/ASGI server",
+    "App-level URL configuration modules to be included",
+    "Django URL resolver path matching requests"
+  ],
+  "outputs": [
+    "Resolved view functions or class-based view instances",
+    "Delegated routing to included app-level URLconfs",
+    "HTTP 404 responses for paths that do not match any defined pattern"
+  ],
+  "dependencies": [],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/config/urls.py",
+  "language": "python",
+  "tags": [
+    "url"
+  ],
+  "architecture_notes": "This module serves as the Root URLconf implementing the Front Controller pattern. By importing include, path, and admin, it follows standard Django conventions for a multi-app architecture: the root router handles high-level path prefixes (such as admin/ or api/) and delegates detailed routing to individual apps. This decouples the project-level routing table from application internals, allowing teams to own their URL namespaces independently and preventing the root urls.py from becoming a bottleneck during parallel development.",
+  "improvements": [
+    "Add explicit path() entries to include each sub-application's urls.py (e.g., path('api/', include('api.urls'))) to activate modular routing",
+    "Introduce API versioning prefixes (e.g., path('api/v1/', ...)) to future-proof REST endpoints",
+    "Add a root-level health-check or ping endpoint for load balancer and monitoring integration",
+    "Include static() and media() URL patterns for local development if not already handled",
+    "Define custom handler404 and handler500 references at the module level for centralized error management",
+    "Consider mounting an API schema endpoint (e.g., OpenAPI/Swagger) if the project exposes a REST interface"
+  ],
+  "code_hash": "88f398231d567ddaa2688fccbbdf6b5a6da99a62e106cf550ea1bee6d1137be5",
+  "last_updated": "2026-07-24T10:16:51.021926"
+}

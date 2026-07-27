@@ -1,0 +1,32 @@
+{
+  "id": "community_4",
+  "type": "Architecture",
+  "name": "Community 4",
+  "summary": "Community with 25 nodes across 6 files",
+  "purpose": "",
+  "responsibilities": [],
+  "inputs": [],
+  "outputs": [],
+  "dependencies": [
+    "queries/admin.py",
+    "models/__init__.py",
+    "queryFeedback.py",
+    "queryHistory.py",
+    "queryResult.py",
+    "queries/repositories.py"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "",
+  "language": "",
+  "tags": [
+    "Admin",
+    "Model",
+    "Repository"
+  ],
+  "architecture_notes": "Composition: {'Admin': 4, 'Model': 13, 'Repository': 8}",
+  "improvements": [],
+  "code_hash": "",
+  "last_updated": ""
+}

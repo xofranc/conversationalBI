@@ -1,0 +1,47 @@
+{
+  "id": "backend_services_ai_prompt_builder_promptbuilder",
+  "type": "Service",
+  "name": "PromptBuilder",
+  "summary": "Constructs and formats LLM prompts for AI query and correction workflows.",
+  "purpose": "Isolates prompt engineering and templating logic from AI service orchestration, ensuring consistent, schema-aware, and context-rich prompts are generated for LLM interactions.",
+  "responsibilities": [
+    "Build base prompts for natural-language-to-query translation via .build()",
+    "Build correction or refinement prompts via .build_correction()",
+    "Serialize structured schemas into textual prompt context via ._schema_to_text()",
+    "Enforce consistent prompt structure and formatting conventions",
+    "Abstract prompt construction details from the AIQueryService orchestrator"
+  ],
+  "inputs": [
+    "Database or domain schema metadata",
+    "User natural language query or intent",
+    "Previous LLM response and correction instructions (for corrections)",
+    "Prompt template parameters and configuration"
+  ],
+  "outputs": [
+    "Formatted prompt strings optimized for LLM consumption",
+    "Textual schema representations embedded in prompts"
+  ],
+  "dependencies": [],
+  "used_by": [
+    "ai_query_service.py",
+    "AIQueryService"
+  ],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/services/ai/prompt_builder.py",
+  "language": "python",
+  "tags": [
+    "service",
+    "promptbuilder"
+  ],
+  "architecture_notes": "Serves as a dedicated builder within the backend AI service layer, applying a Builder-like pattern to construct prompts for distinct use cases (query generation vs. correction). It decouples prompt formatting from AIQueryService, allowing prompt strategies to evolve independently. The private ._schema_to_text() method internalizes schema serialization, suggesting a potential hidden dependency on schema metadata formats.",
+  "improvements": [
+    "Extract ._schema_to_text() into a separate SchemaFormatter utility to improve testability and single-responsibility compliance",
+    "Introduce explicit PromptTemplate or PromptStrategy abstractions to support versioning and experimentation",
+    "Add comprehensive type hints and input validation for all public build methods",
+    "Evaluate converting to stateless functions if no instance state is required, reducing object lifecycle overhead",
+    "Implement token-budget awareness and truncation logic to prevent prompt overflow with large schemas"
+  ],
+  "code_hash": "493372e91b985953f1fb308c90e564e2479cd9e52efdc89faabb74c375ff5943",
+  "last_updated": "2026-07-24T10:17:17.797671"
+}

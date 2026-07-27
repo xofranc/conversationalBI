@@ -1,0 +1,46 @@
+{
+  "id": "backend_conftest",
+  "type": "Module",
+  "name": "conftest.py",
+  "summary": "Pytest configuration module providing shared Django test fixtures and environment setup for the backend test suite.",
+  "purpose": "Centralizes test infrastructure configuration and reusable fixture definitions to eliminate setup duplication across backend tests, enabling consistent and isolated test environments for Django API and model testing.",
+  "responsibilities": [
+    "Configure Django environment for pytest execution",
+    "Provide reusable pytest fixtures for test dependencies",
+    "Instantiate DRF APIClient for integration testing",
+    "Create standardized test user and dataset model instances",
+    "Ensure consistent test data setup across the backend test suite"
+  ],
+  "inputs": [
+    "pytest request context and configuration",
+    "Django settings module (via environment variable)",
+    "Database access for model fixture persistence"
+  ],
+  "outputs": [
+    "Configured Django application environment",
+    "DRF APIClient instances for HTTP request simulation",
+    "Test User model instances",
+    "Test Dataset model instances"
+  ],
+  "dependencies": [
+    "Dataset"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/conftest.py",
+  "language": "python",
+  "tags": [
+    "module"
+  ],
+  "architecture_notes": "Serves as the root test infrastructure layer using the pytest conftest.py pattern to inject dependencies across the backend test hierarchy. Implements the Fixture pattern for reusable test resources, separating test data construction from test logic. Centralizes Django setup (likely including settings module configuration and django.setup() invocation) to ensure the ORM and application registry are initialized before fixture execution. Provides domain-specific fixtures (user, dataset) that couple the test suite to the authentication and data models, suggesting an integration testing strategy that spans API clients through to persistence.",
+  "improvements": [
+    "Extract Django environment setup into a dedicated pytest plugin or setup.cfg/pytest.ini configuration to declutter fixture definitions",
+    "Replace hardcoded model fixtures with factory_boy or pytest-factoryboy for more flexible and maintainable test data generation",
+    "Add explicit scope annotations (e.g., session, function) to fixtures to optimize test execution performance",
+    "Introduce type hints to fixture return types for improved static analysis and developer experience",
+    "Consider splitting domain-specific fixtures (dataset) into domain conftest.py files closer to the relevant application modules"
+  ],
+  "code_hash": "c1cfcd2a89191d681a1e195ce966e59744126dbeb99d911a3933ba8d42d6c372",
+  "last_updated": "2026-07-24T10:17:04.103402"
+}

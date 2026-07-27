@@ -1,0 +1,37 @@
+{
+  "id": "community_2",
+  "type": "Architecture",
+  "name": "Community 2",
+  "summary": "Community with 31 nodes across 8 files",
+  "purpose": "",
+  "responsibilities": [],
+  "inputs": [],
+  "outputs": [],
+  "dependencies": [
+    "dataset/models.py",
+    "permissions.py",
+    "datasetDetail.py",
+    "datasetList.py",
+    "datasetTable.py",
+    "datasetUpload.py",
+    "dataset/urls.py",
+    "dataset/views.py"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "",
+  "language": "",
+  "tags": [
+    "Model",
+    "Permission",
+    "Unknown",
+    "Serializer",
+    "URL",
+    "View"
+  ],
+  "architecture_notes": "Composition: {'Model': 1, 'Permission': 4, 'Unknown': 1, 'Serializer': 13, 'URL': 1, 'View': 11}",
+  "improvements": [],
+  "code_hash": "",
+  "last_updated": ""
+}

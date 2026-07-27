@@ -1,0 +1,45 @@
+{
+  "id": "backend_apps_dataset_tests_test_file_service",
+  "type": "Test",
+  "name": "test_file_service.py",
+  "summary": "Unit tests for FileService file validation logic verifying rejection of oversized files and PDF documents.",
+  "purpose": "Ensures that FileService correctly enforces upload constraints by rejecting invalid file sizes and unsupported formats (PDF), protecting downstream processing from malformed inputs and storage abuse.",
+  "responsibilities": [
+    "Verify that FileService rejects files exceeding the maximum allowed size",
+    "Verify that FileService rejects PDF file types during validation",
+    "Isolate FileService behavior using mocks to avoid external dependencies",
+    "Provide fast regression feedback on file upload validation rules"
+  ],
+  "inputs": [
+    "Mock file objects (unittest.mock.MagicMock)",
+    "FileService class under test",
+    "Invalid file metadata simulating oversized and PDF inputs",
+    "pytest execution context"
+  ],
+  "outputs": [
+    "Assertion results confirming expected validation failures",
+    "pytest test execution reports",
+    "Regression safety for file upload constraint logic"
+  ],
+  "dependencies": [
+    "FileService"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/dataset/tests/test_file_service.py",
+  "language": "python",
+  "tags": [
+    "test"
+  ],
+  "architecture_notes": "Implements isolated unit testing within a pytest framework, utilizing unittest.mock.MagicMock to stub file dependencies and avoid I/O or integration concerns. The module follows Django/Python conventions by residing in an app-scoped tests directory and targets negative validation paths (rejection scenarios), suggesting complementary positive-path coverage is needed elsewhere in the suite.",
+  "improvements": [
+    "Expand coverage to include valid file scenarios (happy path) and additional invalid MIME types",
+    "Introduce pytest fixtures to standardize MagicMock configuration and reduce duplication",
+    "Add parameterized tests for boundary size values (exactly at limit, slightly over, zero-byte)",
+    "Include explicit assertions on error messages to validate user-facing feedback",
+    "Add docstrings linking tests to specific business requirements or ticket references"
+  ],
+  "code_hash": "4c23ea94ef2ee7b72d6104f1fb109028890ce439dba52ee501fb0b64fdfeb786",
+  "last_updated": "2026-07-24T10:14:53.625056"
+}

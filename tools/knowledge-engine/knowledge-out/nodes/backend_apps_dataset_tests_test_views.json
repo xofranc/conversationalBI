@@ -1,0 +1,56 @@
+{
+  "id": "backend_apps_dataset_tests_test_views",
+  "type": "Test",
+  "name": "test_views.py",
+  "summary": "Pytest-based integration test suite for Dataset REST API endpoints covering list, retrieve, upload, destroy, and schema operations.",
+  "purpose": "Validates the behavior, permissions, and data integrity of Dataset views to ensure API contracts are maintained during development and refactoring.",
+  "responsibilities": [
+    "Provide reusable pytest fixtures for test users, authenticated API client, and dataset instances",
+    "Test Dataset list endpoint functionality, filtering, and pagination",
+    "Test Dataset retrieve endpoint for fetching specific dataset details",
+    "Test Dataset upload endpoint handling file I/O and validation",
+    "Test Dataset destroy endpoint for deletion logic and access control",
+    "Test Dataset schema endpoint for metadata and structure validation",
+    "Verify authentication and authorization boundaries across all endpoints",
+    "Mock external dependencies to isolate view-layer behavior"
+  ],
+  "inputs": [
+    "HTTP requests to Dataset API endpoints",
+    "Pytest fixtures (user, other_user, client, dataset)",
+    "Mocked dependencies via unittest.mock.patch",
+    "File-like objects (BytesIO) for upload simulations"
+  ],
+  "outputs": [
+    "HTTP response assertions (status codes, headers, payload structure)",
+    "Database state change validations",
+    "Mock interaction verifications",
+    "Binary pass/fail test results"
+  ],
+  "dependencies": [
+    "Dataset"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/dataset/tests/test_views.py",
+  "language": "python",
+  "tags": [
+    "test",
+    "testdatasetlist",
+    "testdatasetretrieve",
+    "testdatasetupload",
+    "testdatasetdestroy",
+    "testdatasetschema"
+  ],
+  "architecture_notes": "Implements pytest-style integration testing over Django's native TestCase for conciseness and fixture support. Uses dependency injection via module-level fixtures to decouple test setup from assertions. Organizes test classes by API operation (List, Retrieve, Upload, Destroy, Schema) aligning with REST resource semantics. Applies unittest.mock.patch to isolate the view layer from external services. Co-located within the dataset app to enforce bounded-context testing and rapid feedback loops.",
+  "improvements": [
+    "Migrate common fixtures (user, client, dataset) to a conftest.py for cross-module reuse and DRY compliance",
+    "Introduce factory_boy or model_baker for more expressive and maintainable test data generation",
+    "Extract shared authorization scenarios into a dedicated permission mixin or parametrized tests to reduce duplication",
+    "Consider splitting test classes into separate files (e.g., test_list.py, test_upload.py) as the suite scales",
+    "Replace unittest.mock.patch decorators with pytest-mock fixtures for consistency and better test readability",
+    "Add explicit negative-path and edge-case tests for large file uploads and malformed schema payloads"
+  ],
+  "code_hash": "6f374aa8ab038d4109597b40de3c22b9958f54b5ef0cc6ab5639d54b9e448473",
+  "last_updated": "2026-07-24T10:14:57.910848"
+}

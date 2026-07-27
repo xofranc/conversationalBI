@@ -1,0 +1,46 @@
+{
+  "id": "backend_apps_dataset_tests_test_dataset_service",
+  "type": "Test",
+  "name": "test_dataset_service.py",
+  "summary": "Unit tests for DatasetService focusing on schema validation error handling during dataset creation.",
+  "purpose": "Validates that DatasetService correctly detects invalid schemas during dataset creation and appropriately marks errors, ensuring data integrity and preventing corrupt datasets from entering the system.",
+  "responsibilities": [
+    "Test error marking behavior when schema validation fails in DatasetService.create()",
+    "Isolate service logic using mocks for external dependencies and models",
+    "Verify interactions between DatasetService and the Dataset model during failure scenarios",
+    "Provide regression protection for dataset creation error handling paths"
+  ],
+  "inputs": [
+    "Mocked Dataset model and schema objects",
+    "Invalid or malformed schema payloads",
+    "DatasetService instance under test",
+    "Mocked dependencies injected via unittest.mock.patch"
+  ],
+  "outputs": [
+    "Boolean pass/fail assertions on error state marking",
+    "Verification of mock interactions and side effects",
+    "Regression signal for dataset creation failure handling"
+  ],
+  "dependencies": [
+    "Dataset",
+    "DatasetService"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/dataset/tests/test_dataset_service.py",
+  "language": "python",
+  "tags": [
+    "test"
+  ],
+  "architecture_notes": "Implements isolated unit testing using pytest and unittest.mock to test DatasetService in isolation from persistence and infrastructure layers. Follows the Arrange-Act-Assert pattern and supports Test-Driven Development (TDD) by verifying domain service behavior independently of the Django ORM or external validators.",
+  "improvements": [
+    "Expand coverage to include successful dataset creation and edge cases",
+    "Add parameterized tests for various schema failure types",
+    "Extract common mock setups into pytest fixtures for reusability",
+    "Assert on specific error messages or exception types, not just error marking",
+    "Add tests for idempotency and transaction rollback on failure"
+  ],
+  "code_hash": "3ad0dfd0b2391689f3fa73694f84d51976d03aa95413c2114022ad8653adcab7",
+  "last_updated": "2026-07-24T10:14:50.344532"
+}

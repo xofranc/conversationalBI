@@ -1,0 +1,46 @@
+{
+  "id": "backend_apps_dataset_serializers_datasetlist",
+  "type": "Serializer",
+  "name": "datasetList.py",
+  "summary": "DRF serializer that converts Dataset model instances into lightweight JSON representations optimized for list endpoints.",
+  "purpose": "Exists to provide a performant, read-focused serialization contract for dataset collections, separating list-view concerns from detailed dataset representations and preventing heavy field serialization in high-volume endpoints.",
+  "responsibilities": [
+    "Serialize Dataset model instances into primitive Python datatypes suitable for JSON rendering",
+    "Expose a curated subset of Dataset fields appropriate for list views",
+    "Validate and transform incoming data if used for write operations",
+    "Enforce a stable API contract between the domain model and the presentation layer"
+  ],
+  "inputs": [
+    "Dataset model instance or queryset",
+    "Optional DRF request context passed from the view layer"
+  ],
+  "outputs": [
+    "OrderedDict / JSON-compatible dictionary representation of dataset fields",
+    "List of serialized dataset records when instantiated with many=True"
+  ],
+  "dependencies": [
+    "dataset/models.py",
+    "Dataset"
+  ],
+  "used_by": [
+    "dataset/views.py"
+  ],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/dataset/serializers/datasetList.py",
+  "language": "python",
+  "tags": [
+    "serializer",
+    "datasetlistserializer"
+  ],
+  "architecture_notes": "Implements the Django REST Framework Serializer pattern as part of a layered backend architecture. It serves as an anti-corruption layer between the Dataset domain model and the API surface, ensuring list endpoints remain performant by avoiding deeply nested or computationally expensive fields. Typically consumed by dataset/views.py in a ListAPIView or ViewSet. The 'List' suffix implies a companion detail serializer should exist or be introduced to handle full resource representations, following the CQRS-like separation of read models for list versus detail views.",
+  "improvements": [
+    "Explicitly declare Meta.fields rather than using '__all__' to prevent accidental leakage of internal or sensitive model fields",
+    "Add type hints to custom methods and override to_representation if custom logic is present",
+    "Include docstrings and comments explaining the field selection rationale for list views",
+    "Declare read-only fields explicitly (read_only=True) to optimize validation overhead for list endpoints",
+    "Consider adding a hyperlinked identity field or resource URL to improve HATEOAS support"
+  ],
+  "code_hash": "2baab6da85f3d3cd814625d83bac589d69c18ad4baa1e955b9101d1a04e307a4",
+  "last_updated": "2026-07-24T10:14:26.389939"
+}

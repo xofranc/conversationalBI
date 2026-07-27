@@ -1,0 +1,49 @@
+{
+  "id": "backend_apps_users_admin",
+  "type": "Admin",
+  "name": "users/admin.py",
+  "summary": "Django admin configuration registering and customizing the admin interface for User and Profile models",
+  "purpose": "Enables secure back-office management of user accounts and profile data through Django's built-in administrative interface, extending base admin classes to tailor list views, forms, and permissions for the users app",
+  "responsibilities": [
+    "Registers the User and Profile models with the Django admin site",
+    "Extends django.contrib.auth.admin.UserAdmin to customize user management behavior",
+    "Configures ProfileAdmin to control how profile data is displayed and edited",
+    "Defines admin-specific presentation logic such as list displays, filters, and search fields",
+    "Isolates administrative concerns from models and business logic"
+  ],
+  "inputs": [
+    "User and Profile model definitions from users.models",
+    "Base Django admin and auth admin classes",
+    "Staff/superuser HTTP requests to the Django admin interface"
+  ],
+  "outputs": [
+    "Customized CRUD admin pages for User and Profile models",
+    "Back-office list views, detail forms, and admin actions"
+  ],
+  "dependencies": [
+    "users/models.py",
+    "Profile",
+    "User"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/users/admin.py",
+  "language": "python",
+  "tags": [
+    "admin",
+    "useradmin",
+    "profileadmin"
+  ],
+  "architecture_notes": "Follows Django's app-centric modular pattern by co-locating admin configuration within the users app. Uses class inheritance from ModelAdmin and UserAdmin to encapsulate admin-specific behavior without polluting the model layer. Acts as a presentation adapter between the domain models and Django's admin framework, keeping administrative routing and UI configuration separate from core application logic.",
+  "improvements": [
+    "Use @admin.register class decorators for explicit and cleaner model registration",
+    "Add ProfileInline to UserAdmin for unified user-and-profile management on a single page",
+    "Define fieldsets on both admins to improve form organization and UX",
+    "Add custom list_filters and search_fields tailored to business requirements",
+    "Implement admin-level permission checks or audit logging for sensitive user data modifications",
+    "Consider moving admin classes to a dedicated admin/ sub-package if configuration grows complex"
+  ],
+  "code_hash": "388a90112c4d0fff5d2d56e40ba984d5ec234ae1e5d330c59f864517173abf91",
+  "last_updated": "2026-07-24T10:15:53.549811"
+}

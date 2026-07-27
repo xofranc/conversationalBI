@@ -1,0 +1,42 @@
+{
+  "id": "backend_apps_dataset_services_init",
+  "type": "Service",
+  "name": "dataset/services/__init__.py",
+  "summary": "Package-level facade that aggregates and exposes DatasetService, FileService, and SchemaService through a unified public API",
+  "purpose": "Simplifies imports for consumers of the dataset services layer by providing a single entry point, decoupling them from the internal module file structure and establishing a clean package-level public interface",
+  "responsibilities": [
+    "Re-export service classes from internal submodules at the package level",
+    "Provide a unified public API for the dataset services module",
+    "Abstract internal file organization from external consumers",
+    "Enable simplified imports for upper-layer modules and dependency injection"
+  ],
+  "inputs": [
+    "Internal service classes from dataset_service, file_service, and schema_service modules"
+  ],
+  "outputs": [
+    "Exposed public service classes: DatasetService, FileService, SchemaService"
+  ],
+  "dependencies": [
+    "DatasetService",
+    "FileService",
+    "SchemaService"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/dataset/services/__init__.py",
+  "language": "python",
+  "tags": [
+    "service"
+  ],
+  "architecture_notes": "Implements a package-level Facade pattern to decouple consumers from internal module structure. Acts as a service gateway for the dataset domain, following Python's __init__.py public API convention. Promotes Dependency Inversion by allowing upper layers to depend on the package abstraction rather than concrete implementation modules. Centralizes service discovery and import management.",
+  "improvements": [
+    "Define __all__ to explicitly declare the public interface and prevent namespace pollution",
+    "Add module-level docstring explaining the package's architectural role",
+    "Consider lazy imports if service classes have heavy initialization costs to improve startup time",
+    "Evaluate registering services in a central dependency injection container within __init__.py",
+    "Add type stubs or ensure re-exports preserve type information for static analysis"
+  ],
+  "code_hash": "8d8ad2f9089e342f0ee7f6f0999b4278c2f708573e800b720ee4013c865e291a",
+  "last_updated": "2026-07-24T10:14:37.021798"
+}

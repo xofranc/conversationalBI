@@ -1,0 +1,32 @@
+{
+  "id": "community_5",
+  "type": "Architecture",
+  "name": "Community 5",
+  "summary": "Community with 22 nodes across 8 files",
+  "purpose": "",
+  "responsibilities": [],
+  "inputs": [],
+  "outputs": [],
+  "dependencies": [
+    "ai/__init__.py",
+    "ai_query_service.py",
+    "chart_selector.py",
+    "ChartSelector",
+    "prompt_builder.py",
+    "PromptBuilder",
+    "sql_agent.py",
+    "sql_validator.py"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "",
+  "language": "",
+  "tags": [
+    "Service"
+  ],
+  "architecture_notes": "Composition: {'Service': 22}",
+  "improvements": [],
+  "code_hash": "",
+  "last_updated": ""
+}

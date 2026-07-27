@@ -1,0 +1,63 @@
+{
+  "id": "backend_services_ai_ai_query_service",
+  "type": "Service",
+  "name": "ai_query_service.py",
+  "summary": "Orchestrates the end-to-end AI query pipeline from natural language input to validated SQL execution and chart selection.",
+  "purpose": "Acts as a unified facade that coordinates specialized AI sub-services to transform natural language questions into database queries and data visualizations, abstracting the complexity of prompt engineering, SQL generation, validation, execution, and chart recommendation behind a single service boundary.",
+  "responsibilities": [
+    "Orchestrate the multi-stage AI query processing pipeline",
+    "Delegate prompt construction to PromptBuilder for SQL generation context",
+    "Coordinate SQL generation via SQLAgent using LLM capabilities",
+    "Enforce safety and correctness via SQLValidator before execution",
+    "Execute validated SQL via SQLExecutor and retrieve result sets",
+    "Determine optimal visualization via ChartSelector based on result schema",
+    "Capture execution timing and pipeline performance metrics",
+    "Propagate and handle failures between pipeline stages"
+  ],
+  "inputs": [
+    "Natural language user query",
+    "Database schema and metadata context",
+    "User or tenant execution context",
+    "Conversation history or query embeddings"
+  ],
+  "outputs": [
+    "Query result sets from executed SQL",
+    "Recommended chart type and configuration",
+    "Execution metadata and latency metrics",
+    "Validation errors or pipeline stage failures"
+  ],
+  "dependencies": [
+    "chart_selector.py",
+    "ChartSelector",
+    "prompt_builder.py",
+    "PromptBuilder",
+    "sql_agent.py",
+    "SQLAgent",
+    "sql_executor.py",
+    "SQLExecutor",
+    "sql_validator.py",
+    "SQLValidator"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/services/ai/ai_query_service.py",
+  "language": "python",
+  "tags": [
+    "service",
+    "aiqueryservice"
+  ],
+  "architecture_notes": "Implements the Facade and Orchestrator patterns to unify a complex, multi-stage AI pipeline behind a single service interface. The class exhibits high cohesion as a pure coordination layer with no direct business logic, delegating to specialized collaborators (PromptBuilder, SQLAgent, SQLValidator, SQLExecutor, ChartSelector) to maintain separation of concerns and independent testability. The import of `time` suggests ad-hoc performance instrumentation, indicating this is a critical path service where latency matters. Located within a dedicated `ai` service package, it reinforces domain-driven design boundaries by isolating AI-specific orchestration from core business logic.",
+  "improvements": [
+    "Replace ad-hoc `time` instrumentation with structured observability (distributed tracing and structured logging) across all pipeline stages",
+    "Introduce async/await patterns for non-blocking I/O during LLM calls and database execution",
+    "Add a circuit breaker and retry policy with exponential backoff for external AI service invocations to prevent cascade failures",
+    "Implement an intermediate caching layer for repeated natural language queries to reduce LLM token costs and latency",
+    "Refactor sequential stage calls into a formal Pipeline or Chain of Responsibility pattern to support configurable branching and conditional execution",
+    "Add explicit read-only SQL enforcement or query classification to mitigate security risks from LLM-generated SQL",
+    "Introduce input sanitization, rate limiting, and query cost estimation at the facade entry point",
+    "Decouple chart selection from query execution by emitting domain events, enabling asynchronous visualization rendering"
+  ],
+  "code_hash": "767e661befa4404a85358d258309a5348a2ad5b48bf79bf4b1f2fb916e6fd0c1",
+  "last_updated": "2026-07-24T10:17:07.771926"
+}

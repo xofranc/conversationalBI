@@ -1,0 +1,40 @@
+{
+  "id": "backend_apps_users_migrations_0003_remove_user_user_type_id",
+  "type": "Migration",
+  "name": "0003_remove_user_user_type_id.py",
+  "summary": "Django database migration that removes the user_type_id field from the User model",
+  "purpose": "Eliminates the user_type_id column from the users table to align the database schema with the current User model definition, typically because the field was deprecated, replaced by a different relationship, or removed during model refactoring",
+  "responsibilities": [
+    "Remove the user_type_id column from the User database table",
+    "Preserve ordered migration history for sequential schema evolution",
+    "Ensure database schema consistency with the Django ORM model definition"
+  ],
+  "inputs": [
+    "Database schema containing the user_type_id field on the User table",
+    "Dependency on previous migrations in the users app",
+    "Django migration framework execution environment"
+  ],
+  "outputs": [
+    "Modified database schema without the user_type_id column",
+    "Migration entry recorded in the django_migrations table"
+  ],
+  "dependencies": [],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/users/migrations/0003_remove_user_user_type_id.py",
+  "language": "python",
+  "tags": [
+    "migration",
+    "migration"
+  ],
+  "architecture_notes": "Auto-generated Django schema migration following the Django migrations framework pattern. It inherits from django.db.migrations.Migration and uses the RemoveField operation to alter the database schema. Sequenced as 0003 within the users app, it enforces ordered schema changes through declared dependencies. The migration adheres to Django's app-centric modular architecture by isolating user-related schema changes within backend/apps/users/migrations.",
+  "improvements": [
+    "Add a data migration or RunPython operation before removal if user_type_id data must be preserved or migrated to a replacement field",
+    "Verify no raw SQL queries, unmanaged models, or downstream services depend on the user_type_id column before applying",
+    "Include explicit reverse logic if the removal needs to be reversible in production rollback scenarios",
+    "Add model validation or signal updates if business logic previously depended on user_type_id values"
+  ],
+  "code_hash": "b21196fa3368cf9bd0002c28f0a27e1fc30176c4f5c23f45f02f0bede726f3f8",
+  "last_updated": "2026-07-24T10:16:08.065207"
+}

@@ -1,0 +1,33 @@
+{
+  "id": "backend_apps_queries_migrations_init",
+  "type": "Migration",
+  "name": "queries/migrations/__init__.py",
+  "summary": "Package initializer for the queries app migrations directory",
+  "purpose": "Marks the migrations directory as a valid Python package, enabling Django to discover, import, and execute database migration modules contained within this directory",
+  "responsibilities": [
+    "Declares the migrations directory as a Python package",
+    "Enables Django's migration loader to discover and import migration files",
+    "Provides a namespace for migration module resolution"
+  ],
+  "inputs": [],
+  "outputs": [
+    "Python package namespace for migration modules"
+  ],
+  "dependencies": [],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/queries/migrations/__init__.py",
+  "language": "python",
+  "tags": [
+    "migration"
+  ],
+  "architecture_notes": "Standard Django framework convention requiring an __init__.py in every migrations directory. This file is typically empty but essential for Django's migration autoloader to traverse and identify migration files. Follows Python package semantics and Django's app-based migration organization pattern.",
+  "improvements": [
+    "Ensure the file remains empty unless specific package-level initialization is required",
+    "Verify the file is tracked in version control to prevent accidental deletion",
+    "Avoid adding business logic or imports here to prevent circular dependency issues with the migration framework"
+  ],
+  "code_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "last_updated": "2026-07-24T10:15:18.964787"
+}

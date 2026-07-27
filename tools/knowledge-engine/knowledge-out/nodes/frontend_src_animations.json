@@ -1,0 +1,46 @@
+{
+  "id": "frontend_src_animations",
+  "type": "Frontend",
+  "name": "animations.js",
+  "summary": "Centralized frontend animation module using GSAP to manage view transitions, loading states, and UI motion across authentication and dashboard flows.",
+  "purpose": "Encapsulates all imperative DOM animations in a single module to ensure consistent motion design, improve user experience through smooth transitions, and prevent animation logic from scattering across view components.",
+  "responsibilities": [
+    "Orchestrate view-entry animations for authentication and dashboard screens",
+    "Manage loading indicator and empty-state motion graphics",
+    "Provide reusable GSAP timeline instances for complex sequenced transitions",
+    "Animate dashboard content mounting and unmounting",
+    "Centralize animation configuration and easing presets"
+  ],
+  "inputs": [
+    "DOM element references",
+    "View state change triggers",
+    "Optional animation configuration overrides"
+  ],
+  "outputs": [
+    "GSAP timeline and tween instances",
+    "Imperative DOM style mutations",
+    "Animation completion callbacks"
+  ],
+  "dependencies": [],
+  "used_by": [
+    "main.js"
+  ],
+  "calls": [],
+  "called_from": [],
+  "source_file": "frontend/src/animations.js",
+  "language": "javascript",
+  "tags": [
+    "frontend"
+  ],
+  "architecture_notes": "Acts as a dedicated animation service layer following an imperative controller pattern. It isolates third-party GSAP dependencies from UI components, allowing views to invoke named animation routines rather than managing raw timelines. The presence of duplicate function names (loader, authView, dashboardView) suggests either overloaded exports or nested closures, indicating the module may mix public API definitions with internal helpers. It is consumed by main.js, positioning it as a shared utility in the frontend bootstrap path.",
+  "improvements": [
+    "Refactor duplicate function names (loader, authView, dashboardView) to clarify public API surface and eliminate shadowing risks",
+    "Introduce a factory or class-based structure to encapsulate timeline state and enable cleanup",
+    "Add prefers-reduced-motion checks to disable or simplify animations for accessibility compliance",
+    "Export animation parameters (duration, easing, stagger) as a centralized configuration object",
+    "Add TypeScript type definitions for function signatures and GSAP timeline returns",
+    "Implement explicit cleanup/destroy methods to kill orphaned tweens and prevent memory leaks on route changes"
+  ],
+  "code_hash": "471e4390c8fc36a41d0b94e93059307a1ae2ae0d213e539847200512747a62b9",
+  "last_updated": "2026-07-24T10:17:31.316930"
+}

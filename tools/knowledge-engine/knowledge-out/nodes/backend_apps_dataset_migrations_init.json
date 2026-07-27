@@ -1,0 +1,30 @@
+{
+  "id": "backend_apps_dataset_migrations_init",
+  "type": "Migration",
+  "name": "dataset/migrations/__init__.py",
+  "summary": "Package initializer for the dataset application migrations directory.",
+  "purpose": "Makes the migrations directory a Python package so Django can discover, import, and manage database migration modules for the dataset app.",
+  "responsibilities": [
+    "Mark the migrations directory as a Python package",
+    "Enable Django's migration framework to locate and load migration files within the dataset app"
+  ],
+  "inputs": [],
+  "outputs": [],
+  "dependencies": [],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/dataset/migrations/__init__.py",
+  "language": "python",
+  "tags": [
+    "migration"
+  ],
+  "architecture_notes": "Standard Django architectural pattern requiring __init__.py in every migrations directory. This file is typically empty and serves solely as a package marker for Python's import system. It allows Django's migration loader to traverse the package, identify migration modules, and build the migration dependency graph for the dataset app.",
+  "improvements": [
+    "Add a module-level docstring documenting the package purpose if organizational standards require explicit documentation",
+    "Ensure the file is committed to version control to guarantee the migrations directory exists in deployments",
+    "Avoid placing custom logic in this file to prevent side effects during Django's migration discovery process"
+  ],
+  "code_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "last_updated": "2026-07-24T10:14:17.573778"
+}

@@ -1,0 +1,49 @@
+{
+  "id": "backend_apps_queries_models_queryhistory",
+  "type": "Model",
+  "name": "queryHistory.py",
+  "summary": "Django ORM model that persists executed query records to provide an auditable history of user search or data retrieval operations.",
+  "purpose": "To capture and retain metadata about past query executions, enabling audit trails, result reproduction, usage analytics, and integration with feedback mechanisms while decoupling transient request state from persistent operational data.",
+  "responsibilities": [
+    "Store immutable records of query executions including parameters, timestamps, and status",
+    "Associate query history with user identities and related QueryResult/QueryFeedback entities",
+    "Support administrative visibility and repository-based data access patterns",
+    "Enable historical retrieval and audit trail generation for compliance or analytics"
+  ],
+  "inputs": [
+    "Query execution parameters and context",
+    "User identifier references via django.conf.settings",
+    "Temporal and status metadata from query lifecycle events"
+  ],
+  "outputs": [
+    "Persistent QueryHistory records for audit and replay",
+    "Foreign key relationships consumed by QueryResult and QueryFeedback models",
+    "Aggregated historical data for analytics and admin reporting"
+  ],
+  "dependencies": [],
+  "used_by": [
+    "queries/admin.py",
+    "queryFeedback.py",
+    "queryResult.py",
+    "queries/repositories.py",
+    "query_response.py",
+    "queries/views.py"
+  ],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/queries/models/queryHistory.py",
+  "language": "python",
+  "tags": [
+    "model",
+    "queryhistory"
+  ],
+  "architecture_notes": "Implements the Active Record pattern within a Django bounded context for queries. Acts as the central persistence entity in a repository-backed architecture, isolating data access from views and serializers. The dependency on django.conf.settings suggests dynamic configuration (e.g., AUTH_USER_MODEL). Its position between repositories, serializers, and admin indicates it serves as a stable domain model supporting CQRS-like read patterns where history is written once and read frequently.",
+  "improvements": [
+    "Add composite database indexes on high-cardinality fields such as user and created_at to optimize historical lookups",
+    "Introduce an abstract base or mixin if multiple history variants emerge, reducing duplication with queryFeedback and queryResult",
+    "Enforce immutability at the application layer to preserve audit integrity and prevent accidental mutation of historical records",
+    "Evaluate table partitioning or time-based archival for high-volume history retention to manage storage and query performance"
+  ],
+  "code_hash": "d4f099ec76764e07d3754d65125123bd3f09f2e0b5bffb6aad86aea1363a4275",
+  "last_updated": "2026-07-24T10:15:25.721012"
+}

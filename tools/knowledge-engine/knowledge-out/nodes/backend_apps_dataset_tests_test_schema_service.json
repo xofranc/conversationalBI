@@ -1,0 +1,46 @@
+{
+  "id": "backend_apps_dataset_tests_test_schema_service",
+  "type": "Test",
+  "name": "test_schema_service.py",
+  "summary": "Unit test suite validating SchemaService data type inference and nullable column parsing logic.",
+  "purpose": "Ensures the SchemaService correctly identifies column data types (float, date) and nullability from tabular datasets, preventing regression in schema extraction behavior and maintaining contract reliability for downstream data processing pipelines.",
+  "responsibilities": [
+    "Verify float data type inference accuracy from sample data",
+    "Verify date/datetime data type inference accuracy from sample data",
+    "Verify nullable column detection and parsing logic",
+    "Validate SchemaService public API contracts under controlled inputs",
+    "Provide fast feedback on schema logic changes during development"
+  ],
+  "inputs": [
+    "Pandas DataFrames or Series with known column types and null patterns",
+    "SchemaService instance under test",
+    "Hardcoded test fixtures representing edge-case data samples"
+  ],
+  "outputs": [
+    "Assertion results confirming inferred dtype matches expected type",
+    "Assertion results confirming nullable flags are correctly parsed",
+    "pytest pass/fail status and tracebacks on regression"
+  ],
+  "dependencies": [
+    "SchemaService"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/dataset/tests/test_schema_service.py",
+  "language": "python",
+  "tags": [
+    "test"
+  ],
+  "architecture_notes": "This module sits in the app-isolated unit test layer following a modular monolith or service-oriented app architecture (Django-style apps). It tests the SchemaService in isolation, implying the service is a stateless utility or domain service responsible for metadata extraction. The dependency on pandas indicates the dataset domain operates on in-memory tabular structures. Tests are behavior-oriented (grouped by inference concern rather than method name), which improves readability but may indicate missing parameterized coverage. The file location under backend/apps/dataset/tests/ enforces colocation with the domain it validates.",
+  "improvements": [
+    "Replace hardcoded fixtures with parameterized tests to cover mixed-type columns, NaN variants, timezone-aware dates, and empty strings",
+    "Expand coverage to include integer, boolean, string, and categorical dtype inference paths",
+    "Introduce shared pytest fixtures for common DataFrame patterns to reduce boilerplate",
+    "Add negative-path tests for malformed inputs, empty DataFrames, and unsupported formats",
+    "Consider property-based testing (e.g., Hypothesis) to validate inference robustness across generated data distributions",
+    "Add a test verifying the full schema object structure (not just individual fields) to catch serialization contract drift"
+  ],
+  "code_hash": "51f814e35e97c0bb3df63d9b5801f828a1862d6916b11eb334597db4695d9888",
+  "last_updated": "2026-07-24T10:14:53.768366"
+}

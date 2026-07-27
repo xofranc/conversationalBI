@@ -32,10 +32,11 @@ class QueryRepository:
 
     @staticmethod
     def save_result(
-        query:      QueryHistory,
-        rows:       list,
-        columns:    list,
-        chart_type: str,
+        query:        QueryHistory,
+        rows:         list,
+        columns:      list,
+        chart_type:   str,
+        chart_config: dict = None,
     ) -> QueryResult:
         return QueryResult.objects.create(
             query       = query,
@@ -43,7 +44,7 @@ class QueryRepository:
             columns     = columns,
             row_count   = len(rows),
             chart_type  = chart_type,
-            chart_config = QueryRepository._build_chart_config(chart_type, rows, columns),
+            chart_config = chart_config or QueryRepository._build_chart_config(chart_type, rows, columns),
         )
 
     @staticmethod
@@ -69,5 +70,14 @@ class QueryRepository:
             'scatter': {'xKey': num_cols[0] if num_cols else x_key,
                         'yKey': num_cols[1] if len(num_cols) > 1 else y_key},
             'table':   {'columns': [c['name'] for c in columns]},
+            # Análisis: el engine normalmente trae su propia config;
+            # estos son respaldos coherentes con lo que retorna
+            'forecast': {'xKey': x_key, 'yKey': y_key, 'splitKey': 'tipo'},
+            'anomaly':  {'xKey': num_cols[0] if num_cols else x_key,
+                         'yKey': num_cols[1] if len(num_cols) > 1 else y_key},
+            'segment':  {'xKey': num_cols[0] if num_cols else x_key,
+                         'yKey': num_cols[1] if len(num_cols) > 1 else y_key,
+                         'segmentKey': 'segmento'},
+            'drivers':  {'xKey': y_key, 'yKey': x_key},
         }
         return configs.get(chart_type, {})

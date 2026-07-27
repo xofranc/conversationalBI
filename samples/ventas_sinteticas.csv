@@ -1,0 +1,901 @@
+id_venta,fecha,ciudad,categoria,producto,cantidad,precio_unitario,ingresos,canal
+1,2025-04-29,Bogotá,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,Tienda física
+2,2025-05-28,Medellín,Papelería,Kit marcadores x12,1,35000,35000,En línea
+3,2024-06-26,Bogotá,Muebles,Silla ergonómica,1,890000,890000,Tienda física
+4,2025-02-04,Cartagena,Tecnología,Teclado mecánico Redragon,2,210000,420000,En línea
+5,2025-09-04,Bogotá,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+6,2024-09-30,Cartagena,Tecnología,"Monitor Samsung 24""",1,780000,780000,Tienda física
+7,2025-09-06,Pereira,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+8,2025-02-11,Bucaramanga,Hogar,Sanduchera Black+Decker,2,120000,240000,Tienda física
+9,2025-06-16,Bogotá,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,En línea
+10,2024-07-06,Cali,Tecnología,"Monitor Samsung 24""",1,780000,780000,En línea
+11,2024-10-26,Pereira,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,Tienda física
+12,2025-04-03,Bogotá,Tecnología,Audífonos Sony WH-CH520,3,320000,960000,En línea
+13,2025-12-27,Barranquilla,Hogar,Licuadora Oster Pro,2,310000,620000,Tienda física
+14,2025-08-10,Medellín,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+15,2024-06-21,Medellín,Papelería,Resma papel A4,4,22000,88000,Tienda física
+16,2024-11-11,Bogotá,Papelería,Resma papel A4,2,22000,44000,En línea
+17,2025-02-20,Bucaramanga,Tecnología,Teclado mecánico Redragon,2,210000,420000,En línea
+18,2024-06-26,Bogotá,Papelería,Cuaderno argollado,2,18000,36000,En línea
+19,2024-04-03,Medellín,Hogar,Licuadora Oster Pro,3,310000,930000,En línea
+20,2024-11-03,Pereira,Papelería,Cuaderno argollado,2,18000,36000,Tienda física
+21,2024-01-09,Cali,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+22,2025-04-30,Medellín,Tecnología,"Monitor Samsung 24""",1,780000,780000,Tienda física
+23,2025-10-31,Bogotá,Tecnología,Teclado mecánico Redragon,2,210000,420000,Tienda física
+24,2025-10-27,Cali,Tecnología,Teclado mecánico Redragon,2,210000,420000,En línea
+25,2025-07-30,Cali,Muebles,Lámpara de pie LED,3,180000,540000,En línea
+26,2024-09-20,Bucaramanga,Tecnología,Portátil Lenovo IdeaPad 3,4,2400000,9600000,Tienda física
+27,2024-09-05,Pereira,Tecnología,"Monitor Samsung 24""",4,780000,3120000,En línea
+28,2024-12-25,Barranquilla,Tecnología,"Monitor Samsung 24""",3,780000,2340000,En línea
+29,2024-12-21,Bucaramanga,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+30,2024-06-21,Bogotá,Muebles,Lámpara de pie LED,3,180000,540000,En línea
+31,2025-12-29,Medellín,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+32,2024-06-30,Bogotá,Tecnología,Mouse Logitech M185,2,65000,130000,En línea
+33,2024-03-01,Bucaramanga,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+34,2024-03-01,Bogotá,Tecnología,Teclado mecánico Redragon,2,210000,420000,En línea
+35,2025-12-04,Cartagena,Muebles,Lámpara de pie LED,2,180000,360000,Tienda física
+36,2024-06-06,Medellín,Tecnología,"Monitor Samsung 24""",1,780000,780000,En línea
+37,2025-07-04,Bogotá,Hogar,Licuadora Oster Pro,5,310000,1550000,En línea
+38,2024-10-02,Bogotá,Papelería,Kit marcadores x12,1,35000,35000,En línea
+39,2024-11-27,Bucaramanga,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+40,2025-10-20,Pereira,Muebles,Lámpara de pie LED,1,180000,180000,Tienda física
+41,2025-12-18,Bogotá,Papelería,Resma papel A4,3,22000,66000,En línea
+42,2024-06-23,Medellín,Muebles,Escritorio en L,1,1150000,1150000,Tienda física
+43,2024-07-31,Medellín,Hogar,Sanduchera Black+Decker,2,120000,240000,Tienda física
+44,2025-12-30,Bogotá,Muebles,Lámpara de pie LED,3,180000,540000,En línea
+45,2025-12-18,Barranquilla,Muebles,Lámpara de pie LED,2,180000,360000,En línea
+46,2025-03-13,Bogotá,Muebles,Silla ergonómica,4,890000,3560000,Tienda física
+47,2024-03-09,Cali,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,En línea
+48,2024-04-12,Cali,Papelería,Kit marcadores x12,1,35000,35000,Tienda física
+49,2024-11-25,Pereira,Muebles,Lámpara de pie LED,2,180000,360000,En línea
+50,2025-06-25,Cali,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+51,2024-09-13,Medellín,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+52,2025-12-30,Bogotá,Tecnología,"Monitor Samsung 24""",1,780000,780000,Tienda física
+53,2025-11-03,Bogotá,Papelería,Kit marcadores x12,1,35000,35000,Tienda física
+54,2025-06-16,Cali,Hogar,Licuadora Oster Pro,5,310000,1550000,En línea
+55,2025-09-14,Pereira,Tecnología,Teclado mecánico Redragon,2,210000,420000,En línea
+56,2024-04-08,Bogotá,Tecnología,"Monitor Samsung 24""",2,780000,1560000,Tienda física
+57,2025-06-26,Bogotá,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,En línea
+58,2025-11-17,Medellín,Hogar,Sanduchera Black+Decker,1,120000,120000,En línea
+59,2024-01-03,Bogotá,Hogar,Cafetera Oster 12 tazas,2,240000,480000,Tienda física
+60,2025-02-11,Bogotá,Muebles,Escritorio en L,1,1150000,1150000,Tienda física
+61,2025-11-17,Cali,Muebles,Lámpara de pie LED,3,180000,540000,En línea
+62,2024-04-18,Cartagena,Tecnología,Mouse Logitech M185,4,65000,260000,Tienda física
+63,2025-11-14,Bogotá,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,Tienda física
+64,2025-11-05,Bogotá,Muebles,Escritorio en L,2,1150000,2300000,Tienda física
+65,2025-10-22,Bucaramanga,Papelería,Cuaderno argollado,3,18000,54000,En línea
+66,2025-07-10,Cartagena,Tecnología,Mouse Logitech M185,4,65000,260000,Tienda física
+67,2025-09-09,Bogotá,Tecnología,Teclado mecánico Redragon,3,210000,630000,Tienda física
+68,2025-10-18,Medellín,Tecnología,Teclado mecánico Redragon,3,210000,630000,En línea
+69,2025-08-26,Bogotá,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+70,2025-10-22,Cali,Papelería,Resma papel A4,1,22000,22000,En línea
+71,2025-12-23,Bogotá,Muebles,Lámpara de pie LED,4,180000,720000,Tienda física
+72,2024-05-29,Bogotá,Papelería,Resma papel A4,1,22000,22000,En línea
+73,2025-07-04,Medellín,Tecnología,Mouse Logitech M185,2,65000,130000,En línea
+74,2025-03-06,Bogotá,Tecnología,Teclado mecánico Redragon,3,210000,630000,Tienda física
+75,2025-01-30,Cali,Hogar,Cafetera Oster 12 tazas,3,240000,720000,En línea
+76,2024-02-29,Medellín,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+77,2025-06-27,Medellín,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+78,2024-08-26,Pereira,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,Tienda física
+79,2025-11-16,Cali,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+80,2024-08-19,Cali,Muebles,Escritorio en L,2,1150000,2300000,En línea
+81,2024-12-07,Bucaramanga,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,Tienda física
+82,2024-05-22,Cali,Tecnología,"Monitor Samsung 24""",2,780000,1560000,En línea
+83,2025-09-15,Bogotá,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+84,2024-01-19,Cartagena,Tecnología,Teclado mecánico Redragon,2,210000,420000,En línea
+85,2024-11-23,Barranquilla,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+86,2024-07-15,Barranquilla,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+87,2024-03-31,Pereira,Muebles,Escritorio en L,1,1150000,1150000,En línea
+88,2024-02-10,Medellín,Tecnología,Teclado mecánico Redragon,3,210000,630000,Tienda física
+89,2025-05-21,Pereira,Papelería,Cuaderno argollado,2,18000,36000,Tienda física
+90,2025-04-06,Cartagena,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+91,2025-11-13,Bogotá,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+92,2025-04-27,Cali,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+93,2024-03-06,Medellín,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+94,2024-04-27,Barranquilla,Tecnología,Teclado mecánico Redragon,2,210000,420000,En línea
+95,2024-11-18,Bogotá,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+96,2025-11-17,Cartagena,Muebles,Lámpara de pie LED,2,180000,360000,Tienda física
+97,2024-11-02,Barranquilla,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,Tienda física
+98,2025-12-12,Cali,Muebles,Escritorio en L,3,1150000,3450000,Tienda física
+99,2024-06-27,Bogotá,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+100,2025-05-30,Medellín,Muebles,Escritorio en L,1,1150000,1150000,En línea
+101,2025-04-14,Cali,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,En línea
+102,2025-05-02,Bogotá,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,En línea
+103,2024-06-21,Medellín,Tecnología,Mouse Logitech M185,3,65000,195000,Tienda física
+104,2025-09-27,Bogotá,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+105,2025-12-31,Cartagena,Tecnología,Mouse Logitech M185,2,65000,130000,Tienda física
+106,2025-07-23,Bogotá,Papelería,Resma papel A4,1,22000,22000,En línea
+107,2024-04-17,Bogotá,Hogar,Licuadora Oster Pro,2,310000,620000,Tienda física
+108,2025-08-02,Barranquilla,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,En línea
+109,2025-09-16,Bogotá,Papelería,Resma papel A4,1,22000,22000,En línea
+110,2025-05-28,Barranquilla,Papelería,Resma papel A4,1,22000,22000,En línea
+111,2025-06-07,Barranquilla,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+112,2025-03-26,Cartagena,Tecnología,Audífonos Sony WH-CH520,5,320000,1600000,En línea
+113,2024-12-01,Medellín,Tecnología,Mouse Logitech M185,2,65000,130000,Tienda física
+114,2025-09-19,Cali,Tecnología,"Monitor Samsung 24""",5,780000,3900000,Tienda física
+115,2025-06-18,Pereira,Muebles,Escritorio en L,3,1150000,3450000,En línea
+116,2025-09-06,Medellín,Muebles,Lámpara de pie LED,2,180000,360000,Tienda física
+117,2024-08-03,Bogotá,Papelería,Kit marcadores x12,3,35000,105000,Tienda física
+118,2024-07-15,Medellín,Muebles,Silla ergonómica,2,890000,1780000,En línea
+119,2025-10-12,Cartagena,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+120,2025-11-03,Bogotá,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+121,2024-03-13,Barranquilla,Hogar,Cafetera Oster 12 tazas,2,240000,480000,Tienda física
+122,2025-05-04,Bogotá,Muebles,Silla ergonómica,3,890000,2670000,En línea
+123,2025-06-08,Medellín,Tecnología,Mouse Logitech M185,2,65000,130000,En línea
+124,2024-11-29,Barranquilla,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+125,2024-07-21,Bogotá,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+126,2025-07-29,Medellín,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,Tienda física
+127,2025-12-22,Bogotá,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+128,2024-07-02,Cali,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+129,2025-12-21,Bogotá,Muebles,Lámpara de pie LED,2,180000,360000,Tienda física
+130,2024-12-27,Medellín,Papelería,Kit marcadores x12,2,35000,70000,En línea
+131,2024-06-02,Medellín,Tecnología,"Monitor Samsung 24""",4,780000,3120000,Tienda física
+132,2024-11-14,Bogotá,Tecnología,"Monitor Samsung 24""",2,780000,1560000,En línea
+133,2025-02-22,Bogotá,Tecnología,Mouse Logitech M185,5,65000,325000,Tienda física
+134,2025-04-01,Cali,Hogar,Sanduchera Black+Decker,1,120000,120000,En línea
+135,2024-12-07,Medellín,Papelería,Kit marcadores x12,5,35000,175000,Tienda física
+136,2025-04-03,Bogotá,Hogar,Cafetera Oster 12 tazas,4,240000,960000,En línea
+137,2025-05-15,Bogotá,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+138,2024-12-10,Bogotá,Muebles,Lámpara de pie LED,1,180000,180000,Tienda física
+139,2025-06-15,Bucaramanga,Muebles,Silla ergonómica,2,890000,1780000,Tienda física
+140,2025-04-17,Medellín,Hogar,Licuadora Oster Pro,4,310000,1240000,En línea
+141,2025-05-05,Bogotá,Papelería,Kit marcadores x12,3,35000,105000,En línea
+142,2024-09-05,Bogotá,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+143,2025-06-05,Medellín,Hogar,Cafetera Oster 12 tazas,4,240000,960000,En línea
+144,2024-03-09,Medellín,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,En línea
+145,2024-03-18,Cali,Papelería,Resma papel A4,3,22000,66000,Tienda física
+146,2025-12-31,Bogotá,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+147,2024-12-19,Bogotá,Hogar,Licuadora Oster Pro,4,310000,1240000,Tienda física
+148,2025-04-25,Medellín,Muebles,Silla ergonómica,1,890000,890000,En línea
+149,2025-05-23,Barranquilla,Papelería,Kit marcadores x12,1,35000,35000,En línea
+150,2025-12-08,Medellín,Hogar,Sanduchera Black+Decker,2,120000,240000,En línea
+151,2024-09-19,Medellín,Papelería,Cuaderno argollado,1,18000,18000,Tienda física
+152,2025-05-13,Bogotá,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+153,2025-07-25,Bogotá,Hogar,Licuadora Oster Pro,3,310000,930000,En línea
+154,2025-12-01,Bogotá,Muebles,Escritorio en L,2,1150000,2300000,Tienda física
+155,2025-04-03,Cali,Tecnología,Teclado mecánico Redragon,1,210000,210000,Tienda física
+156,2024-03-20,Medellín,Papelería,Cuaderno argollado,4,18000,72000,En línea
+157,2025-09-27,Medellín,Muebles,Silla ergonómica,3,890000,2670000,En línea
+158,2025-09-29,Cali,Papelería,Cuaderno argollado,1,18000,18000,En línea
+159,2025-11-27,Bucaramanga,Muebles,Silla ergonómica,4,890000,3560000,En línea
+160,2025-08-22,Medellín,Muebles,Escritorio en L,4,1150000,4600000,Tienda física
+161,2024-08-15,Pereira,Tecnología,Teclado mecánico Redragon,2,210000,420000,En línea
+162,2024-05-06,Cali,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+163,2024-12-12,Barranquilla,Tecnología,Mouse Logitech M185,1,65000,65000,Tienda física
+164,2024-07-07,Barranquilla,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+165,2025-09-09,Cartagena,Tecnología,Mouse Logitech M185,2,65000,130000,Tienda física
+166,2024-12-29,Cali,Tecnología,Portátil Lenovo IdeaPad 3,2,2400000,4800000,Tienda física
+167,2025-10-30,Medellín,Muebles,Escritorio en L,2,1150000,2300000,Tienda física
+168,2024-11-20,Medellín,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+169,2024-10-02,Cartagena,Hogar,Cafetera Oster 12 tazas,2,240000,480000,Tienda física
+170,2025-10-18,Barranquilla,Tecnología,Mouse Logitech M185,1,65000,65000,Tienda física
+171,2025-10-28,Cali,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,Tienda física
+172,2025-12-30,Bogotá,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+173,2025-10-28,Bucaramanga,Muebles,Escritorio en L,2,1150000,2300000,En línea
+174,2025-08-27,Bogotá,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+175,2025-02-25,Bogotá,Hogar,Sanduchera Black+Decker,1,120000,120000,Tienda física
+176,2025-04-12,Bogotá,Tecnología,Teclado mecánico Redragon,4,210000,840000,En línea
+177,2024-07-23,Cartagena,Tecnología,Teclado mecánico Redragon,1,210000,210000,Tienda física
+178,2025-05-28,Medellín,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,Tienda física
+179,2025-04-28,Cartagena,Muebles,Escritorio en L,1,1150000,1150000,En línea
+180,2024-11-05,Cali,Muebles,Silla ergonómica,1,890000,890000,Tienda física
+181,2025-12-28,Cali,Tecnología,Teclado mecánico Redragon,5,210000,1050000,En línea
+182,2025-02-25,Bogotá,Hogar,Licuadora Oster Pro,3,310000,930000,Tienda física
+183,2024-12-30,Cartagena,Papelería,Kit marcadores x12,1,35000,35000,Tienda física
+184,2024-10-12,Cali,Hogar,Licuadora Oster Pro,2,310000,620000,Tienda física
+185,2025-05-14,Bucaramanga,Hogar,Sanduchera Black+Decker,2,120000,240000,Tienda física
+186,2024-09-07,Barranquilla,Muebles,Escritorio en L,2,1150000,2300000,En línea
+187,2024-08-26,Bogotá,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+188,2025-12-19,Cartagena,Muebles,Lámpara de pie LED,4,180000,720000,En línea
+189,2025-09-21,Barranquilla,Muebles,Silla ergonómica,3,890000,2670000,En línea
+190,2024-04-08,Pereira,Papelería,Resma papel A4,1,22000,22000,Tienda física
+191,2025-06-30,Cartagena,Papelería,Cuaderno argollado,5,18000,90000,En línea
+192,2025-08-22,Medellín,Tecnología,Portátil Lenovo IdeaPad 3,2,2400000,4800000,Tienda física
+193,2025-05-24,Pereira,Muebles,Lámpara de pie LED,3,180000,540000,En línea
+194,2024-07-07,Cali,Tecnología,Portátil Lenovo IdeaPad 3,4,2400000,9600000,Tienda física
+195,2024-06-28,Bucaramanga,Tecnología,"Monitor Samsung 24""",3,780000,2340000,En línea
+196,2024-11-19,Medellín,Tecnología,Audífonos Sony WH-CH520,4,320000,1280000,En línea
+197,2024-03-23,Medellín,Papelería,Kit marcadores x12,1,35000,35000,Tienda física
+198,2025-07-15,Barranquilla,Papelería,Resma papel A4,1,22000,22000,En línea
+199,2024-11-23,Medellín,Tecnología,"Monitor Samsung 24""",2,780000,1560000,Tienda física
+200,2024-01-26,Pereira,Tecnología,Mouse Logitech M185,1,65000,65000,Tienda física
+201,2024-03-25,Pereira,Hogar,Licuadora Oster Pro,2,310000,620000,En línea
+202,2024-11-13,Cartagena,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+203,2025-05-17,Bogotá,Hogar,Licuadora Oster Pro,2,310000,620000,Tienda física
+204,2024-07-15,Bogotá,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,Tienda física
+205,2024-06-18,Medellín,Tecnología,Audífonos Sony WH-CH520,4,320000,1280000,En línea
+206,2025-11-15,Bogotá,Tecnología,Portátil Lenovo IdeaPad 3,4,2400000,9600000,En línea
+207,2024-07-20,Bogotá,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,En línea
+208,2025-08-22,Bogotá,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+209,2025-07-14,Medellín,Muebles,Lámpara de pie LED,3,180000,540000,Tienda física
+210,2025-01-10,Pereira,Tecnología,"Monitor Samsung 24""",2,780000,1560000,En línea
+211,2025-08-16,Medellín,Papelería,Kit marcadores x12,2,35000,70000,Tienda física
+212,2024-02-20,Barranquilla,Muebles,Silla ergonómica,1,890000,890000,En línea
+213,2025-11-20,Cali,Tecnología,"Monitor Samsung 24""",1,780000,780000,En línea
+214,2024-08-09,Medellín,Hogar,Licuadora Oster Pro,2,310000,620000,Tienda física
+215,2025-01-24,Bogotá,Muebles,Silla ergonómica,2,890000,1780000,Tienda física
+216,2025-10-13,Barranquilla,Hogar,Licuadora Oster Pro,3,310000,930000,En línea
+217,2024-12-11,Medellín,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+218,2024-03-22,Medellín,Muebles,Escritorio en L,2,1150000,2300000,En línea
+219,2025-11-28,Bogotá,Tecnología,"Monitor Samsung 24""",3,780000,2340000,En línea
+220,2025-07-11,Cali,Hogar,Sanduchera Black+Decker,2,120000,240000,Tienda física
+221,2024-09-24,Cali,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,Tienda física
+222,2025-10-25,Cali,Hogar,Cafetera Oster 12 tazas,5,240000,1200000,En línea
+223,2025-03-07,Bogotá,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,En línea
+224,2025-10-07,Cali,Tecnología,Mouse Logitech M185,3,65000,195000,Tienda física
+225,2025-10-07,Cali,Papelería,Cuaderno argollado,3,18000,54000,Tienda física
+226,2024-01-21,Bogotá,Papelería,Resma papel A4,3,22000,66000,En línea
+227,2025-06-15,Bogotá,Tecnología,Mouse Logitech M185,1,65000,65000,Tienda física
+228,2025-02-25,Cali,Muebles,Escritorio en L,1,1150000,1150000,En línea
+229,2025-07-17,Medellín,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+230,2025-06-28,Bogotá,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+231,2024-05-12,Bogotá,Hogar,Licuadora Oster Pro,2,310000,620000,Tienda física
+232,2024-12-25,Barranquilla,Muebles,Escritorio en L,1,1150000,1150000,En línea
+233,2024-12-01,Medellín,Tecnología,Teclado mecánico Redragon,2,210000,420000,Tienda física
+234,2024-02-05,Bogotá,Tecnología,Mouse Logitech M185,2,65000,130000,En línea
+235,2024-06-21,Medellín,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+236,2025-07-18,Barranquilla,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+237,2025-09-28,Bucaramanga,Hogar,Sanduchera Black+Decker,1,120000,120000,En línea
+238,2024-01-15,Cali,Papelería,Resma papel A4,4,22000,88000,Tienda física
+239,2025-06-20,Bogotá,Muebles,Escritorio en L,1,1150000,1150000,En línea
+240,2025-09-01,Bucaramanga,Hogar,Licuadora Oster Pro,3,310000,930000,En línea
+241,2025-10-07,Cali,Tecnología,Teclado mecánico Redragon,2,210000,420000,En línea
+242,2024-09-08,Bogotá,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+243,2024-04-07,Medellín,Muebles,Silla ergonómica,4,890000,3560000,Tienda física
+244,2025-09-16,Bogotá,Hogar,Sanduchera Black+Decker,1,120000,120000,En línea
+245,2025-03-28,Bogotá,Hogar,Cafetera Oster 12 tazas,2,240000,480000,Tienda física
+246,2024-12-29,Medellín,Hogar,Cafetera Oster 12 tazas,3,240000,720000,Tienda física
+247,2025-02-23,Bucaramanga,Hogar,Licuadora Oster Pro,2,310000,620000,Tienda física
+248,2024-05-07,Medellín,Tecnología,"Monitor Samsung 24""",1,780000,780000,En línea
+249,2024-02-16,Medellín,Muebles,Silla ergonómica,1,890000,890000,En línea
+250,2025-09-27,Cartagena,Tecnología,"Monitor Samsung 24""",4,780000,3120000,Tienda física
+251,2025-01-06,Cartagena,Muebles,Silla ergonómica,2,890000,1780000,Tienda física
+252,2024-12-10,Medellín,Hogar,Sanduchera Black+Decker,2,120000,240000,En línea
+253,2024-05-07,Bucaramanga,Tecnología,"Monitor Samsung 24""",1,780000,780000,En línea
+254,2025-06-23,Bogotá,Muebles,Silla ergonómica,1,890000,890000,En línea
+255,2024-12-05,Medellín,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+256,2024-11-19,Cartagena,Tecnología,Mouse Logitech M185,2,65000,130000,Tienda física
+257,2024-02-25,Bogotá,Tecnología,"Monitor Samsung 24""",2,780000,1560000,Tienda física
+258,2025-05-12,Medellín,Papelería,Kit marcadores x12,4,35000,140000,Tienda física
+259,2024-04-30,Barranquilla,Tecnología,Mouse Logitech M185,5,65000,325000,En línea
+260,2025-03-22,Medellín,Papelería,Resma papel A4,1,22000,22000,Tienda física
+261,2025-09-11,Barranquilla,Hogar,Licuadora Oster Pro,3,310000,930000,Tienda física
+262,2025-01-20,Medellín,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+263,2024-05-30,Medellín,Tecnología,Audífonos Sony WH-CH520,4,320000,1280000,En línea
+264,2024-04-27,Bogotá,Tecnología,"Monitor Samsung 24""",3,780000,2340000,Tienda física
+265,2025-09-29,Medellín,Papelería,Kit marcadores x12,1,35000,35000,Tienda física
+266,2024-04-21,Cartagena,Tecnología,Mouse Logitech M185,1,65000,65000,Tienda física
+267,2025-09-07,Medellín,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,Tienda física
+268,2024-07-10,Barranquilla,Muebles,Escritorio en L,1,1150000,1150000,En línea
+269,2025-01-26,Medellín,Tecnología,Mouse Logitech M185,3,65000,195000,Tienda física
+270,2024-10-24,Medellín,Papelería,Resma papel A4,5,22000,110000,En línea
+271,2024-11-03,Cartagena,Muebles,Lámpara de pie LED,5,180000,900000,Tienda física
+272,2024-04-28,Bucaramanga,Tecnología,Teclado mecánico Redragon,2,210000,420000,Tienda física
+273,2024-03-28,Bogotá,Hogar,Sanduchera Black+Decker,4,120000,480000,Tienda física
+274,2024-08-07,Medellín,Papelería,Kit marcadores x12,1,35000,35000,Tienda física
+275,2024-06-28,Bogotá,Muebles,Silla ergonómica,1,890000,890000,En línea
+276,2025-01-02,Medellín,Tecnología,Teclado mecánico Redragon,5,210000,1050000,En línea
+277,2025-12-02,Cartagena,Hogar,Sanduchera Black+Decker,2,120000,240000,En línea
+278,2024-08-19,Bogotá,Hogar,Sanduchera Black+Decker,2,120000,240000,Tienda física
+279,2024-12-09,Bogotá,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,Tienda física
+280,2025-02-08,Bogotá,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+281,2024-08-31,Cartagena,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,En línea
+282,2024-04-04,Bogotá,Papelería,Kit marcadores x12,2,35000,70000,En línea
+283,2024-07-13,Cali,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+284,2024-11-24,Pereira,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+285,2025-01-20,Cali,Muebles,Silla ergonómica,5,890000,4450000,En línea
+286,2024-12-19,Bogotá,Hogar,Licuadora Oster Pro,5,310000,1550000,En línea
+287,2025-08-21,Cali,Tecnología,Mouse Logitech M185,3,65000,195000,Tienda física
+288,2025-07-09,Cali,Tecnología,Mouse Logitech M185,1,65000,65000,Tienda física
+289,2024-05-26,Barranquilla,Hogar,Cafetera Oster 12 tazas,2,240000,480000,Tienda física
+290,2025-09-09,Medellín,Tecnología,"Monitor Samsung 24""",3,780000,2340000,En línea
+291,2024-02-04,Pereira,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+292,2025-12-27,Barranquilla,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+293,2024-10-16,Medellín,Hogar,Sanduchera Black+Decker,4,120000,480000,En línea
+294,2024-10-24,Bucaramanga,Papelería,Kit marcadores x12,3,35000,105000,En línea
+295,2025-12-20,Bucaramanga,Muebles,Silla ergonómica,2,890000,1780000,En línea
+296,2025-08-31,Cali,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+297,2025-02-05,Cali,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+298,2025-03-28,Medellín,Muebles,Escritorio en L,2,1150000,2300000,En línea
+299,2025-10-26,Bogotá,Tecnología,Mouse Logitech M185,5,65000,325000,Tienda física
+300,2025-12-09,Medellín,Tecnología,"Monitor Samsung 24""",2,780000,1560000,Tienda física
+301,2025-05-30,Cali,Papelería,Resma papel A4,1,22000,22000,Tienda física
+302,2024-01-27,Medellín,Tecnología,"Monitor Samsung 24""",3,780000,2340000,En línea
+303,2025-02-26,Pereira,Hogar,Licuadora Oster Pro,2,310000,620000,En línea
+304,2025-07-30,Medellín,Muebles,Lámpara de pie LED,2,180000,360000,Tienda física
+305,2024-07-19,Medellín,Tecnología,"Monitor Samsung 24""",3,780000,2340000,En línea
+306,2025-02-21,Medellín,Tecnología,Teclado mecánico Redragon,1,210000,210000,Tienda física
+307,2024-08-18,Bogotá,Papelería,Resma papel A4,2,22000,44000,Tienda física
+308,2024-12-11,Bogotá,Papelería,Kit marcadores x12,1,35000,35000,Tienda física
+309,2025-10-08,Bogotá,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+310,2025-11-09,Bucaramanga,Papelería,Kit marcadores x12,3,35000,105000,Tienda física
+311,2025-08-25,Bogotá,Muebles,Silla ergonómica,1,890000,890000,En línea
+312,2025-08-22,Medellín,Tecnología,Portátil Lenovo IdeaPad 3,2,2400000,4800000,Tienda física
+313,2025-02-11,Medellín,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+314,2025-06-26,Cartagena,Muebles,Lámpara de pie LED,3,180000,540000,En línea
+315,2025-12-20,Barranquilla,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+316,2025-11-01,Bogotá,Hogar,Sanduchera Black+Decker,2,120000,240000,Tienda física
+317,2024-12-02,Bogotá,Papelería,Resma papel A4,1,22000,22000,En línea
+318,2024-05-18,Medellín,Tecnología,Mouse Logitech M185,3,65000,195000,Tienda física
+319,2025-11-11,Cali,Hogar,Sanduchera Black+Decker,1,120000,120000,Tienda física
+320,2024-04-16,Medellín,Tecnología,Mouse Logitech M185,2,65000,130000,En línea
+321,2025-12-07,Barranquilla,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,Tienda física
+322,2025-10-05,Bogotá,Muebles,Lámpara de pie LED,3,180000,540000,En línea
+323,2025-05-01,Barranquilla,Muebles,Lámpara de pie LED,2,180000,360000,En línea
+324,2025-04-28,Bogotá,Muebles,Silla ergonómica,2,890000,1780000,Tienda física
+325,2024-12-24,Bogotá,Hogar,Sanduchera Black+Decker,2,120000,240000,En línea
+326,2024-02-19,Bogotá,Muebles,Escritorio en L,2,1150000,2300000,Tienda física
+327,2024-09-10,Bucaramanga,Hogar,Cafetera Oster 12 tazas,3,240000,720000,Tienda física
+328,2024-04-21,Medellín,Tecnología,Mouse Logitech M185,2,65000,130000,En línea
+329,2024-08-02,Bogotá,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+330,2025-04-08,Bogotá,Tecnología,Teclado mecánico Redragon,4,210000,840000,En línea
+331,2025-03-07,Medellín,Tecnología,Mouse Logitech M185,3,65000,195000,En línea
+332,2024-12-31,Pereira,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+333,2025-12-17,Bogotá,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+334,2025-11-04,Cali,Hogar,Licuadora Oster Pro,2,310000,620000,Tienda física
+335,2024-12-02,Barranquilla,Papelería,Kit marcadores x12,3,35000,105000,En línea
+336,2024-11-14,Cali,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+337,2025-01-03,Pereira,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+338,2024-04-11,Cartagena,Papelería,Cuaderno argollado,1,18000,18000,En línea
+339,2025-12-05,Medellín,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+340,2024-02-05,Medellín,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+341,2025-03-31,Cali,Muebles,Silla ergonómica,1,890000,890000,En línea
+342,2025-12-27,Medellín,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+343,2025-01-25,Cartagena,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+344,2025-05-25,Cartagena,Papelería,Cuaderno argollado,2,18000,36000,Tienda física
+345,2025-06-05,Pereira,Tecnología,Portátil Lenovo IdeaPad 3,2,2400000,4800000,Tienda física
+346,2025-08-10,Cali,Muebles,Lámpara de pie LED,3,180000,540000,En línea
+347,2025-04-20,Bogotá,Hogar,Licuadora Oster Pro,3,310000,930000,Tienda física
+348,2024-01-25,Bogotá,Papelería,Resma papel A4,1,22000,22000,En línea
+349,2024-05-08,Barranquilla,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+350,2025-10-29,Bogotá,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+351,2024-09-20,Medellín,Hogar,Licuadora Oster Pro,2,310000,620000,En línea
+352,2025-11-21,Barranquilla,Tecnología,Mouse Logitech M185,1,65000,65000,Tienda física
+353,2025-05-02,Bogotá,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+354,2025-02-17,Bogotá,Tecnología,Teclado mecánico Redragon,5,210000,1050000,En línea
+355,2024-06-18,Medellín,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+356,2025-08-27,Cali,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+357,2025-12-23,Cartagena,Hogar,Sanduchera Black+Decker,5,120000,600000,En línea
+358,2024-08-19,Medellín,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+359,2024-12-22,Pereira,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,Tienda física
+360,2024-04-27,Bogotá,Hogar,Licuadora Oster Pro,2,310000,620000,Tienda física
+361,2025-01-24,Medellín,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+362,2024-03-26,Cali,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+363,2024-11-18,Medellín,Papelería,Resma papel A4,4,22000,88000,En línea
+364,2025-12-16,Bucaramanga,Tecnología,Mouse Logitech M185,2,65000,130000,En línea
+365,2025-03-04,Pereira,Muebles,Lámpara de pie LED,3,180000,540000,Tienda física
+366,2024-05-26,Bucaramanga,Papelería,Kit marcadores x12,1,35000,35000,Tienda física
+367,2024-11-12,Pereira,Muebles,Silla ergonómica,4,890000,3560000,Tienda física
+368,2025-11-01,Bogotá,Tecnología,Portátil Lenovo IdeaPad 3,2,2400000,4800000,Tienda física
+369,2024-08-17,Medellín,Papelería,Cuaderno argollado,2,18000,36000,Tienda física
+370,2025-10-12,Bogotá,Muebles,Silla ergonómica,1,890000,890000,En línea
+371,2024-12-14,Barranquilla,Tecnología,Teclado mecánico Redragon,1,210000,210000,Tienda física
+372,2025-02-26,Cartagena,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+373,2025-09-22,Cali,Muebles,Silla ergonómica,1,890000,890000,En línea
+374,2024-04-29,Bogotá,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+375,2025-07-23,Barranquilla,Papelería,Resma papel A4,1,22000,22000,En línea
+376,2025-05-10,Bogotá,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+377,2024-11-17,Barranquilla,Muebles,Silla ergonómica,4,890000,3560000,En línea
+378,2024-04-10,Cali,Papelería,Resma papel A4,1,22000,22000,En línea
+379,2024-04-23,Cali,Tecnología,Audífonos Sony WH-CH520,3,320000,960000,En línea
+380,2025-02-09,Cali,Muebles,Silla ergonómica,2,890000,1780000,En línea
+381,2024-07-18,Bogotá,Hogar,Cafetera Oster 12 tazas,4,240000,960000,En línea
+382,2025-06-16,Bogotá,Tecnología,"Monitor Samsung 24""",2,780000,1560000,En línea
+383,2025-01-04,Medellín,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+384,2024-04-09,Bogotá,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,En línea
+385,2025-09-07,Medellín,Muebles,Silla ergonómica,2,890000,1780000,En línea
+386,2024-12-15,Medellín,Hogar,Sanduchera Black+Decker,3,120000,360000,Tienda física
+387,2025-07-17,Medellín,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+388,2025-12-29,Pereira,Papelería,Resma papel A4,1,22000,22000,En línea
+389,2024-11-19,Pereira,Hogar,Cafetera Oster 12 tazas,3,240000,720000,Tienda física
+390,2024-11-26,Bucaramanga,Papelería,Cuaderno argollado,1,18000,18000,Tienda física
+391,2024-10-30,Cali,Hogar,Licuadora Oster Pro,2,310000,620000,Tienda física
+392,2024-10-09,Cali,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,Tienda física
+393,2024-06-29,Bogotá,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,Tienda física
+394,2025-02-04,Bogotá,Muebles,Lámpara de pie LED,3,180000,540000,En línea
+395,2024-08-09,Bogotá,Papelería,Resma papel A4,3,22000,66000,Tienda física
+396,2024-11-25,Bogotá,Hogar,Cafetera Oster 12 tazas,4,240000,960000,En línea
+397,2024-03-26,Barranquilla,Tecnología,Portátil Lenovo IdeaPad 3,2,2400000,4800000,En línea
+398,2025-07-13,Bogotá,Muebles,Escritorio en L,1,1150000,1150000,Tienda física
+399,2024-02-16,Cartagena,Muebles,Silla ergonómica,1,890000,890000,Tienda física
+400,2024-09-15,Medellín,Muebles,Lámpara de pie LED,2,180000,360000,En línea
+401,2024-05-02,Medellín,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+402,2025-12-10,Cali,Papelería,Kit marcadores x12,4,35000,140000,En línea
+403,2024-12-29,Cali,Papelería,Cuaderno argollado,4,18000,72000,Tienda física
+404,2024-09-15,Medellín,Muebles,Escritorio en L,1,1150000,1150000,Tienda física
+405,2024-12-20,Barranquilla,Hogar,Sanduchera Black+Decker,1,120000,120000,Tienda física
+406,2025-11-23,Cali,Muebles,Lámpara de pie LED,5,180000,900000,En línea
+407,2024-07-14,Bucaramanga,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,Tienda física
+408,2024-03-19,Bogotá,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+409,2025-03-29,Barranquilla,Papelería,Kit marcadores x12,1,35000,35000,Tienda física
+410,2025-02-18,Medellín,Muebles,Silla ergonómica,4,890000,3560000,Tienda física
+411,2024-01-12,Bogotá,Papelería,Resma papel A4,5,22000,110000,Tienda física
+412,2024-12-22,Bogotá,Tecnología,Teclado mecánico Redragon,2,210000,420000,Tienda física
+413,2025-02-11,Cali,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+414,2024-07-28,Bogotá,Muebles,Silla ergonómica,2,890000,1780000,Tienda física
+415,2024-12-18,Medellín,Hogar,Sanduchera Black+Decker,4,120000,480000,En línea
+416,2025-02-21,Bogotá,Tecnología,Teclado mecánico Redragon,1,210000,210000,Tienda física
+417,2025-03-08,Medellín,Muebles,Escritorio en L,1,1150000,1150000,En línea
+418,2025-09-28,Barranquilla,Muebles,Silla ergonómica,2,890000,1780000,En línea
+419,2025-09-18,Medellín,Papelería,Resma papel A4,2,22000,44000,En línea
+420,2025-08-26,Medellín,Tecnología,Audífonos Sony WH-CH520,3,320000,960000,Tienda física
+421,2025-02-02,Bogotá,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+422,2025-12-08,Medellín,Hogar,Licuadora Oster Pro,3,310000,930000,Tienda física
+423,2024-07-05,Medellín,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+424,2025-04-10,Medellín,Hogar,Licuadora Oster Pro,2,310000,620000,En línea
+425,2024-01-06,Cali,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+426,2025-12-22,Cali,Tecnología,Portátil Lenovo IdeaPad 3,3,2400000,7200000,Tienda física
+427,2025-11-20,Bogotá,Tecnología,"Monitor Samsung 24""",1,780000,780000,En línea
+428,2025-01-20,Medellín,Hogar,Sanduchera Black+Decker,1,120000,120000,En línea
+429,2024-11-18,Bogotá,Muebles,Lámpara de pie LED,5,180000,900000,Tienda física
+430,2025-10-09,Barranquilla,Hogar,Licuadora Oster Pro,4,310000,1240000,En línea
+431,2024-11-02,Bogotá,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+432,2024-12-31,Cali,Muebles,Escritorio en L,3,1150000,3450000,Tienda física
+433,2024-03-22,Bogotá,Muebles,Lámpara de pie LED,1,180000,180000,Tienda física
+434,2025-11-07,Bogotá,Muebles,Silla ergonómica,1,890000,890000,Tienda física
+435,2025-11-14,Bucaramanga,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+436,2025-12-15,Barranquilla,Muebles,Lámpara de pie LED,3,180000,540000,En línea
+437,2024-03-06,Cartagena,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+438,2025-11-12,Bogotá,Tecnología,Mouse Logitech M185,3,65000,195000,Tienda física
+439,2025-06-30,Bogotá,Muebles,Silla ergonómica,5,890000,4450000,En línea
+440,2025-10-02,Pereira,Tecnología,Mouse Logitech M185,3,65000,195000,En línea
+441,2025-08-08,Pereira,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,En línea
+442,2024-10-15,Cali,Papelería,Resma papel A4,1,22000,22000,Tienda física
+443,2024-03-13,Barranquilla,Hogar,Licuadora Oster Pro,3,310000,930000,En línea
+444,2024-05-10,Barranquilla,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+445,2024-03-31,Medellín,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,En línea
+446,2024-04-22,Cali,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+447,2024-01-21,Cali,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+448,2024-11-05,Bogotá,Tecnología,Teclado mecánico Redragon,1,210000,210000,Tienda física
+449,2025-11-17,Bogotá,Papelería,Cuaderno argollado,2,18000,36000,En línea
+450,2024-04-28,Bogotá,Tecnología,Mouse Logitech M185,2,65000,130000,En línea
+451,2024-11-26,Bogotá,Muebles,Silla ergonómica,1,890000,890000,En línea
+452,2025-04-17,Bogotá,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+453,2025-12-10,Cartagena,Tecnología,Mouse Logitech M185,2,65000,130000,En línea
+454,2024-09-29,Pereira,Hogar,Sanduchera Black+Decker,4,120000,480000,En línea
+455,2024-09-17,Medellín,Papelería,Resma papel A4,1,22000,22000,Tienda física
+456,2025-12-18,Medellín,Tecnología,Teclado mecánico Redragon,2,210000,420000,Tienda física
+457,2024-07-14,Medellín,Tecnología,Mouse Logitech M185,3,65000,195000,En línea
+458,2025-02-23,Barranquilla,Muebles,Lámpara de pie LED,2,180000,360000,Tienda física
+459,2025-12-11,Medellín,Muebles,Silla ergonómica,3,890000,2670000,En línea
+460,2025-06-08,Medellín,Hogar,Sanduchera Black+Decker,3,120000,360000,En línea
+461,2025-04-24,Barranquilla,Tecnología,Teclado mecánico Redragon,2,210000,420000,Tienda física
+462,2024-03-03,Medellín,Papelería,Cuaderno argollado,2,18000,36000,En línea
+463,2025-11-26,Cartagena,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+464,2025-11-12,Bogotá,Muebles,Lámpara de pie LED,2,180000,360000,Tienda física
+465,2025-05-13,Bogotá,Tecnología,Mouse Logitech M185,2,65000,130000,Tienda física
+466,2025-05-28,Pereira,Tecnología,Mouse Logitech M185,3,65000,195000,En línea
+467,2024-01-09,Medellín,Tecnología,Teclado mecánico Redragon,2,210000,420000,Tienda física
+468,2025-03-05,Barranquilla,Muebles,Escritorio en L,1,1150000,1150000,Tienda física
+469,2024-12-31,Bogotá,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+470,2025-12-15,Bogotá,Tecnología,"Monitor Samsung 24""",4,780000,3120000,En línea
+471,2024-12-12,Medellín,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,En línea
+472,2025-06-11,Cartagena,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+473,2025-10-10,Bogotá,Hogar,Licuadora Oster Pro,2,310000,620000,Tienda física
+474,2024-07-15,Cali,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,Tienda física
+475,2024-07-06,Cali,Muebles,Escritorio en L,1,1150000,1150000,En línea
+476,2024-01-23,Cali,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+477,2025-06-17,Cartagena,Tecnología,Audífonos Sony WH-CH520,3,320000,960000,En línea
+478,2024-03-27,Medellín,Papelería,Kit marcadores x12,1,35000,35000,En línea
+479,2024-07-29,Cali,Papelería,Kit marcadores x12,2,35000,70000,Tienda física
+480,2025-04-05,Cartagena,Muebles,Lámpara de pie LED,1,180000,180000,Tienda física
+481,2025-09-11,Cali,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+482,2024-04-24,Bogotá,Tecnología,"Monitor Samsung 24""",1,780000,780000,Tienda física
+483,2025-01-08,Medellín,Muebles,Escritorio en L,1,1150000,1150000,En línea
+484,2025-04-25,Pereira,Hogar,Cafetera Oster 12 tazas,2,240000,480000,Tienda física
+485,2024-12-27,Medellín,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+486,2024-10-18,Cartagena,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,Tienda física
+487,2025-01-04,Medellín,Muebles,Silla ergonómica,2,890000,1780000,Tienda física
+488,2024-12-26,Barranquilla,Tecnología,"Monitor Samsung 24""",1,780000,780000,En línea
+489,2024-08-09,Medellín,Muebles,Lámpara de pie LED,1,180000,180000,Tienda física
+490,2025-08-01,Bogotá,Muebles,Lámpara de pie LED,1,180000,180000,Tienda física
+491,2025-09-19,Bogotá,Tecnología,Mouse Logitech M185,3,65000,195000,Tienda física
+492,2025-02-06,Cartagena,Papelería,Cuaderno argollado,1,18000,18000,Tienda física
+493,2024-08-28,Medellín,Papelería,Cuaderno argollado,1,18000,18000,Tienda física
+494,2024-12-05,Bogotá,Papelería,Cuaderno argollado,3,18000,54000,Tienda física
+495,2025-03-16,Cali,Tecnología,Mouse Logitech M185,3,65000,195000,En línea
+496,2024-04-28,Bogotá,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+497,2024-08-14,Barranquilla,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+498,2024-08-02,Cali,Papelería,Kit marcadores x12,5,35000,175000,En línea
+499,2025-12-16,Pereira,Hogar,Sanduchera Black+Decker,4,120000,480000,Tienda física
+500,2024-04-18,Barranquilla,Papelería,Kit marcadores x12,1,35000,35000,Tienda física
+501,2025-07-29,Cali,Hogar,Licuadora Oster Pro,2,310000,620000,En línea
+502,2024-11-22,Bucaramanga,Muebles,Silla ergonómica,2,890000,1780000,En línea
+503,2025-01-12,Medellín,Tecnología,Teclado mecánico Redragon,4,210000,840000,Tienda física
+504,2024-09-22,Barranquilla,Tecnología,Portátil Lenovo IdeaPad 3,3,2400000,7200000,Tienda física
+505,2024-12-14,Bogotá,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+506,2024-06-25,Bogotá,Muebles,Escritorio en L,1,1150000,1150000,Tienda física
+507,2024-10-01,Medellín,Muebles,Lámpara de pie LED,2,180000,360000,En línea
+508,2025-06-01,Cartagena,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,En línea
+509,2024-04-15,Bogotá,Papelería,Kit marcadores x12,1,35000,35000,Tienda física
+510,2024-06-15,Cali,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+511,2025-12-03,Bogotá,Tecnología,Teclado mecánico Redragon,2,210000,420000,En línea
+512,2025-11-17,Medellín,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,Tienda física
+513,2024-07-07,Bogotá,Hogar,Licuadora Oster Pro,3,310000,930000,En línea
+514,2024-04-23,Bogotá,Tecnología,Teclado mecánico Redragon,2,210000,420000,Tienda física
+515,2025-09-14,Bogotá,Papelería,Cuaderno argollado,1,18000,18000,En línea
+516,2024-11-04,Medellín,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+517,2024-04-26,Bogotá,Hogar,Cafetera Oster 12 tazas,3,240000,720000,Tienda física
+518,2024-05-01,Cali,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+519,2025-06-29,Medellín,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+520,2025-10-19,Barranquilla,Tecnología,"Monitor Samsung 24""",1,780000,780000,Tienda física
+521,2024-11-05,Bogotá,Papelería,Resma papel A4,1,22000,22000,En línea
+522,2024-03-12,Cali,Muebles,Lámpara de pie LED,2,180000,360000,Tienda física
+523,2025-06-07,Medellín,Hogar,Sanduchera Black+Decker,2,120000,240000,En línea
+524,2025-01-07,Bogotá,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+525,2025-12-12,Medellín,Muebles,Silla ergonómica,1,890000,890000,Tienda física
+526,2025-01-22,Pereira,Papelería,Cuaderno argollado,5,18000,90000,En línea
+527,2025-10-19,Barranquilla,Muebles,Lámpara de pie LED,1,180000,180000,Tienda física
+528,2025-12-12,Bogotá,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+529,2024-01-31,Medellín,Tecnología,"Monitor Samsung 24""",3,780000,2340000,Tienda física
+530,2025-01-01,Bogotá,Muebles,Escritorio en L,3,1150000,3450000,En línea
+531,2025-04-09,Medellín,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+532,2025-09-06,Cali,Muebles,Lámpara de pie LED,1,180000,180000,Tienda física
+533,2025-05-31,Barranquilla,Tecnología,"Monitor Samsung 24""",2,780000,1560000,Tienda física
+534,2024-02-17,Medellín,Tecnología,"Monitor Samsung 24""",1,780000,780000,Tienda física
+535,2024-09-07,Bogotá,Hogar,Cafetera Oster 12 tazas,3,240000,720000,Tienda física
+536,2025-06-14,Cali,Tecnología,Audífonos Sony WH-CH520,5,320000,1600000,Tienda física
+537,2025-06-28,Cartagena,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+538,2025-11-06,Cartagena,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+539,2024-02-23,Bogotá,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+540,2024-10-18,Medellín,Muebles,Silla ergonómica,2,890000,1780000,En línea
+541,2024-03-28,Bogotá,Muebles,Lámpara de pie LED,3,180000,540000,En línea
+542,2024-02-04,Medellín,Papelería,Kit marcadores x12,1,35000,35000,En línea
+543,2024-05-07,Cali,Papelería,Resma papel A4,4,22000,88000,Tienda física
+544,2025-07-13,Medellín,Muebles,Escritorio en L,1,1150000,1150000,Tienda física
+545,2024-08-05,Medellín,Tecnología,"Monitor Samsung 24""",1,780000,780000,Tienda física
+546,2024-05-29,Pereira,Hogar,Sanduchera Black+Decker,5,120000,600000,En línea
+547,2024-12-16,Medellín,Tecnología,Teclado mecánico Redragon,3,210000,630000,Tienda física
+548,2024-01-07,Medellín,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,Tienda física
+549,2024-12-16,Barranquilla,Muebles,Lámpara de pie LED,2,180000,360000,En línea
+550,2025-11-15,Bogotá,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+551,2024-07-07,Bucaramanga,Tecnología,Mouse Logitech M185,3,65000,195000,Tienda física
+552,2024-01-02,Barranquilla,Hogar,Licuadora Oster Pro,3,310000,930000,En línea
+553,2025-01-23,Bogotá,Tecnología,Teclado mecánico Redragon,2,210000,420000,Tienda física
+554,2025-06-21,Bucaramanga,Tecnología,"Monitor Samsung 24""",4,780000,3120000,En línea
+555,2025-06-14,Bogotá,Tecnología,Mouse Logitech M185,5,65000,325000,En línea
+556,2024-04-23,Cali,Hogar,Sanduchera Black+Decker,1,120000,120000,En línea
+557,2025-12-16,Medellín,Tecnología,Teclado mecánico Redragon,1,210000,210000,Tienda física
+558,2025-06-14,Bogotá,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+559,2024-06-15,Bogotá,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+560,2024-12-17,Pereira,Muebles,Escritorio en L,2,1150000,2300000,En línea
+561,2024-09-06,Bogotá,Tecnología,Teclado mecánico Redragon,1,210000,210000,Tienda física
+562,2025-09-22,Cartagena,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+563,2024-03-18,Medellín,Tecnología,Teclado mecánico Redragon,1,210000,210000,Tienda física
+564,2024-07-27,Medellín,Papelería,Cuaderno argollado,1,18000,18000,En línea
+565,2025-07-19,Cartagena,Tecnología,Teclado mecánico Redragon,2,210000,420000,En línea
+566,2024-01-10,Bogotá,Hogar,Sanduchera Black+Decker,5,120000,600000,Tienda física
+567,2024-10-28,Cali,Hogar,Licuadora Oster Pro,2,310000,620000,En línea
+568,2025-09-10,Bucaramanga,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,En línea
+569,2024-04-19,Medellín,Papelería,Kit marcadores x12,3,35000,105000,En línea
+570,2024-12-15,Cartagena,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,En línea
+571,2024-01-23,Bogotá,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+572,2024-08-13,Cali,Papelería,Kit marcadores x12,1,35000,35000,En línea
+573,2024-08-26,Bogotá,Muebles,Escritorio en L,2,1150000,2300000,En línea
+574,2024-04-27,Cali,Tecnología,Audífonos Sony WH-CH520,4,320000,1280000,Tienda física
+575,2025-09-01,Cartagena,Hogar,Sanduchera Black+Decker,5,120000,600000,En línea
+576,2025-02-04,Medellín,Muebles,Silla ergonómica,4,890000,3560000,En línea
+577,2024-05-30,Bucaramanga,Tecnología,Mouse Logitech M185,1,65000,65000,Tienda física
+578,2024-02-18,Barranquilla,Papelería,Cuaderno argollado,2,18000,36000,Tienda física
+579,2025-12-20,Bogotá,Tecnología,"Monitor Samsung 24""",2,780000,1560000,Tienda física
+580,2025-11-24,Bogotá,Tecnología,"Monitor Samsung 24""",5,780000,3900000,Tienda física
+581,2025-08-28,Cartagena,Tecnología,Mouse Logitech M185,3,65000,195000,En línea
+582,2025-03-20,Bucaramanga,Hogar,Sanduchera Black+Decker,2,120000,240000,En línea
+583,2025-06-14,Cali,Papelería,Resma papel A4,2,22000,44000,En línea
+584,2025-12-26,Medellín,Papelería,Kit marcadores x12,2,35000,70000,En línea
+585,2024-03-17,Cali,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+586,2025-11-25,Barranquilla,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,Tienda física
+587,2025-10-07,Cali,Tecnología,Mouse Logitech M185,1,65000,65000,Tienda física
+588,2025-08-09,Pereira,Hogar,Sanduchera Black+Decker,4,120000,480000,En línea
+589,2025-12-07,Medellín,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+590,2024-05-12,Pereira,Papelería,Resma papel A4,3,22000,66000,Tienda física
+591,2024-05-25,Bucaramanga,Papelería,Resma papel A4,2,22000,44000,Tienda física
+592,2024-06-29,Medellín,Muebles,Lámpara de pie LED,1,180000,180000,Tienda física
+593,2024-04-18,Pereira,Hogar,Cafetera Oster 12 tazas,4,240000,960000,En línea
+594,2025-12-29,Cali,Papelería,Resma papel A4,1,22000,22000,Tienda física
+595,2025-12-18,Pereira,Tecnología,Teclado mecánico Redragon,2,210000,420000,En línea
+596,2025-07-16,Bogotá,Tecnología,Teclado mecánico Redragon,5,210000,1050000,Tienda física
+597,2024-03-16,Bucaramanga,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+598,2024-07-31,Bogotá,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+599,2024-01-01,Pereira,Tecnología,Mouse Logitech M185,3,65000,195000,Tienda física
+600,2024-12-28,Bogotá,Tecnología,Mouse Logitech M185,2,65000,130000,En línea
+601,2025-10-22,Bogotá,Hogar,Licuadora Oster Pro,2,310000,620000,En línea
+602,2025-10-08,Pereira,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+603,2024-05-22,Cali,Tecnología,Mouse Logitech M185,3,65000,195000,Tienda física
+604,2024-03-20,Medellín,Muebles,Lámpara de pie LED,2,180000,360000,En línea
+605,2025-12-07,Bogotá,Tecnología,Audífonos Sony WH-CH520,4,320000,1280000,En línea
+606,2024-06-17,Barranquilla,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,Tienda física
+607,2024-07-31,Bogotá,Tecnología,Teclado mecánico Redragon,1,210000,210000,Tienda física
+608,2025-10-03,Medellín,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+609,2025-05-16,Bogotá,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+610,2024-08-23,Medellín,Tecnología,"Monitor Samsung 24""",3,780000,2340000,En línea
+611,2024-12-27,Cali,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+612,2025-11-06,Bogotá,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+613,2024-07-01,Barranquilla,Tecnología,Teclado mecánico Redragon,1,210000,210000,Tienda física
+614,2024-03-13,Pereira,Tecnología,Mouse Logitech M185,2,65000,130000,Tienda física
+615,2025-02-13,Medellín,Hogar,Sanduchera Black+Decker,3,120000,360000,En línea
+616,2025-10-24,Medellín,Muebles,Silla ergonómica,4,890000,3560000,En línea
+617,2025-11-16,Bucaramanga,Hogar,Cafetera Oster 12 tazas,2,240000,480000,Tienda física
+618,2025-05-28,Barranquilla,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+619,2025-12-25,Bogotá,Papelería,Cuaderno argollado,3,18000,54000,En línea
+620,2025-12-26,Cali,Muebles,Escritorio en L,5,1150000,5750000,Tienda física
+621,2024-07-26,Bogotá,Papelería,Resma papel A4,4,22000,88000,En línea
+622,2024-11-12,Medellín,Tecnología,Mouse Logitech M185,1,65000,65000,Tienda física
+623,2025-08-19,Medellín,Hogar,Licuadora Oster Pro,2,310000,620000,En línea
+624,2024-05-05,Pereira,Muebles,Lámpara de pie LED,3,180000,540000,Tienda física
+625,2025-02-21,Cali,Tecnología,"Monitor Samsung 24""",1,780000,780000,En línea
+626,2024-11-20,Cali,Tecnología,Mouse Logitech M185,2,65000,130000,En línea
+627,2024-08-09,Barranquilla,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,En línea
+628,2025-11-08,Barranquilla,Tecnología,Mouse Logitech M185,1,65000,65000,Tienda física
+629,2025-11-13,Medellín,Tecnología,Portátil Lenovo IdeaPad 3,3,2400000,7200000,En línea
+630,2024-12-28,Bucaramanga,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+631,2025-12-20,Bogotá,Muebles,Escritorio en L,3,1150000,3450000,En línea
+632,2025-05-04,Cartagena,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,Tienda física
+633,2025-07-27,Medellín,Papelería,Kit marcadores x12,3,35000,105000,En línea
+634,2024-09-08,Cartagena,Muebles,Silla ergonómica,1,890000,890000,Tienda física
+635,2024-01-23,Cartagena,Tecnología,Audífonos Sony WH-CH520,3,320000,960000,En línea
+636,2024-12-13,Bogotá,Papelería,Resma papel A4,3,22000,66000,Tienda física
+637,2025-01-04,Bogotá,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+638,2025-03-21,Cali,Tecnología,Audífonos Sony WH-CH520,4,320000,1280000,En línea
+639,2024-05-17,Barranquilla,Papelería,Kit marcadores x12,3,35000,105000,En línea
+640,2024-11-06,Pereira,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,Tienda física
+641,2025-05-05,Medellín,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+642,2025-08-14,Bucaramanga,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+643,2025-03-27,Cartagena,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,En línea
+644,2025-12-17,Medellín,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+645,2024-07-21,Cartagena,Muebles,Silla ergonómica,2,890000,1780000,En línea
+646,2024-03-28,Cartagena,Muebles,Silla ergonómica,2,890000,1780000,En línea
+647,2025-05-05,Bogotá,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+648,2025-12-27,Bogotá,Hogar,Licuadora Oster Pro,4,310000,1240000,Tienda física
+649,2025-11-10,Barranquilla,Tecnología,Teclado mecánico Redragon,1,210000,210000,Tienda física
+650,2025-09-04,Cali,Hogar,Sanduchera Black+Decker,2,120000,240000,Tienda física
+651,2025-06-28,Bogotá,Hogar,Licuadora Oster Pro,5,310000,1550000,En línea
+652,2024-11-07,Cali,Tecnología,Portátil Lenovo IdeaPad 3,3,2400000,7200000,En línea
+653,2025-07-02,Cartagena,Tecnología,Teclado mecánico Redragon,2,210000,420000,Tienda física
+654,2025-05-24,Cartagena,Muebles,Silla ergonómica,3,890000,2670000,Tienda física
+655,2024-05-31,Bogotá,Tecnología,"Monitor Samsung 24""",1,780000,780000,Tienda física
+656,2025-07-30,Medellín,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,En línea
+657,2024-10-15,Cartagena,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+658,2024-07-28,Medellín,Tecnología,Teclado mecánico Redragon,4,210000,840000,Tienda física
+659,2025-03-12,Bucaramanga,Papelería,Resma papel A4,1,22000,22000,En línea
+660,2025-10-24,Bogotá,Tecnología,Mouse Logitech M185,1,65000,65000,Tienda física
+661,2024-04-27,Cali,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,Tienda física
+662,2024-12-13,Barranquilla,Tecnología,Mouse Logitech M185,3,65000,195000,En línea
+663,2025-04-22,Bogotá,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,En línea
+664,2025-07-29,Medellín,Tecnología,Audífonos Sony WH-CH520,3,320000,960000,Tienda física
+665,2024-03-15,Medellín,Hogar,Licuadora Oster Pro,2,310000,620000,Tienda física
+666,2024-11-04,Medellín,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,En línea
+667,2024-09-18,Cali,Hogar,Sanduchera Black+Decker,1,120000,120000,Tienda física
+668,2024-07-19,Bogotá,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+669,2025-03-16,Bogotá,Tecnología,Audífonos Sony WH-CH520,3,320000,960000,En línea
+670,2025-07-03,Bucaramanga,Muebles,Lámpara de pie LED,1,180000,180000,Tienda física
+671,2024-10-05,Bogotá,Papelería,Kit marcadores x12,1,35000,35000,Tienda física
+672,2025-11-25,Barranquilla,Muebles,Escritorio en L,1,1150000,1150000,En línea
+673,2025-07-08,Medellín,Muebles,Lámpara de pie LED,1,180000,180000,Tienda física
+674,2024-01-29,Cali,Papelería,Kit marcadores x12,1,35000,35000,En línea
+675,2025-12-29,Bogotá,Hogar,Licuadora Oster Pro,2,310000,620000,Tienda física
+676,2024-11-24,Medellín,Tecnología,Mouse Logitech M185,2,65000,130000,En línea
+677,2025-06-10,Cali,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+678,2024-08-04,Cartagena,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+679,2025-06-26,Bogotá,Tecnología,"Monitor Samsung 24""",1,780000,780000,En línea
+680,2024-06-13,Bogotá,Tecnología,Teclado mecánico Redragon,2,210000,420000,Tienda física
+681,2024-08-26,Bogotá,Tecnología,Portátil Lenovo IdeaPad 3,2,2400000,4800000,Tienda física
+682,2024-09-25,Bucaramanga,Tecnología,Portátil Lenovo IdeaPad 3,2,2400000,4800000,Tienda física
+683,2025-05-22,Medellín,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,Tienda física
+684,2024-03-27,Pereira,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+685,2024-12-16,Bogotá,Tecnología,"Monitor Samsung 24""",1,780000,780000,En línea
+686,2025-09-01,Bogotá,Tecnología,Mouse Logitech M185,3,65000,195000,Tienda física
+687,2024-02-06,Bogotá,Papelería,Kit marcadores x12,2,35000,70000,En línea
+688,2024-12-05,Bogotá,Hogar,Licuadora Oster Pro,4,310000,1240000,Tienda física
+689,2024-06-01,Bogotá,Muebles,Escritorio en L,5,1150000,5750000,En línea
+690,2025-10-11,Cartagena,Hogar,Sanduchera Black+Decker,2,120000,240000,En línea
+691,2025-06-11,Bogotá,Tecnología,"Monitor Samsung 24""",4,780000,3120000,En línea
+692,2025-03-18,Bogotá,Hogar,Sanduchera Black+Decker,2,120000,240000,En línea
+693,2024-10-17,Cartagena,Tecnología,Portátil Lenovo IdeaPad 3,2,2400000,4800000,Tienda física
+694,2024-04-21,Medellín,Papelería,Resma papel A4,1,22000,22000,En línea
+695,2024-07-29,Cali,Tecnología,Mouse Logitech M185,3,65000,195000,Tienda física
+696,2025-03-06,Cali,Muebles,Lámpara de pie LED,5,180000,900000,En línea
+697,2025-01-18,Cali,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+698,2024-10-07,Cartagena,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+699,2025-12-26,Bogotá,Tecnología,"Monitor Samsung 24""",2,780000,1560000,Tienda física
+700,2025-10-12,Medellín,Papelería,Kit marcadores x12,1,35000,35000,En línea
+701,2025-12-19,Cali,Tecnología,"Monitor Samsung 24""",1,780000,780000,En línea
+702,2024-07-08,Medellín,Muebles,Silla ergonómica,3,890000,2670000,Tienda física
+703,2024-12-09,Cali,Tecnología,"Monitor Samsung 24""",2,780000,1560000,En línea
+704,2024-11-21,Bogotá,Muebles,Lámpara de pie LED,1,180000,180000,Tienda física
+705,2025-04-11,Bogotá,Tecnología,Mouse Logitech M185,2,65000,130000,Tienda física
+706,2025-12-10,Bogotá,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+707,2025-02-19,Cali,Hogar,Licuadora Oster Pro,2,310000,620000,Tienda física
+708,2024-04-07,Medellín,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+709,2025-12-16,Barranquilla,Tecnología,Teclado mecánico Redragon,2,210000,420000,En línea
+710,2024-05-18,Barranquilla,Tecnología,Audífonos Sony WH-CH520,3,320000,960000,En línea
+711,2025-04-04,Medellín,Tecnología,Audífonos Sony WH-CH520,4,320000,1280000,En línea
+712,2025-08-15,Medellín,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+713,2025-10-01,Medellín,Muebles,Lámpara de pie LED,3,180000,540000,Tienda física
+714,2025-12-13,Cali,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,En línea
+715,2025-12-04,Medellín,Hogar,Sanduchera Black+Decker,2,120000,240000,Tienda física
+716,2024-05-28,Bogotá,Muebles,Lámpara de pie LED,3,180000,540000,En línea
+717,2025-03-27,Medellín,Papelería,Kit marcadores x12,2,35000,70000,Tienda física
+718,2025-11-24,Pereira,Hogar,Cafetera Oster 12 tazas,1,240000,240000,Tienda física
+719,2024-12-11,Barranquilla,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,Tienda física
+720,2024-08-29,Barranquilla,Hogar,Cafetera Oster 12 tazas,4,240000,960000,Tienda física
+721,2025-04-23,Bogotá,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,En línea
+722,2025-05-24,Pereira,Papelería,Cuaderno argollado,2,18000,36000,En línea
+723,2025-06-09,Medellín,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+724,2025-03-01,Barranquilla,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+725,2024-08-18,Cali,Hogar,Sanduchera Black+Decker,3,120000,360000,En línea
+726,2024-05-03,Barranquilla,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+727,2024-08-19,Barranquilla,Tecnología,Teclado mecánico Redragon,3,210000,630000,En línea
+728,2025-07-23,Bogotá,Tecnología,Portátil Lenovo IdeaPad 3,3,2400000,7200000,Tienda física
+729,2025-07-12,Cali,Papelería,Kit marcadores x12,3,35000,105000,En línea
+730,2025-08-17,Cali,Hogar,Sanduchera Black+Decker,1,120000,120000,Tienda física
+731,2024-11-07,Medellín,Papelería,Resma papel A4,5,22000,110000,Tienda física
+732,2024-01-10,Cartagena,Tecnología,Teclado mecánico Redragon,2,210000,420000,Tienda física
+733,2025-09-25,Cali,Papelería,Resma papel A4,3,22000,66000,Tienda física
+734,2025-02-06,Pereira,Hogar,Licuadora Oster Pro,3,310000,930000,En línea
+735,2024-05-28,Bogotá,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+736,2024-10-31,Bogotá,Muebles,Escritorio en L,2,1150000,2300000,Tienda física
+737,2024-07-23,Bogotá,Tecnología,Mouse Logitech M185,3,65000,195000,En línea
+738,2024-09-18,Cali,Tecnología,"Monitor Samsung 24""",4,780000,3120000,Tienda física
+739,2024-12-27,Cartagena,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+740,2024-06-27,Medellín,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+741,2025-01-29,Bogotá,Tecnología,"Monitor Samsung 24""",1,780000,780000,En línea
+742,2024-10-19,Cali,Tecnología,Audífonos Sony WH-CH520,3,320000,960000,Tienda física
+743,2025-09-20,Cali,Papelería,Cuaderno argollado,1,18000,18000,En línea
+744,2025-11-17,Pereira,Hogar,Licuadora Oster Pro,2,310000,620000,Tienda física
+745,2024-09-17,Medellín,Papelería,Resma papel A4,4,22000,88000,En línea
+746,2024-08-15,Medellín,Papelería,Resma papel A4,3,22000,66000,Tienda física
+747,2024-12-08,Bogotá,Tecnología,Portátil Lenovo IdeaPad 3,4,2400000,9600000,En línea
+748,2025-12-09,Cali,Tecnología,Audífonos Sony WH-CH520,5,320000,1600000,En línea
+749,2024-02-25,Bucaramanga,Hogar,Licuadora Oster Pro,3,310000,930000,En línea
+750,2024-03-29,Pereira,Muebles,Lámpara de pie LED,3,180000,540000,Tienda física
+751,2025-05-04,Bogotá,Papelería,Resma papel A4,3,22000,66000,En línea
+752,2024-09-26,Cartagena,Tecnología,"Monitor Samsung 24""",1,780000,780000,Tienda física
+753,2025-03-05,Medellín,Tecnología,Teclado mecánico Redragon,1,210000,210000,Tienda física
+754,2024-12-03,Cali,Tecnología,Portátil Lenovo IdeaPad 3,2,2400000,4800000,Tienda física
+755,2025-04-11,Barranquilla,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+756,2025-12-01,Medellín,Tecnología,"Monitor Samsung 24""",3,780000,2340000,En línea
+757,2025-08-01,Cali,Muebles,Escritorio en L,1,1150000,1150000,En línea
+758,2025-01-26,Cartagena,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+759,2025-12-14,Bucaramanga,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,Tienda física
+760,2025-07-04,Cali,Tecnología,Mouse Logitech M185,4,65000,260000,Tienda física
+761,2024-04-15,Cali,Tecnología,Portátil Lenovo IdeaPad 3,2,2400000,4800000,Tienda física
+762,2024-09-03,Medellín,Hogar,Cafetera Oster 12 tazas,4,240000,960000,En línea
+763,2025-05-04,Bogotá,Muebles,Silla ergonómica,1,890000,890000,Tienda física
+764,2024-06-09,Cartagena,Tecnología,Audífonos Sony WH-CH520,3,320000,960000,Tienda física
+765,2025-12-03,Cali,Papelería,Cuaderno argollado,2,18000,36000,En línea
+766,2024-02-26,Medellín,Tecnología,"Monitor Samsung 24""",3,780000,2340000,En línea
+767,2024-04-19,Cali,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+768,2024-09-14,Medellín,Muebles,Silla ergonómica,2,890000,1780000,Tienda física
+769,2025-02-24,Medellín,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+770,2024-07-17,Medellín,Tecnología,Teclado mecánico Redragon,3,210000,630000,Tienda física
+771,2024-04-24,Medellín,Hogar,Cafetera Oster 12 tazas,4,240000,960000,En línea
+772,2024-09-04,Cali,Muebles,Lámpara de pie LED,1,180000,180000,Tienda física
+773,2025-10-18,Bogotá,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,Tienda física
+774,2024-03-06,Medellín,Tecnología,"Monitor Samsung 24""",1,780000,780000,En línea
+775,2025-03-11,Bucaramanga,Muebles,Escritorio en L,2,1150000,2300000,Tienda física
+776,2025-02-03,Barranquilla,Papelería,Cuaderno argollado,2,18000,36000,En línea
+777,2024-06-29,Bogotá,Hogar,Cafetera Oster 12 tazas,3,240000,720000,En línea
+778,2025-01-08,Cali,Tecnología,Mouse Logitech M185,2,65000,130000,Tienda física
+779,2025-09-05,Medellín,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+780,2024-05-29,Pereira,Papelería,Resma papel A4,2,22000,44000,Tienda física
+781,2024-12-24,Medellín,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+782,2024-10-26,Bucaramanga,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,En línea
+783,2024-12-18,Pereira,Muebles,Silla ergonómica,1,890000,890000,En línea
+784,2025-06-16,Cartagena,Muebles,Lámpara de pie LED,3,180000,540000,En línea
+785,2025-02-04,Medellín,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,Tienda física
+786,2025-09-30,Bucaramanga,Muebles,Silla ergonómica,1,890000,890000,En línea
+787,2024-10-13,Medellín,Papelería,Kit marcadores x12,2,35000,70000,Tienda física
+788,2025-01-02,Bogotá,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,Tienda física
+789,2024-06-21,Barranquilla,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,En línea
+790,2024-07-04,Medellín,Hogar,Sanduchera Black+Decker,3,120000,360000,En línea
+791,2024-06-20,Bogotá,Tecnología,Audífonos Sony WH-CH520,3,320000,960000,En línea
+792,2025-03-03,Bogotá,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,Tienda física
+793,2024-02-15,Pereira,Tecnología,Teclado mecánico Redragon,1,210000,210000,Tienda física
+794,2025-02-22,Cali,Tecnología,Portátil Lenovo IdeaPad 3,3,2400000,7200000,En línea
+795,2024-03-14,Bucaramanga,Muebles,Escritorio en L,5,1150000,5750000,En línea
+796,2025-09-25,Cartagena,Hogar,Licuadora Oster Pro,3,310000,930000,En línea
+797,2025-05-15,Medellín,Tecnología,Teclado mecánico Redragon,3,210000,630000,En línea
+798,2025-03-18,Bogotá,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+799,2025-10-18,Bogotá,Muebles,Silla ergonómica,1,890000,890000,En línea
+800,2024-12-21,Cartagena,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+801,2024-04-10,Cali,Muebles,Silla ergonómica,1,890000,890000,Tienda física
+802,2025-11-12,Cali,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+803,2024-02-03,Cartagena,Muebles,Lámpara de pie LED,1,180000,180000,Tienda física
+804,2024-11-03,Barranquilla,Muebles,Lámpara de pie LED,3,180000,540000,Tienda física
+805,2024-03-24,Bogotá,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,Tienda física
+806,2024-08-16,Bogotá,Papelería,Kit marcadores x12,1,35000,35000,Tienda física
+807,2025-08-21,Bogotá,Muebles,Lámpara de pie LED,1,180000,180000,Tienda física
+808,2025-06-05,Bogotá,Tecnología,Mouse Logitech M185,1,65000,65000,Tienda física
+809,2024-07-22,Medellín,Papelería,Kit marcadores x12,1,35000,35000,En línea
+810,2025-05-31,Cartagena,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+811,2024-10-26,Medellín,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+812,2025-06-17,Cali,Hogar,Cafetera Oster 12 tazas,4,240000,960000,Tienda física
+813,2024-12-08,Bogotá,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+814,2024-10-02,Barranquilla,Muebles,Lámpara de pie LED,2,180000,360000,En línea
+815,2025-12-16,Bogotá,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,Tienda física
+816,2024-12-04,Bogotá,Tecnología,"Monitor Samsung 24""",1,780000,780000,En línea
+817,2024-11-05,Cali,Papelería,Cuaderno argollado,2,18000,36000,Tienda física
+818,2025-03-24,Cali,Papelería,Resma papel A4,3,22000,66000,En línea
+819,2024-06-14,Bogotá,Hogar,Licuadora Oster Pro,3,310000,930000,En línea
+820,2025-03-26,Bogotá,Muebles,Silla ergonómica,1,890000,890000,En línea
+821,2024-07-11,Pereira,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,Tienda física
+822,2024-10-13,Medellín,Tecnología,Mouse Logitech M185,2,65000,130000,Tienda física
+823,2024-02-28,Cartagena,Tecnología,"Monitor Samsung 24""",1,780000,780000,Tienda física
+824,2024-10-09,Cali,Papelería,Resma papel A4,1,22000,22000,En línea
+825,2025-12-01,Medellín,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+826,2024-03-02,Cartagena,Tecnología,Teclado mecánico Redragon,4,210000,840000,Tienda física
+827,2025-10-31,Barranquilla,Hogar,Sanduchera Black+Decker,2,120000,240000,Tienda física
+828,2025-02-22,Pereira,Hogar,Cafetera Oster 12 tazas,3,240000,720000,En línea
+829,2024-12-15,Bogotá,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+830,2025-04-24,Bogotá,Papelería,Cuaderno argollado,2,18000,36000,En línea
+831,2025-12-12,Cartagena,Muebles,Silla ergonómica,1,890000,890000,En línea
+832,2024-03-20,Bogotá,Hogar,Licuadora Oster Pro,3,310000,930000,Tienda física
+833,2024-12-21,Bogotá,Tecnología,Mouse Logitech M185,4,65000,260000,Tienda física
+834,2025-06-01,Bogotá,Papelería,Kit marcadores x12,2,35000,70000,Tienda física
+835,2025-10-28,Bogotá,Tecnología,Audífonos Sony WH-CH520,1,320000,320000,Tienda física
+836,2024-05-11,Cali,Tecnología,"Monitor Samsung 24""",4,780000,3120000,Tienda física
+837,2025-04-07,Bogotá,Hogar,Cafetera Oster 12 tazas,2,240000,480000,En línea
+838,2025-04-13,Bucaramanga,Muebles,Silla ergonómica,5,890000,4450000,Tienda física
+839,2024-12-27,Bogotá,Papelería,Cuaderno argollado,4,18000,72000,En línea
+840,2025-03-06,Medellín,Tecnología,"Monitor Samsung 24""",3,780000,2340000,En línea
+841,2025-01-02,Bogotá,Tecnología,Mouse Logitech M185,2,65000,130000,Tienda física
+842,2025-06-12,Bogotá,Muebles,Silla ergonómica,2,890000,1780000,En línea
+843,2025-03-10,Bogotá,Tecnología,Mouse Logitech M185,2,65000,130000,En línea
+844,2024-07-10,Medellín,Muebles,Silla ergonómica,2,890000,1780000,En línea
+845,2024-06-20,Cartagena,Hogar,Cafetera Oster 12 tazas,1,240000,240000,En línea
+846,2024-05-30,Bogotá,Tecnología,Audífonos Sony WH-CH520,2,320000,640000,En línea
+847,2024-08-04,Medellín,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+848,2025-12-14,Bogotá,Tecnología,Audífonos Sony WH-CH520,3,320000,960000,En línea
+849,2025-12-30,Barranquilla,Hogar,Sanduchera Black+Decker,2,120000,240000,Tienda física
+850,2024-08-30,Medellín,Muebles,Lámpara de pie LED,2,180000,360000,Tienda física
+851,2024-02-19,Cali,Hogar,Sanduchera Black+Decker,2,120000,240000,En línea
+852,2024-09-29,Pereira,Tecnología,Mouse Logitech M185,2,65000,130000,En línea
+853,2024-01-16,Pereira,Tecnología,Audífonos Sony WH-CH520,4,320000,1280000,En línea
+854,2025-03-06,Cartagena,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+855,2025-05-25,Bucaramanga,Muebles,Silla ergonómica,3,890000,2670000,En línea
+856,2024-08-18,Bogotá,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+857,2024-10-01,Cartagena,Hogar,Licuadora Oster Pro,2,310000,620000,En línea
+858,2024-05-16,Bogotá,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+859,2025-05-03,Bucaramanga,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+860,2025-03-15,Bogotá,Papelería,Resma papel A4,1,22000,22000,En línea
+861,2025-07-03,Barranquilla,Hogar,Licuadora Oster Pro,4,310000,1240000,En línea
+862,2024-05-20,Bucaramanga,Tecnología,"Monitor Samsung 24""",1,780000,780000,En línea
+863,2024-01-21,Bogotá,Tecnología,Mouse Logitech M185,3,65000,195000,En línea
+864,2024-05-11,Medellín,Hogar,Licuadora Oster Pro,4,310000,1240000,En línea
+865,2024-08-16,Cartagena,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+866,2025-05-18,Medellín,Papelería,Kit marcadores x12,1,35000,35000,Tienda física
+867,2025-01-31,Pereira,Tecnología,Teclado mecánico Redragon,1,210000,210000,Tienda física
+868,2024-05-28,Cali,Muebles,Lámpara de pie LED,2,180000,360000,Tienda física
+869,2025-01-18,Medellín,Hogar,Licuadora Oster Pro,1,310000,310000,En línea
+870,2025-09-03,Bogotá,Muebles,Escritorio en L,1,1150000,1150000,En línea
+871,2024-01-01,Medellín,Hogar,Sanduchera Black+Decker,3,120000,360000,En línea
+872,2024-01-07,Medellín,Papelería,Resma papel A4,4,22000,88000,En línea
+873,2024-12-02,Bogotá,Tecnología,Teclado mecánico Redragon,1,210000,210000,En línea
+874,2024-11-21,Bogotá,Muebles,Lámpara de pie LED,1,180000,180000,Tienda física
+875,2024-11-08,Medellín,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+876,2025-07-31,Barranquilla,Papelería,Kit marcadores x12,3,35000,105000,En línea
+877,2025-07-15,Cartagena,Hogar,Sanduchera Black+Decker,1,120000,120000,En línea
+878,2024-08-21,Bogotá,Hogar,Licuadora Oster Pro,2,310000,620000,Tienda física
+879,2024-06-04,Cali,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,En línea
+880,2024-03-28,Barranquilla,Tecnología,Teclado mecánico Redragon,3,210000,630000,En línea
+881,2024-05-07,Medellín,Muebles,Silla ergonómica,1,890000,890000,Tienda física
+882,2025-12-31,Medellín,Muebles,Silla ergonómica,3,890000,2670000,Tienda física
+883,2025-12-11,Bogotá,Tecnología,"Monitor Samsung 24""",3,780000,2340000,En línea
+884,2024-06-07,Cartagena,Hogar,Sanduchera Black+Decker,3,120000,360000,En línea
+885,2025-08-03,Medellín,Tecnología,Teclado mecánico Redragon,3,210000,630000,Tienda física
+886,2024-01-26,Cali,Muebles,Silla ergonómica,3,890000,2670000,Tienda física
+887,2024-12-20,Medellín,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+888,2024-02-02,Bogotá,Papelería,Resma papel A4,2,22000,44000,Tienda física
+889,2024-06-12,Bogotá,Papelería,Kit marcadores x12,4,35000,140000,En línea
+890,2025-04-23,Bogotá,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+891,2025-08-21,Cartagena,Tecnología,Portátil Lenovo IdeaPad 3,1,2400000,2400000,En línea
+892,2025-03-23,Bogotá,Tecnología,Mouse Logitech M185,1,65000,65000,En línea
+893,2025-04-11,Cali,Papelería,Resma papel A4,5,22000,110000,En línea
+894,2025-05-03,Bogotá,Hogar,Cafetera Oster 12 tazas,3,240000,720000,En línea
+895,2025-12-24,Cartagena,Hogar,Sanduchera Black+Decker,3,120000,360000,En línea
+896,2024-06-08,Bogotá,Hogar,Licuadora Oster Pro,1,310000,310000,Tienda física
+897,2024-12-25,Barranquilla,Muebles,Escritorio en L,1,1150000,1150000,En línea
+898,2024-06-04,Bogotá,Tecnología,Mouse Logitech M185,3,65000,195000,Tienda física
+899,2025-11-23,Bogotá,Muebles,Lámpara de pie LED,1,180000,180000,En línea
+900,2024-07-30,Cali,Tecnología,Mouse Logitech M185,1,65000,65000,En línea

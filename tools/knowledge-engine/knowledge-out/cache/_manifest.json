@@ -1,0 +1,318 @@
+{
+  "backend/apps/dataset/__init__.py": {
+    "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cache_key": "e18a51ce0ff61d06"
+  },
+  "backend/apps/dataset/apps.py": {
+    "hash": "6a8e80cac6e98f9de8f863d9df61dd5561b12749697525f5a8ef49e67f6f2851",
+    "cache_key": "b811bb09619437cf"
+  },
+  ".opencode/plugins/graphify.js": {
+    "hash": "ca230c9bcd12dce7cba5107e5ec751023bd1c3a34e920b348bf2c7f9d79f0ccd",
+    "cache_key": "0d9b7baa5c6afe17"
+  },
+  "backend/apps/dataset/admin.py": {
+    "hash": "b2e328e31f08dc907100505521d13ee6a9ea67a240655d051120011ce49cfaf8",
+    "cache_key": "ac2356e9c6237a52"
+  },
+  ".opencode/opencode.json": {
+    "hash": "f6ae02a184c6b12631b74b0ae664be0737c17cc865420deff8240abb14de29ab",
+    "cache_key": "ba0786d24e7fc480"
+  },
+  "backend/apps/dataset/migrations/0002_alter_dataset_status.py": {
+    "hash": "a0a6661773a57a7859ccc9fcd23a2760acb0e0fdb40ae52783f349f70fed6b40",
+    "cache_key": "df5e602495c409e6"
+  },
+  "backend/apps/dataset/migrations/__init__.py": {
+    "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cache_key": "db58fc3985c80504"
+  },
+  "backend/apps/dataset/migrations/0001_initial.py": {
+    "hash": "844c72c45de7532fec738b12f5649b02acc355a98304eec5f64c4b8fe14f2038",
+    "cache_key": "159b5b9bb949d394"
+  },
+  "backend/apps/dataset/migrations/0003_alter_dataset_status.py": {
+    "hash": "5e7437478ee079f9299b92eeb27d51ff3f79b6c18a8bd7a11de329fd0937d1c2",
+    "cache_key": "f682f935a01a5f67"
+  },
+  "backend/apps/dataset/models.py": {
+    "hash": "a3c6e95e474c52ba5e6f838ad923646177302e6bca6a90a4a495d75bc5f0a5f5",
+    "cache_key": "847b2581df32dd36"
+  },
+  "backend/apps/dataset/permissions.py": {
+    "hash": "7f23f7254ea08b6793e5a43c57d6a82a745ddd8e601c5eb1aa20ddc8bb1fd18b",
+    "cache_key": "1abb25e4e1e5bd9b"
+  },
+  "backend/apps/dataset/serializers/datasetList.py": {
+    "hash": "2baab6da85f3d3cd814625d83bac589d69c18ad4baa1e955b9101d1a04e307a4",
+    "cache_key": "b94370be520fb99e"
+  },
+  "backend/apps/dataset/repositories.py": {
+    "hash": "d48293a5a111d43341679999543f880645238fc8684da9a4694390ea1e1a8ccf",
+    "cache_key": "e5eee700df2a2539"
+  },
+  "backend/apps/dataset/serializers/datasetDetail.py": {
+    "hash": "f426d7b8fde9b9f7564c2bb7912a5a22cdd9c895f94e195515d812f782b60bb4",
+    "cache_key": "6925fd3cfaa9e776"
+  },
+  "backend/apps/dataset/serializers/datasetUpload.py": {
+    "hash": "a5e56257b5015dafc76b539feb2296da211e58aed7722c69a8bc2451b97c7f47",
+    "cache_key": "e2f1601053b0db45"
+  },
+  "backend/apps/dataset/serializers/datasetTable.py": {
+    "hash": "2f08653b634b0eb58ccc2ec32424eaf6c4acef25677afeb9f9f9628b59f0b494",
+    "cache_key": "ef64578140d33a87"
+  },
+  "backend/apps/dataset/services/__init__.py": {
+    "hash": "8d8ad2f9089e342f0ee7f6f0999b4278c2f708573e800b720ee4013c865e291a",
+    "cache_key": "9a673ad2daf0c488"
+  },
+  "backend/apps/dataset/services/file_service.py": {
+    "hash": "abff3594f9270e50b1facf8e4e770c1c983b9fb2889097900c67f0a0400c3fe6",
+    "cache_key": "63f5ed94086b0e77"
+  },
+  "backend/apps/dataset/services/dataset_service.py": {
+    "hash": "73488353f7798ea384d6ea00a9696d19764437e1a7cf8a8a3e8609b200c6dc6f",
+    "cache_key": "2b2047626897a156"
+  },
+  "backend/apps/dataset/tests/__init__.py": {
+    "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cache_key": "8c91042cc28de94c"
+  },
+  "backend/apps/dataset/services/schema_service.py": {
+    "hash": "709d69cd4358359315128fdf8c9a1acbf7a839d618eb855d2affbcfdd7db6e7a",
+    "cache_key": "6b3685cbd96a4453"
+  },
+  "backend/apps/dataset/tests/test_schema_service.py": {
+    "hash": "51f814e35e97c0bb3df63d9b5801f828a1862d6916b11eb334597db4695d9888",
+    "cache_key": "e679f256e87e9bf8"
+  },
+  "backend/apps/dataset/tests/test_dataset_service.py": {
+    "hash": "3ad0dfd0b2391689f3fa73694f84d51976d03aa95413c2114022ad8653adcab7",
+    "cache_key": "2cac9221f1f52c8c"
+  },
+  "backend/apps/dataset/tests/test_file_service.py": {
+    "hash": "4c23ea94ef2ee7b72d6104f1fb109028890ce439dba52ee501fb0b64fdfeb786",
+    "cache_key": "c5d1eed1fc6a3e52"
+  },
+  "backend/apps/dataset/tests/test_views.py": {
+    "hash": "6f374aa8ab038d4109597b40de3c22b9958f54b5ef0cc6ab5639d54b9e448473",
+    "cache_key": "28d6b7e5b19a709e"
+  },
+  "backend/apps/dataset/urls.py": {
+    "hash": "5fa6eb31fd14c2f5cf88b983ebd87e6d65fcd894513f787e9ad851d0367b2c30",
+    "cache_key": "22b4f9d8f6bef0eb"
+  },
+  "backend/apps/dataset/views.py": {
+    "hash": "ba121967d85c609a5321dd94069c5f44f23a0c84a28946ff729cbd24b2e49a48",
+    "cache_key": "599b19af093ad983"
+  },
+  "backend/apps/queries/__init__.py": {
+    "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cache_key": "b6af1201c86a120c"
+  },
+  "backend/apps/queries/admin.py": {
+    "hash": "2909bb04788a2ef0754eb2dc643b1a4cc6a16654885b9448e873f59b406e2318",
+    "cache_key": "e76b327ce91f4b5f"
+  },
+  "backend/apps/queries/apps.py": {
+    "hash": "64274b404ad8a3444296ac065a2bb4b14f942af1f254bea85a58f659fab1f5bf",
+    "cache_key": "80c7e07d1eb8660e"
+  },
+  "backend/apps/queries/migrations/__init__.py": {
+    "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cache_key": "7a9ab2903b9d9360"
+  },
+  "backend/apps/queries/models/__init__.py": {
+    "hash": "647c1e7783e2edcef5970ba65ce1c028754554ac2679c2a155192a0853ab1840",
+    "cache_key": "2e05128edb3e2302"
+  },
+  "backend/apps/queries/migrations/0001_initial.py": {
+    "hash": "3df7dd0f57671a5c9d3cc83af5ee5c5cf3a10059dacc3d813ca262118a0460f1",
+    "cache_key": "17f25c3f7c8f09c8"
+  },
+  "backend/apps/queries/models/queryResult.py": {
+    "hash": "b565d7b044503da2a3a8fead88aec2bc70f2730063e868b76679987cadae505d",
+    "cache_key": "dd39b9e1e291fb29"
+  },
+  "backend/apps/queries/models/queryFeedback.py": {
+    "hash": "2870f2a3dc4f4f1d6741739021598260d54bf092e34cb3172401cb01594bd9f2",
+    "cache_key": "63e450ed7fb8b540"
+  },
+  "backend/apps/queries/repositories.py": {
+    "hash": "6e07f0392be7f221f7ba2c6f12ec23e2376f9b6c50011676a2071ebec09560ef",
+    "cache_key": "c50ecd4acb3034f2"
+  },
+  "backend/apps/queries/models/queryHistory.py": {
+    "hash": "d4f099ec76764e07d3754d65125123bd3f09f2e0b5bffb6aad86aea1363a4275",
+    "cache_key": "72758c28fa765298"
+  },
+  "backend/apps/queries/serializers/__init__.py": {
+    "hash": "71a8a11ccd38ccd3f9c2ca9106268ae2df4d28106deef0d486b183719a1e0a0a",
+    "cache_key": "0c7cd3d2c815a987"
+  },
+  "backend/apps/queries/serializers/query_request.py": {
+    "hash": "105220be8f1b8861b564b9f57b569b083855018d4ee45d0d22e2cd982f7f3d12",
+    "cache_key": "3043dd43de9fd884"
+  },
+  "backend/apps/queries/services/__init__.py": {
+    "hash": "a5e1ed28060caa59eb1153683d30543afdd96955aeebe3672c28405702351dc0",
+    "cache_key": "3296f243242a0a78"
+  },
+  "backend/apps/queries/services/cache_service.py": {
+    "hash": "a678696e0ca3bba38bb3d4e706fa143a83f2c6b3fe817baa1b3721a8e6fd04f5",
+    "cache_key": "c4333932833b489c"
+  },
+  "backend/apps/queries/serializers/query_response.py": {
+    "hash": "a37369aa06167af5a7b83e7abe343b45069a55d84615593d6157d8db281192dc",
+    "cache_key": "f3f635df247ce24d"
+  },
+  "backend/apps/queries/services/query_service.py": {
+    "hash": "d339a7d0a9a55ff0ad539045f8a2b14735ea540d80c82cbef75611ad5c440652",
+    "cache_key": "f392cae83731460b"
+  },
+  "backend/apps/queries/urls.py": {
+    "hash": "a3628d2415c718df3d5a4602169eef75faf9728b670d6491b05f086ea85e915b",
+    "cache_key": "8ebd0bdf235ef744"
+  },
+  "backend/apps/users/__init__.py": {
+    "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cache_key": "8e21cfaa23d68bf8"
+  },
+  "backend/apps/queries/views.py": {
+    "hash": "be6855e26d3afbbcc8425dd73b9f82c3253b718148947d72b519e596c8298dae",
+    "cache_key": "e2e2aa010d30cf52"
+  },
+  "backend/apps/users/admin.py": {
+    "hash": "388a90112c4d0fff5d2d56e40ba984d5ec234ae1e5d330c59f864517173abf91",
+    "cache_key": "ae115b6004178fe1"
+  },
+  "backend/apps/users/apps.py": {
+    "hash": "c4e447fa7f07941ed2262003283b1349de189693fafeb3ff65028f33bb233118",
+    "cache_key": "2e19a58b38a8aa44"
+  },
+  "backend/apps/users/migrations/0003_remove_user_user_type_id.py": {
+    "hash": "b21196fa3368cf9bd0002c28f0a27e1fc30176c4f5c23f45f02f0bede726f3f8",
+    "cache_key": "c3f226af75cdac94"
+  },
+  "backend/apps/users/migrations/__init__.py": {
+    "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cache_key": "bb3c4321b41bd57c"
+  },
+  "backend/apps/users/migrations/0002_profile_query_count_profile_query_limit.py": {
+    "hash": "ca69bf4ec24979cfa23ff80cc074cb8529ec3c5b813e69fcadf39cdb49d20b0a",
+    "cache_key": "6194c7aefc645b1e"
+  },
+  "backend/apps/users/migrations/0001_initial.py": {
+    "hash": "76eabf92caba16d2f3b1ef05e0bf3c4bdeac127da2d550574bf0360705509a54",
+    "cache_key": "1ada9f7733cf5579"
+  },
+  "backend/apps/users/services/__init__.py": {
+    "hash": "5bba672218201c52a6e4d2408a7d229c08da79f4664a0f9a21b1c61b1193444f",
+    "cache_key": "8a4c3c57c9a43839"
+  },
+  "backend/apps/users/models.py": {
+    "hash": "ff1a46298d3c336c9d4c6cac63e95add673cbe76e140971d4f68a4eb61a30bfa",
+    "cache_key": "175377ab9421e67b"
+  },
+  "backend/apps/users/services/auth_service.py": {
+    "hash": "b3234f8d4dbd5e34b2346ec855c4ee9b3011e75c29dc34c337f2f2c94735a5db",
+    "cache_key": "209d3e1b6f20ce8f"
+  },
+  "backend/apps/users/serializers/profile.py": {
+    "hash": "633c26133f546a589cc72469a755532b13944d50d3277a880aa8b04ccddea979",
+    "cache_key": "0448ac09f4ba62c6"
+  },
+  "backend/apps/users/serializers/auth.py": {
+    "hash": "c0c4844caef446fa41cc3ddead5f5d3836680cb13901d169617f4ec2e4da74f9",
+    "cache_key": "d9f8d0df792a5185"
+  },
+  "backend/apps/users/services/user_service.py": {
+    "hash": "9de3fe517d35bc3bd80a8ff2356aea23fbcaa02d6475438aeecbe5ee0a1a9dbf",
+    "cache_key": "35ea986f51204891"
+  },
+  "backend/apps/users/urls.py": {
+    "hash": "1359d875e4636c6f143bee2ad7d14e8a64da2a71712ad885896cdc326e2fa9b0",
+    "cache_key": "dacee5c49cfedbd3"
+  },
+  "backend/config/__init__.py": {
+    "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cache_key": "f47e1e3f2d30ad5a"
+  },
+  "backend/apps/users/views/auth.py": {
+    "hash": "f843b9934998f74cc73d24a10ca00aae17a9b8f6fb9e9dda06ec24a4f13a62a2",
+    "cache_key": "00aa118be87dcaf0"
+  },
+  "backend/config/asgi.py": {
+    "hash": "064c418121d3307154a8523afa02cfe8ce803d92191952bc2f738196a5129190",
+    "cache_key": "8d3fa535f1755928"
+  },
+  "backend/config/settings.py": {
+    "hash": "dbe210f983835895bd5b0d5ca321f651cfc93a2ac1c393a58f9db856d81e694d",
+    "cache_key": "4314e7383e7a3daf"
+  },
+  "backend/config/urls.py": {
+    "hash": "88f398231d567ddaa2688fccbbdf6b5a6da99a62e106cf550ea1bee6d1137be5",
+    "cache_key": "de1cb596363b15cf"
+  },
+  "backend/config/wsgi.py": {
+    "hash": "684c626e5b2f4d9e4e848a8c694120de46f66a3f3dd69038245fc408f9aa9737",
+    "cache_key": "f4f766fb3ae062b8"
+  },
+  "backend/conftest.py": {
+    "hash": "c1cfcd2a89191d681a1e195ce966e59744126dbeb99d911a3933ba8d42d6c372",
+    "cache_key": "d0b971217131a7a5"
+  },
+  "backend/services/ai/__init__.py": {
+    "hash": "c11381390ed43a1c3b235f9b3dd5debe161563753d21cbe91e95903ec5c5a343",
+    "cache_key": "f3997ba52596f7c0"
+  },
+  "backend/manage.py": {
+    "hash": "9e055a3ca49f173675232d3f61d1feb89f1350708fb25a002f6d3edefeec6db4",
+    "cache_key": "4eb07313375aa3d0"
+  },
+  "backend/services/ai/ai_query_service.py": {
+    "hash": "767e661befa4404a85358d258309a5348a2ad5b48bf79bf4b1f2fb916e6fd0c1",
+    "cache_key": "2c36eaa7b93f8feb"
+  },
+  "backend/services/ai/chart_selector.py": {
+    "hash": "901c975bf1d37f12f1f3c3d52e522a23a5407212c20fada89f4ae4d99a65e38d",
+    "cache_key": "e298cf8840b0982a"
+  },
+  "backend/services/ai/prompt_builder.py": {
+    "hash": "493372e91b985953f1fb308c90e564e2479cd9e52efdc89faabb74c375ff5943",
+    "cache_key": "59cd6d3610e18e38"
+  },
+  "backend/services/ai/sql_agent.py": {
+    "hash": "683cf075b8425c630566a25e738b35a231ae76dbffa54d86b9fd69f60a3513ce",
+    "cache_key": "c439e8a873551ea6"
+  },
+  "backend/services/ai/sql_validator.py": {
+    "hash": "5cf2688fba89541cc42f73fc6c4b2b650163cdc7f12cfd5488f38eae53c1628c",
+    "cache_key": "3be8d7a29e3f7980"
+  },
+  "backend/services/ai/sql_executor.py": {
+    "hash": "f7c47a5d50671630a197830a133dfc8faf2839b73cbeb50b6353ca66f35b37c5",
+    "cache_key": "0068c575f9ccf5d1"
+  },
+  "frontend/src/animations.js": {
+    "hash": "471e4390c8fc36a41d0b94e93059307a1ae2ae0d213e539847200512747a62b9",
+    "cache_key": "0f28646eb9cd208d"
+  },
+  "frontend/package.json": {
+    "hash": "559807336627e74e4932ac8b3184246f86e101fa849b7802fb6d4ff93592ea14",
+    "cache_key": "da6498268e99511d"
+  },
+  "frontend/src/api.js": {
+    "hash": "8eb3ca7d987874052756122d5b1f322747910129e34c0a003af4b32fdbf21005",
+    "cache_key": "a89738858630f071"
+  },
+  "vault/.obsidian/app.json": {
+    "hash": "9048a6fc08496dddc5531795ea97dbd1a963448cdfb629fee081ec5075841b37",
+    "cache_key": "830a9cce22cd39fe"
+  },
+  "frontend/src/main.js": {
+    "hash": "0a1000f9a80cfdc4464b542e7362a6723cb06658834689d01d67608f6dd50cde",
+    "cache_key": "2f46f8a9c2b03069"
+  }
+}

@@ -9,6 +9,7 @@ from apps.dataset.models import Dataset
 from apps.dataset.repositories import DatasetRepository
 from apps.users.services import UserService
 from services.ai import AIQueryService
+from services.analysis import AnalysisService, detect as detect_analysis
 from ..repositories import QueryRepository
 from .cache_service import CacheService
 
@@ -57,12 +58,21 @@ class QueryService:
             # Nadie llenó el caché: calculamos de todas formas (mejor duplicar que fallar)
 
         try:
-            # 4. AI engine — no sabe nada de Django
-            ai_result = AIQueryService.execute(
-                question   = question,
-                dataset_id = dataset_id,
-                schema     = dataset.schema_json,
-            )
+            # 4. Motor: análisis estadístico si la intención lo pide
+            #    (pronóstico/anomalías/segmentación/factores); si no, SQL con LLM
+            analysis_type = detect_analysis(question)
+            if analysis_type:
+                engine_result = AnalysisService.execute(
+                    analysis_type = analysis_type,
+                    dataset_id    = dataset_id,
+                    question      = question,
+                )
+            else:
+                engine_result = AIQueryService.execute(
+                    question   = question,
+                    dataset_id = dataset_id,
+                    schema     = dataset.schema_json,
+                )
 
             # 5. Persistencia atómica — nunca queda un QueryHistory sin su QueryResult
             with transaction.atomic():
@@ -70,22 +80,23 @@ class QueryService:
                     user           = user,
                     dataset_id     = dataset_id,
                     question       = question,
-                    sql_generated  = ai_result['sql'],
-                    execution_time = ai_result['execution_time'],
-                    success        = ai_result['success'],
-                    error_msg      = ai_result['error_msg'],
-                    model_used     = getattr(settings, 'OLLAMA_MODEL', ''),
-                    retry_count    = ai_result['retry_count'],
+                    sql_generated  = engine_result['sql'],
+                    execution_time = engine_result['execution_time'],
+                    success        = engine_result['success'],
+                    error_msg      = engine_result['error_msg'],
+                    model_used     = engine_result.get('model_used') or getattr(settings, 'OLLAMA_MODEL', ''),
+                    retry_count    = engine_result['retry_count'],
                     cached         = False,
                 )
 
                 result = None
-                if ai_result['success']:
+                if engine_result['success']:
                     result = QueryRepository.save_result(
-                        query      = query,
-                        rows       = ai_result['rows'],
-                        columns    = ai_result['columns'],
-                        chart_type = ai_result['chart_type'],
+                        query        = query,
+                        rows         = engine_result['rows'],
+                        columns      = engine_result['columns'],
+                        chart_type   = engine_result['chart_type'],
+                        chart_config = engine_result.get('chart_config'),
                     )
 
             # 6. Cuota
@@ -93,7 +104,7 @@ class QueryService:
 
             # 7. Construye respuesta y cachea si fue exitosa
             response = QueryService._build_response(query, result, cached=False)
-            if ai_result['success']:
+            if engine_result['success']:
                 CacheService.set(question, dataset_id, response, version)
 
             return response

@@ -1,0 +1,48 @@
+{
+  "id": "backend_apps_dataset_serializers_datasettable",
+  "type": "Serializer",
+  "name": "datasetTable.py",
+  "summary": "Django REST Framework serializer that converts DatasetTable model instances to and from JSON representations for API consumption.",
+  "purpose": "Acts as a translation layer between the DatasetTable domain model and the REST API, ensuring data integrity by validating incoming requests and controlling the shape of outgoing responses.",
+  "responsibilities": [
+    "Serialize DatasetTable model instances into JSON-serializable dictionaries for API responses",
+    "Deserialize and validate incoming request data before model instantiation or updates",
+    "Define the field-level contract and validation rules for the DatasetTable resource",
+    "Isolate API presentation concerns from business logic and data persistence layers"
+  ],
+  "inputs": [
+    "DatasetTable model instances or QuerySets",
+    "Incoming JSON/dict payload from HTTP requests",
+    "Optional serializer context (e.g., request, view) from DRF"
+  ],
+  "outputs": [
+    "Validated native Python datatypes ready for model creation or updates",
+    "JSON-compatible serialized representations of DatasetTable objects",
+    "ValidationError exceptions for malformed or unauthorized input"
+  ],
+  "dependencies": [
+    "dataset/models.py",
+    "DatasetTable"
+  ],
+  "used_by": [
+    "datasetDetail.py"
+  ],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/dataset/serializers/datasetTable.py",
+  "language": "python",
+  "tags": [
+    "serializer",
+    "datasettableserializer"
+  ],
+  "architecture_notes": "Implements the Serializer pattern within Django REST Framework to decouple the internal DatasetTable domain model from external API contracts. Typically inherits from ModelSerializer to auto-map model fields, though explicit field declarations are recommended for API stability. Located in a dedicated per-app serializers module, enforcing separation of concerns alongside models and views. Proximity to datasetDetail.py suggests a family of serializers handling varying representation granularities (e.g., list vs. detail), which aligns with the Multiple Representations pattern in RESTful design.",
+  "improvements": [
+    "Explicitly declare Meta.fields instead of '__all__' to prevent accidental exposure of internal or sensitive model fields",
+    "Add type hints and docstrings to the class and any custom validate/to_representation methods",
+    "Split into separate read-only and write-only serializers if field requirements diverge between retrieval and mutation",
+    "Add custom validation methods for complex DatasetTable business rules beyond simple type checking",
+    "Consider adding select_related/prefetch_related hints or nested serializers if DatasetTable has foreign key relationships"
+  ],
+  "code_hash": "2f08653b634b0eb58ccc2ec32424eaf6c4acef25677afeb9f9f9628b59f0b494",
+  "last_updated": "2026-07-24T10:14:31.194721"
+}

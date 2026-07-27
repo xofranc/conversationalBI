@@ -1,0 +1,25 @@
+{
+  "id": "community_29",
+  "type": "Architecture",
+  "name": "Community 29",
+  "summary": "Community with 1 nodes across 1 files",
+  "purpose": "",
+  "responsibilities": [],
+  "inputs": [],
+  "outputs": [],
+  "dependencies": [
+    "dataset/admin.py"
+  ],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "",
+  "language": "",
+  "tags": [
+    "Admin"
+  ],
+  "architecture_notes": "Composition: {'Admin': 1}",
+  "improvements": [],
+  "code_hash": "",
+  "last_updated": ""
+}

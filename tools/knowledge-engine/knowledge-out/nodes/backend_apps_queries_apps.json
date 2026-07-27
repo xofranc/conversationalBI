@@ -1,0 +1,40 @@
+{
+  "id": "backend_apps_queries_apps",
+  "type": "App",
+  "name": "queries/apps.py",
+  "summary": "Django AppConfig class that registers and configures the queries application within the project.",
+  "purpose": "Exists to inform Django's application registry about the queries app, enabling discovery, metadata attachment, and lifecycle management so the framework can correctly load models, URLs, and other app-level resources.",
+  "responsibilities": [
+    "Register the queries app in Django's global app registry",
+    "Provide application metadata such as name, label, and default configuration",
+    "Act as a dedicated hook for application initialization logic (e.g., signals, checks, or app-specific setup)",
+    "Decouple app-level configuration from models, views, and business logic"
+  ],
+  "inputs": [
+    "Django framework app registry",
+    "Project INSTALLED_APPS setting entry pointing to this configuration"
+  ],
+  "outputs": [
+    "Registered QueriesConfig instance",
+    "Application metadata consumed by Django's app loading system"
+  ],
+  "dependencies": [],
+  "used_by": [],
+  "calls": [],
+  "called_from": [],
+  "source_file": "backend/apps/queries/apps.py",
+  "language": "python",
+  "tags": [
+    "app",
+    "queriesconfig"
+  ],
+  "architecture_notes": "Follows Django's standard AppConfig pattern to encapsulate per-application metadata and lifecycle hooks. Isolates the queries app as a self-contained deployable unit within the backend/apps directory, keeping startup logic out of models.py and preventing circular import issues.",
+  "improvements": [
+    "Add explicit 'name' and 'verbose_name' class attributes for readability",
+    "Implement the ready() method if signal registration or startup initialization is needed",
+    "Add type hints and module-level docstrings to improve maintainability",
+    "Define 'default_auto_field' if the app contains models to suppress Django system checks"
+  ],
+  "code_hash": "64274b404ad8a3444296ac065a2bb4b14f942af1f254bea85a58f659fab1f5bf",
+  "last_updated": "2026-07-24T10:15:14.817825"
+}
