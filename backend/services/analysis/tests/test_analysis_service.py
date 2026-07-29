@@ -12,6 +12,14 @@ from services.analysis import AnalysisService, engine
 pytestmark = pytest.mark.django_db
 
 
+@pytest.fixture(autouse=True)
+def _writer_mockeado():
+    """La narrativa sale del LLM: se mockea para no depender de Ollama."""
+    with patch('services.analysis.analysis_service.AnswerWriter') as mock_writer_cls:
+        mock_writer_cls.return_value.write.return_value = 'respuesta de prueba'
+        yield
+
+
 @pytest.fixture
 def csv_mensual(test_user, tmp_path, settings):
     """Dataset READY con 24 meses de ventas en un MEDIA_ROOT temporal."""

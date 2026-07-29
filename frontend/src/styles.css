@@ -2,12 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── ConversationalBI · "El informe que conversa" ───────────────────── */
+/* ── ConversationalBI · consola de datos ────────────────────────────── */
 
 /* Scrollbar sobrio (WebKit + Firefox) */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(30, 107, 79, 0.35) transparent;
+  scrollbar-color: rgba(14, 94, 111, 0.35) transparent;
 }
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
@@ -16,14 +16,14 @@
   background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(30, 107, 79, 0.3);
+  background: rgba(14, 94, 111, 0.3);
   border-radius: 10px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(30, 107, 79, 0.55);
+  background: rgba(14, 94, 111, 0.55);
 }
 
-/* Burbujas de conversación */
+/* ── Burbujas de conversación ───────────────────────────────────────── */
 .chat-message {
   max-width: 85%;
   padding: 10px 14px;
@@ -33,15 +33,15 @@
 }
 
 .chat-message.user {
-  background: #1e6b4f;
+  background: #0e5e6f;
   color: #ffffff;
   border-bottom-right-radius: 4px;
 }
 
 .chat-message.ai {
-  background: #ffffff;
-  color: #1b1e23;
-  border: 1px solid #e3e5df;
+  background: #f0f2ef;
+  color: #1b2430;
+  border: 1px solid #dce0d9;
   border-bottom-left-radius: 4px;
 }
 
@@ -50,14 +50,15 @@
   flex-direction: column;
 }
 
-/* ── Recibo SQL (firma del producto) ────────────────────────────────── */
+/* ── Recibo verificable (la firma del producto) ─────────────────────── */
+/* Ticket mono con borde perforado y sello: cada respuesta trae prueba. */
 .sql-receipt {
   margin-top: 6px;
   max-width: 85%;
   font-size: 0.75rem;
-  border: 1px dashed #cbd3cc;
+  border: 1px dashed #b9c2b8;
   border-radius: 8px;
-  background: #f7f8f5;
+  background: #f6f7f4;
   overflow: hidden;
 }
 
@@ -68,8 +69,8 @@
   padding: 6px 10px;
   cursor: pointer;
   list-style: none;
-  color: #5a6068;
-  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  color: #5c6672;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
   user-select: none;
 }
 
@@ -79,7 +80,7 @@
 
 .sql-receipt summary::before {
   content: '▸';
-  color: #1e6b4f;
+  color: #0e5e6f;
   transition: transform 0.15s ease;
 }
 
@@ -88,67 +89,211 @@
 }
 
 .sql-receipt summary:hover {
-  color: #1b1e23;
+  color: #1b2430;
 }
 
 .sql-receipt pre {
   margin: 0;
   padding: 10px 12px;
-  border-top: 1px dashed #cbd3cc;
+  border-top: 1px dashed #b9c2b8;
   background: #ffffff;
-  color: #1b1e23;
-  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  color: #1b2430;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 0.72rem;
   line-height: 1.5;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
+/* Sello del recibo: motor o caché, en mayúsculas de bitácora */
 .sql-badge {
   display: inline-block;
   padding: 1px 7px;
-  border-radius: 999px;
-  font-size: 0.65rem;
+  border-radius: 3px;
+  font-size: 0.62rem;
   font-weight: 600;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .sql-badge.cache {
-  background: #f7eeda;
-  color: #b97a0f;
+  background: #f8eedd;
+  color: #c77b21;
 }
 
 .sql-badge.model {
-  background: #e4efe9;
-  color: #1e6b4f;
+  background: #e2eef1;
+  color: #0e5e6f;
 }
 
-/* ── Chips de ejemplo (empty state): mismo lenguaje punteado del recibo ── */
+/* ── Chips de ejemplo (empty state) ─────────────────────────────────── */
 .example-chip {
-  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 0.72rem;
   padding: 6px 12px;
-  border: 1px dashed #cbd3cc;
+  border: 1px dashed #b9c2b8;
   border-radius: 999px;
   background: #ffffff;
-  color: #5a6068;
+  color: #5c6672;
   cursor: pointer;
   transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
 
 .example-chip:hover {
-  color: #1e6b4f;
-  border-color: #1e6b4f;
-  background: #e4efe9;
+  color: #0e5e6f;
+  border-color: #0e5e6f;
+  background: #e2eef1;
+}
+
+/* ── Rail: ítems de fuentes de datos ────────────────────────────────── */
+.dataset-item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  text-align: left;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.dataset-item:hover {
+  background: #1a212b;
+}
+
+.dataset-item.active {
+  background: #1a212b;
+  border-color: #28303c;
+}
+
+.dataset-item .d-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #3e8fa3;
+  flex-shrink: 0;
+}
+
+.dataset-item.active .d-dot {
+  background: #3e8fa3;
+  box-shadow: 0 0 0 3px rgba(62, 143, 163, 0.25);
+}
+
+.dataset-item .d-name {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.72rem;
+  color: #ffffff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.dataset-item .d-meta {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.6rem;
+  color: rgba(167, 176, 188, 0.7);
+  flex-shrink: 0;
+}
+
+.dataset-item .d-delete {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.7rem;
+  color: rgba(167, 176, 188, 0.5);
+  padding: 0 2px;
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+}
+
+.dataset-item .d-delete:hover {
+  color: #e0785f;
+}
+
+/* ── Rail: bitácora de consultas ────────────────────────────────────── */
+.history-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 6px;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.history-item:hover {
+  background: #1a212b;
+}
+
+.history-item .h-time {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.6rem;
+  color: rgba(167, 176, 188, 0.55);
+  flex-shrink: 0;
+}
+
+.history-item .h-q {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.68rem;
+  color: #a7b0bc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.history-item:hover .h-q {
+  color: #ffffff;
+}
+
+.history-item .h-status {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.history-item .h-status.ok {
+  background: #3e8fa3;
+}
+
+.history-item .h-status.fail {
+  background: #b3402e;
+}
+
+.history-item .h-status.cache {
+  background: #c77b21;
+}
+
+/* ── Sugerencias tras un fallo: caminos, no callejones ──────────────── */
+.suggestion-hint {
+  margin-top: 6px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5c6672;
+}
+
+.suggestion-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+  max-width: 85%;
 }
 
 /* Foco visible consistente */
 :focus-visible {
-  outline: 2px solid #1e6b4f;
+  outline: 2px solid #0e5e6f;
   outline-offset: 2px;
 }
 
-/* Moción reducida: el informe no se mueve */
+/* Moción reducida: la consola no se agita */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

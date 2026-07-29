@@ -20,3 +20,36 @@ def test_parse_column_nullable():
     result = SchemaService._parse_column("monto", s)
     assert result["nullable"] is True
     assert result["dtype"] == "float"
+
+def test_column_info_str_baja_cardinalidad_lista_valores():
+    import pandas as pd
+    from apps.dataset.services.schema_service import SchemaService
+    s = pd.Series(['Bogotá', 'Cali', 'Bogotá', 'Cali', 'Bogotá'])
+    info = SchemaService._column_info('str', s)
+    assert 'Bogotá' in info and 'Cali' in info
+
+
+def test_column_info_str_alta_cardinalidad_no_lista():
+    import pandas as pd
+    from apps.dataset.services.schema_service import SchemaService
+    s = pd.Series([f'valor_{i}' for i in range(500)])
+    info = SchemaService._column_info('str', s)
+    assert 'valores:' not in info
+    assert '500 valores distintos' in info
+
+
+def test_column_info_fecha_da_rango():
+    import pandas as pd
+    from apps.dataset.services.schema_service import SchemaService
+    s = pd.Series(['2024-01-15', '2024-06-20', '2024-03-10'])
+    info = SchemaService._column_info('date', s)
+    assert '2024-01-15' in info
+    assert '2024-06-20' in info
+
+
+def test_column_info_numerica_da_rango():
+    import pandas as pd
+    from apps.dataset.services.schema_service import SchemaService
+    s = pd.Series([10, 500, 100])
+    info = SchemaService._column_info('int', s)
+    assert '10' in info and '500' in info

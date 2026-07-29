@@ -13,6 +13,17 @@ pytestmark = pytest.mark.django_db
 
 PREGUNTA = 'ventas totales por region'
 
+@pytest.fixture(autouse=True)
+def _ya_materializado(request):
+    """Los tests de caché y persistencia no ejercitan archivos:
+    la BD del dataset se asume materializada."""
+    if request.cls is None or request.cls.__name__ == 'TestMaterializacionPerezosa':
+        yield
+        return
+    with patch('apps.queries.services.query_service.DatabaseService.exists',
+               return_value=True):
+        yield
+
 
 class TestGuardsDeDataset:
 
@@ -92,3 +103,69 @@ class TestPersistenciaAtomica:
 
         # La transacción revirtió el QueryHistory: no queda huérfano con success=True
         assert QueryHistory.objects.count() == 0
+
+
+class TestMaterializacionPerezosa:
+    """Datasets anteriores a la BD persistente se materializan en la
+    primera consulta, una sola vez."""
+
+    def test_dataset_sin_bd_se_materializa_al_consultar(
+        self, test_user, tmp_path, settings
+    ):
+        settings.MEDIA_ROOT = str(tmp_path)
+        import pandas as pd
+        pd.DataFrame({'a': [1, 2, 3]}).to_csv(tmp_path / 'viejo.csv', index=False)
+        ds = Dataset.objects.create(
+            user=test_user, name='viejo', file_path='viejo.csv',
+            status=Dataset.Status.READY,
+        )
+
+        with patch('apps.queries.services.query_service.AIQueryService.execute') as mock_ai:
+            mock_ai.return_value = {
+                'sql': 'SELECT 1', 'success': False, 'error_msg': 'x',
+                'retry_count': 0, 'execution_time': 0.1,
+                'rows': [], 'columns': [], 'chart_type': 'table',
+            }
+            QueryService.execute(PREGUNTA, ds.id, test_user)
+
+        ds.refresh_from_db()
+        assert ds.db_path.endswith(f'dataset_{ds.id}.sqlite')
+
+        # Segunda consulta: ya materializado, no se vuelve a convertir
+        with patch('apps.queries.services.query_service.DatabaseService.materialize') as mock_mat:
+            with patch('apps.queries.services.query_service.AIQueryService.execute') as mock_ai:
+                mock_ai.return_value = {
+                    'sql': 'SELECT 1', 'success': False, 'error_msg': 'x',
+                    'retry_count': 0, 'execution_time': 0.1,
+                    'rows': [], 'columns': [], 'chart_type': 'table',
+                }
+                QueryService.execute(PREGUNTA, ds.id, test_user)
+        mock_mat.assert_not_called()
+
+
+class TestContextoDeConversacion:
+
+    def test_solo_exitosas_no_cacheadas_y_no_analisis(self, test_user, test_dataset):
+        from apps.queries.models import QueryHistory as QH
+        crear = lambda **kw: QH.objects.create(user=test_user, dataset=test_dataset, **kw)
+        crear(question='q1', sql_generated='SELECT 1', success=True)
+        crear(question='q2', sql_generated='SELECT 2', success=True)
+        crear(question='fallida', sql_generated='SELECT x', success=False)
+        crear(question='cacheada', sql_generated='SELECT 3', success=True, cached=True)
+        crear(question='analisis', sql_generated='-- método', success=True)
+
+        ctx = QueryService._conversation_context(test_user, test_dataset.id)
+
+        preguntas = [c['question'] for c in ctx]
+        assert preguntas == ['q1', 'q2']          # orden vieja → nueva
+
+    def test_limite_de_contexto(self, test_user, test_dataset):
+        from apps.queries.models import QueryHistory as QH
+        for i in range(6):
+            QH.objects.create(
+                user=test_user, dataset=test_dataset,
+                question=f'q{i}', sql_generated=f'SELECT {i}', success=True,
+            )
+        ctx = QueryService._conversation_context(test_user, test_dataset.id)
+        assert len(ctx) == 3                       # HISTORY_CONTEXT
+        assert ctx[-1]['question'] == 'q5'         # la más reciente al final

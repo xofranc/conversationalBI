@@ -1,4 +1,5 @@
 # apps/queries/services/query_service.py
+import os
 import time
 
 from django.conf import settings
@@ -7,11 +8,16 @@ from rest_framework.exceptions import NotFound, ValidationError
 
 from apps.dataset.models import Dataset
 from apps.dataset.repositories import DatasetRepository
+from apps.dataset.services.database_service import DatabaseService
 from apps.users.services import UserService
 from services.ai import AIQueryService
 from services.analysis import AnalysisService, detect as detect_analysis
+from ..models import QueryHistory
 from ..repositories import QueryRepository
 from .cache_service import CacheService
+
+# Cuántas consultas previas entran como contexto de la conversación
+HISTORY_CONTEXT = 3
 
 
 class QueryService:
@@ -39,6 +45,13 @@ class QueryService:
                 {'dataset_id': f'El dataset no está listo para consultas (estado: {dataset.status}).'}
             )
 
+        # Materialización perezosa: datasets subidos antes de la BD
+        # persistente se convierten aquí, una sola vez.
+        if not DatabaseService.exists(dataset.db_path):
+            abs_file = os.path.join(settings.MEDIA_ROOT, dataset.file_path)
+            dataset.db_path = DatabaseService.materialize(dataset.id, abs_file)
+            dataset.save(update_fields=['db_path', 'updated_at'])
+
         version = dataset.updated_at.isoformat()
 
         # 2. Caché
@@ -59,7 +72,8 @@ class QueryService:
 
         try:
             # 4. Motor: análisis estadístico si la intención lo pide
-            #    (pronóstico/anomalías/segmentación/factores); si no, SQL con LLM
+            #    (pronóstico/anomalías/segmentación/factores/resumen);
+            #    si no, SQL con LLM — con el contexto de la conversación
             analysis_type = detect_analysis(question)
             if analysis_type:
                 engine_result = AnalysisService.execute(
@@ -72,6 +86,7 @@ class QueryService:
                     question   = question,
                     dataset_id = dataset_id,
                     schema     = dataset.schema_json,
+                    history    = QueryService._conversation_context(user, dataset_id),
                 )
 
             # 5. Persistencia atómica — nunca queda un QueryHistory sin su QueryResult
@@ -97,6 +112,7 @@ class QueryService:
                         columns      = engine_result['columns'],
                         chart_type   = engine_result['chart_type'],
                         chart_config = engine_result.get('chart_config'),
+                        answer       = engine_result.get('answer', ''),
                     )
 
             # 6. Cuota
@@ -104,6 +120,8 @@ class QueryService:
 
             # 7. Construye respuesta y cachea si fue exitosa
             response = QueryService._build_response(query, result, cached=False)
+            if not engine_result['success']:
+                response['suggestions'] = engine_result.get('suggestions', [])
             if engine_result['success']:
                 CacheService.set(question, dataset_id, response, version)
 
@@ -136,6 +154,26 @@ class QueryService:
         return {**cached, 'cached': True, 'query_id': query.id}
 
     @staticmethod
+    def _conversation_context(user, dataset_id: int) -> list:
+        """
+        Últimas consultas exitosas de la conversación (usuario + dataset),
+        de más vieja a más nueva, para que el LLM entienda las preguntas
+        de seguimiento ("y por mes?", "ahora por ciudad").
+        """
+        recientes = (
+            QueryHistory.objects
+            .filter(user=user, dataset_id=dataset_id, success=True, cached=False)
+            .exclude(sql_generated='')
+            .exclude(sql_generated__startswith='--')
+            .order_by('-created_at')[:HISTORY_CONTEXT]
+            .values('question', 'sql_generated')
+        )
+        return [
+            {'question': item['question'], 'sql': item['sql_generated']}
+            for item in reversed(list(recientes))
+        ]
+
+    @staticmethod
     def _build_response(query, result, cached: bool) -> dict:
         return {
             'query_id':       query.id,
@@ -151,4 +189,5 @@ class QueryService:
             'chart_type':     result.chart_type  if result else 'table',
             'chart_config':   result.chart_config if result else {},
             'row_count':      result.row_count   if result else 0,
+            'answer':         result.answer      if result else '',
         }

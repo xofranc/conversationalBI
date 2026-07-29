@@ -3,6 +3,7 @@ from django.conf import settings
 
 from apps.dataset.repositories import DatasetRepository
 from ..models import Dataset
+from .database_service import DatabaseService
 from .file_service import FileService
 from .schema_service import SchemaService
 
@@ -32,6 +33,12 @@ class DatasetService:
             dataset.save(update_fields=["status", "file_path", "updated_at"])
 
             abs_path = os.path.join(settings.MEDIA_ROOT, dataset.file_path)
+
+            # Materializa la BD SQLite persistente: las consultas y los
+            # análisis se ejecutan contra ella, sin releer el archivo.
+            dataset.db_path = DatabaseService.materialize(dataset.id, abs_path)
+            dataset.save(update_fields=["db_path", "updated_at"])
+
             schema = SchemaService.extract(abs_path)
             row_count = sum(t["row_count"] for t in schema["tables"])
             col_count = sum(len(t["columns"]) for t in schema["tables"])
@@ -54,6 +61,8 @@ class DatasetService:
             raise PermissionError("No tienes permiso para eliminar este dataset.")
         
         file_path = dataset.file_path
-        dataset.delete()               # ← primero el registro
-        FileService.delete(file_path)  # ← luego el archivo (fallo aquí es recuperable)
+        db_path = dataset.db_path
+        dataset.delete()                    # ← primero el registro
+        FileService.delete(file_path)       # ← luego el archivo (fallo aquí es recuperable)
+        DatabaseService.delete(db_path)     # ← y la BD materializada
         

@@ -20,17 +20,18 @@ Chart.register(
   Tooltip, Legend, Filler,
 );
 
-Chart.defaults.font.family = '"IBM Plex Sans", system-ui, sans-serif';
-Chart.defaults.color = '#5A6068';
+Chart.defaults.font.family = '"Inter", system-ui, sans-serif';
+Chart.defaults.color = '#5C6672';
 
 // App State
+let datasets = [];
 let currentDatasetId = null;
 let resultChart = null;
 let sending = false;
 let toastTimer = null;
 let figureCount = 0;
 
-const CHART_COLORS = ['#1E6B4F', '#3E9C71', '#8FBF9F', '#B97A0F', '#2F4B7C', '#5A6068'];
+const CHART_COLORS = ['#0E5E6F', '#3E8FA3', '#8FC0C9', '#C77B21', '#5C6672', '#B3402E'];
 const MAX_TABLE_ROWS = 50;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const dropZone = document.getElementById('drop-zone');
   const fileInput = document.getElementById('file-upload');
 
-  // Sesión activa → directo al dashboard
+  // Sesión activa → directo a la consola
   if (api.getToken()) {
     enterDashboard(false);
   }
@@ -124,8 +125,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function forceLogout() {
     api.clearTokens();
+    datasets = [];
     currentDatasetId = null;
-    hideActiveDataset();
+    renderDatasetList();
+    renderHistory([]);
+    resetReport(true);
     animations.logout();
   }
 
@@ -137,6 +141,192 @@ document.addEventListener('DOMContentLoaded', () => {
       const dashboard = document.getElementById('dashboard-view');
       dashboard.classList.remove('hidden');
       dashboard.style.opacity = '1';
+    }
+    loadLibrary();
+  }
+
+  // ── Biblioteca de fuentes de datos ──────────────────────────────────────
+  async function loadLibrary(selectId = null) {
+    try {
+      const list = await api.dataset.list();
+      datasets = Array.isArray(list) ? list : (list.results || []);
+    } catch {
+      datasets = [];
+    }
+
+    if (selectId && datasets.some((d) => d.id === selectId)) {
+      currentDatasetId = selectId;
+    } else if (!currentDatasetId || !datasets.some((d) => d.id === currentDatasetId)) {
+      const firstReady = datasets.find((d) => d.status === 'ready');
+      currentDatasetId = firstReady ? firstReady.id : null;
+    }
+
+    renderDatasetList();
+    syncDatasetLabels();
+    loadHistory();
+  }
+
+  function activeDataset() {
+    return datasets.find((d) => d.id === currentDatasetId) || null;
+  }
+
+  function syncDatasetLabels() {
+    const ds = activeDataset();
+    const label = ds ? ds.name : 'sin fuente';
+    document.getElementById('masthead-dataset').innerText = label;
+    document.getElementById('chat-dataset').innerText = ds ? ds.name : 'sin fuente activa';
+  }
+
+  function renderDatasetList() {
+    const list = document.getElementById('dataset-list');
+    document.getElementById('dataset-count').innerText = String(datasets.length);
+    list.innerHTML = '';
+
+    datasets.forEach((ds) => {
+      const li = document.createElement('li');
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.className = `dataset-item${ds.id === currentDatasetId ? ' active' : ''}`;
+
+      const meta = ds.status === 'ready'
+        ? `${Number(ds.row_count).toLocaleString('es-CO')} filas`
+        : ds.status;
+
+      const dot = document.createElement('span');
+      dot.className = 'd-dot';
+      const name = document.createElement('span');
+      name.className = 'd-name';
+      name.innerText = ds.name;
+      const metaEl = document.createElement('span');
+      metaEl.className = 'd-meta';
+      metaEl.innerText = meta;
+      const del = document.createElement('span');
+      del.className = 'd-delete';
+      del.innerText = '×';
+      del.title = `Eliminar ${ds.name}`;
+
+      item.append(dot, name, metaEl, del);
+      item.addEventListener('click', () => selectDataset(ds.id));
+      del.addEventListener('click', (e) => {
+        e.stopPropagation();
+        removeDataset(ds.id);
+      });
+
+      li.appendChild(item);
+      list.appendChild(li);
+    });
+  }
+
+  function selectDataset(id) {
+    if (id === currentDatasetId) return;
+    currentDatasetId = id;
+    renderDatasetList();
+    syncDatasetLabels();
+    resetReport(true);
+    const ds = activeDataset();
+    if (ds) {
+      addMessageToChat('AI', `Fuente activa: "${ds.name}" (${Number(ds.row_count).toLocaleString('es-CO')} filas). ¿Qué quieres saber?`);
+    }
+    loadHistory();
+  }
+
+  async function removeDataset(id) {
+    try {
+      await api.dataset.delete(id);
+    } catch {
+      // Si ya no existe en el backend, igual se desvincula localmente
+    }
+    const wasActive = id === currentDatasetId;
+    datasets = datasets.filter((d) => d.id !== id);
+    if (wasActive) {
+      currentDatasetId = null;
+      const firstReady = datasets.find((d) => d.status === 'ready');
+      currentDatasetId = firstReady ? firstReady.id : null;
+      resetReport(true);
+    }
+    renderDatasetList();
+    syncDatasetLabels();
+    loadHistory();
+    showToast('Fuente de datos eliminada.', 'success');
+  }
+
+  // ── Bitácora de consultas ───────────────────────────────────────────────
+  async function loadHistory() {
+    if (!currentDatasetId) {
+      renderHistory([]);
+      return;
+    }
+    try {
+      const data = await api.query.history(currentDatasetId);
+      renderHistory(data.results || data || []);
+    } catch {
+      // La bitácora es secundaria: un fallo aquí no interrumpe la consola
+    }
+  }
+
+  function renderHistory(items) {
+    const list = document.getElementById('history-list');
+    const empty = document.getElementById('history-empty');
+    list.innerHTML = '';
+    empty.classList.toggle('hidden', items.length > 0);
+
+    items.forEach((q) => {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'history-item';
+      btn.title = q.question;
+
+      const time = new Date(q.created_at).toLocaleTimeString('es-CO', {
+        hour: '2-digit', minute: '2-digit',
+      });
+      const status = !q.success ? 'fail' : q.cached ? 'cache' : 'ok';
+
+      const timeEl = document.createElement('span');
+      timeEl.className = 'h-time';
+      timeEl.innerText = time;
+      const qEl = document.createElement('span');
+      qEl.className = 'h-q';
+      qEl.innerText = q.question;
+      const statusEl = document.createElement('span');
+      statusEl.className = `h-status ${status}`;
+
+      btn.append(timeEl, qEl, statusEl);
+      btn.addEventListener('click', () => openHistoryQuery(q.id));
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
+  }
+
+  async function openHistoryQuery(id) {
+    try {
+      const q = await api.query.detail(id);
+      if (!q.success || !q.result) {
+        showToast('Esa consulta no tiene resultado guardado.', 'error');
+        return;
+      }
+      renderResult({
+        success: q.success,
+        error_msg: q.error_msg,
+        sql: q.sql_generated,
+        execution_time: q.execution_time,
+        model_used: q.model_used,
+        cached: q.cached,
+        data: q.result.result_json,
+        columns: q.result.columns,
+        chart_type: q.result.chart_type,
+        chart_config: q.result.chart_config,
+        row_count: q.result.row_count,
+      }, q.question);
+      addMessageToChat('AI', q.result.answer || `${q.result.row_count} fila(s) encontradas.`, {
+        sql: q.sql_generated,
+        execution_time: q.execution_time,
+        cached: q.cached,
+        model_used: q.model_used,
+      });
+      showToast('Consulta restaurada de la bitácora.', 'success');
+    } catch (err) {
+      handleApiError(err, 'No se pudo abrir la consulta.');
     }
   }
 
@@ -151,16 +341,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   dropZone.addEventListener('dragover', (e) => {
     e.preventDefault();
-    dropZone.classList.add('border-leaf', 'bg-leaf-pale/40');
+    dropZone.classList.add('border-petrol-bright', 'bg-rail-raise');
   });
 
   dropZone.addEventListener('dragleave', () => {
-    dropZone.classList.remove('border-leaf', 'bg-leaf-pale/40');
+    dropZone.classList.remove('border-petrol-bright', 'bg-rail-raise');
   });
 
   dropZone.addEventListener('drop', (e) => {
     e.preventDefault();
-    dropZone.classList.remove('border-leaf', 'bg-leaf-pale/40');
+    dropZone.classList.remove('border-petrol-bright', 'bg-rail-raise');
     if (e.dataTransfer.files.length) handleUpload(e.dataTransfer.files[0]);
   });
 
@@ -180,12 +370,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const name = file.name.replace(/\.[^.]+$/, '');
       const dataset = await api.dataset.upload(file, name);
 
-      currentDatasetId = dataset.id;
-      showActiveDataset(dataset.name);
+      resetReport(true);
       addMessageToChat(
         'AI',
-        `Dataset "${dataset.name}" listo: ${dataset.row_count} filas y ${dataset.column_count} columnas. ¿Qué quieres saber?`
+        `Fuente "${dataset.name}" lista: ${dataset.row_count} filas y ${dataset.column_count} columnas. ¿Qué quieres saber?`
       );
+      await loadLibrary(dataset.id);
     } catch (err) {
       handleApiError(err, 'Error al cargar el archivo.');
     } finally {
@@ -194,26 +384,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function showActiveDataset(name) {
-    dropZone.classList.add('hidden');
-    document.getElementById('dataset-name').innerText = name;
-    document.getElementById('active-dataset').classList.remove('hidden');
-    document.getElementById('active-dataset').classList.add('flex');
-    document.getElementById('masthead-dataset').innerText = name;
-  }
-
-  function hideActiveDataset() {
-    dropZone.classList.remove('hidden');
-    document.getElementById('active-dataset').classList.add('hidden');
-    document.getElementById('active-dataset').classList.remove('flex');
-    document.getElementById('masthead-dataset').innerText = 'sin dataset';
-    fileInput.value = '';
-    currentDatasetId = null;
-    resetReport();
-  }
-
-  // Sin fuente no hay informe: se retira el documento y la conversación
-  function resetReport() {
+  // Sin fuente no hay informe: se retira el documento
+  function resetReport(clearChat) {
     if (resultChart) {
       resultChart.destroy();
       resultChart = null;
@@ -225,20 +397,10 @@ document.addEventListener('DOMContentLoaded', () => {
     emptyState.style.opacity = '';
     emptyState.style.transform = '';
     document.getElementById('masthead-folio').innerText = '—';
-    document.getElementById('chat-messages').innerHTML = '';
-  }
-
-  document.getElementById('remove-dataset').addEventListener('click', async () => {
-    if (currentDatasetId) {
-      try {
-        await api.dataset.delete(currentDatasetId);
-      } catch {
-        // Si ya no existe en el backend, igual se desvincula localmente
-      }
+    if (clearChat) {
+      document.getElementById('chat-messages').innerHTML = '';
     }
-    hideActiveDataset();
-    showToast('Dataset eliminado.', 'success');
-  });
+  }
 
   // ── Chat ────────────────────────────────────────────────────────────────
   const sendMessage = async () => {
@@ -248,7 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     if (!currentDatasetId) {
-      showToast('Por favor, sube un dataset primero.', 'error');
+      showToast('Por favor, sube o activa una fuente de datos primero.', 'error');
       return;
     }
     if (sending) return;
@@ -262,15 +424,22 @@ document.addEventListener('DOMContentLoaded', () => {
       const res = await api.query.ask(text, currentDatasetId);
 
       if (res.success) {
-        addMessageToChat('AI', `${res.row_count} fila(s) encontradas.`, {
+        addMessageToChat('AI', res.answer || `${res.row_count} fila(s) encontradas.`, {
           sql: res.sql,
           execution_time: res.execution_time,
           cached: res.cached,
           model_used: res.model_used,
         });
         renderResult(res, text);
+        loadHistory();
       } else {
-        addMessageToChat('AI', `No pude responder esa pregunta: ${res.error_msg || 'error desconocido'}.`);
+        addMessageToChat(
+          'AI',
+          `No pude responder esa pregunta: ${res.error_msg || 'error desconocido'}.`,
+          null,
+          res.suggestions || []
+        );
+        loadHistory();
       }
     } catch (err) {
       handleApiError(err, 'Ocurrió un error al procesar la consulta.');
@@ -306,11 +475,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('kpi-time').innerText = Number.isFinite(seconds)
       ? `${seconds.toFixed(2)}s`
       : `${res.execution_time}s`;
-    document.getElementById('kpi-source').innerText = res.cached ? 'Caché' : (res.model_used || 'IA');
+    document.getElementById('kpi-source').innerText = res.cached ? 'caché' : (res.model_used || 'IA');
     document.getElementById('masthead-folio').innerText = formatFolio();
 
     figureCount += 1;
-    document.getElementById('figure-label').innerText = `Fig. ${figureCount}`;
+    document.getElementById('figure-label').innerText = `fig. ${figureCount}`;
     document.getElementById('figure-title').innerText = question;
     document.getElementById('annex-caption').innerText =
       res.data.length > MAX_TABLE_ROWS
@@ -338,17 +507,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const cfg = res.chart_config || {};
     const ctx = document.getElementById('chart-1').getContext('2d');
 
-    // Tooltip con acabado de informe: papel, tinta y filete
+    // Tooltip con acabado de consola: papel, tinta y filete
     const tooltip = {
       backgroundColor: '#FFFFFF',
-      titleColor: '#1B1E23',
-      bodyColor: '#1B1E23',
-      borderColor: '#E3E5DF',
+      titleColor: '#1B2430',
+      bodyColor: '#1B2430',
+      borderColor: '#DCE0D9',
       borderWidth: 1,
       padding: 10,
       displayColors: false,
-      titleFont: { family: '"IBM Plex Mono", ui-monospace, monospace', size: 11 },
-      bodyFont: { family: '"IBM Plex Mono", ui-monospace, monospace', size: 12 },
+      titleFont: { family: '"JetBrains Mono", ui-monospace, monospace', size: 11 },
+      bodyFont: { family: '"JetBrains Mono", ui-monospace, monospace', size: 12 },
     };
 
     // Serie única: la leyenda no informa, se oculta
@@ -359,8 +528,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const scaleOptions = {
-      y: { ticks: { color: '#5A6068' }, grid: { color: 'rgba(27, 30, 35, 0.07)' } },
-      x: { ticks: { color: '#5A6068' }, grid: { color: 'rgba(27, 30, 35, 0.07)' } },
+      y: { ticks: { color: '#5C6672' }, grid: { color: 'rgba(27, 36, 48, 0.07)' } },
+      x: { ticks: { color: '#5C6672' }, grid: { color: 'rgba(27, 36, 48, 0.07)' } },
     };
 
     if (res.chart_type === 'pie') {
@@ -381,7 +550,7 @@ document.addEventListener('DOMContentLoaded', () => {
             legend: {
               display: true,
               position: 'bottom',
-              labels: { color: '#1B1E23', boxWidth: 12, boxHeight: 12, padding: 16, font: { size: 11 } },
+              labels: { color: '#1B2430', boxWidth: 12, boxHeight: 12, padding: 16, font: { size: 11 } },
             },
             tooltip,
           },
@@ -397,7 +566,7 @@ document.addEventListener('DOMContentLoaded', () => {
           datasets: [{
             label: `${cfg.xKey} vs ${cfg.yKey}`,
             data: res.data.map((r) => ({ x: r[cfg.xKey], y: r[cfg.yKey] })),
-            backgroundColor: '#1E6B4F',
+            backgroundColor: '#0E5E6F',
             pointRadius: 4,
             pointHoverRadius: 5,
           }],
@@ -415,13 +584,13 @@ document.addEventListener('DOMContentLoaded', () => {
           datasets: [{
             label: cfg.yKey,
             data: res.data.map((r) => r[cfg.yKey]),
-            borderColor: '#1E6B4F',
-            backgroundColor: 'rgba(30, 107, 79, 0.10)',
+            borderColor: '#0E5E6F',
+            backgroundColor: 'rgba(14, 94, 111, 0.10)',
             fill: true,
             tension: 0.35,
             borderWidth: 2,
             pointRadius: 3,
-            pointBackgroundColor: '#1E6B4F',
+            pointBackgroundColor: '#0E5E6F',
             pointBorderColor: '#FFFFFF',
             pointBorderWidth: 1.5,
           }],
@@ -452,15 +621,15 @@ document.addEventListener('DOMContentLoaded', () => {
             { label: 'inferior', data: lower, borderWidth: 0, pointRadius: 0, spanGaps: true },
             {
               label: 'superior', data: upper, borderWidth: 0, pointRadius: 0, spanGaps: true,
-              fill: 0, backgroundColor: 'rgba(185, 122, 15, 0.12)',
+              fill: '-1', backgroundColor: 'rgba(199, 123, 33, 0.12)',
             },
             {
-              label: 'Real', data: real, borderColor: '#1E6B4F', backgroundColor: '#1E6B4F',
+              label: 'Real', data: real, borderColor: '#0E5E6F', backgroundColor: '#0E5E6F',
               tension: 0.3, borderWidth: 2, pointRadius: 2.5,
               pointBorderColor: '#FFFFFF', pointBorderWidth: 1.5,
             },
             {
-              label: 'Pronóstico', data: pred, borderColor: '#B97A0F', backgroundColor: '#B97A0F',
+              label: 'Pronóstico', data: pred, borderColor: '#C77B21', backgroundColor: '#C77B21',
               borderDash: [6, 4], tension: 0.3, borderWidth: 2, pointRadius: 3.5, pointStyle: 'rectRot',
               pointBorderColor: '#FFFFFF', pointBorderWidth: 1.5,
             },
@@ -472,7 +641,7 @@ document.addEventListener('DOMContentLoaded', () => {
             legend: {
               display: true, position: 'bottom',
               labels: {
-                color: '#1B1E23', boxWidth: 12, boxHeight: 12, padding: 16, font: { size: 11 },
+                color: '#1B2430', boxWidth: 12, boxHeight: 12, padding: 16, font: { size: 11 },
                 filter: (item) => item.text === 'Real' || item.text === 'Pronóstico',
               },
             },
@@ -491,7 +660,7 @@ document.addEventListener('DOMContentLoaded', () => {
           datasets: [{
             label: `${cfg.xKey} vs ${cfg.yKey}`,
             data: res.data.map((r) => ({ x: r[cfg.xKey], y: r[cfg.yKey] })),
-            backgroundColor: '#B97A0F',
+            backgroundColor: '#C77B21',
             borderColor: '#FFFFFF',
             borderWidth: 1.5,
             pointRadius: 6,
@@ -522,7 +691,7 @@ document.addEventListener('DOMContentLoaded', () => {
           plugins: {
             legend: {
               display: true, position: 'bottom',
-              labels: { color: '#1B1E23', boxWidth: 12, boxHeight: 12, padding: 16, font: { size: 11 } },
+              labels: { color: '#1B2430', boxWidth: 12, boxHeight: 12, padding: 16, font: { size: 11 } },
             },
             tooltip,
           },
@@ -540,8 +709,8 @@ document.addEventListener('DOMContentLoaded', () => {
           datasets: [{
             label: cfg.xKey,                           // correlación
             data: res.data.map((r) => r[cfg.xKey]),
-            backgroundColor: res.data.map((r) => (r[cfg.xKey] >= 0 ? '#1E6B4F' : '#B97A0F')),
-            hoverBackgroundColor: res.data.map((r) => (r[cfg.xKey] >= 0 ? '#185A42' : '#96650C')),
+            backgroundColor: res.data.map((r) => (r[cfg.xKey] >= 0 ? '#0E5E6F' : '#C77B21')),
+            hoverBackgroundColor: res.data.map((r) => (r[cfg.xKey] >= 0 ? '#0A4A58' : '#A8661B')),
             borderRadius: 5,
             maxBarThickness: 28,
           }],
@@ -559,8 +728,8 @@ document.addEventListener('DOMContentLoaded', () => {
         datasets: [{
           label: cfg.yKey,
           data: res.data.map((r) => r[cfg.yKey]),
-          backgroundColor: '#1E6B4F',
-          hoverBackgroundColor: '#185A42',
+          backgroundColor: '#0E5E6F',
+          hoverBackgroundColor: '#0A4A58',
           borderRadius: 5,
           maxBarThickness: 52,
         }],
@@ -620,7 +789,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return `actualizado ${fecha} · ${hora}`;
   }
 
-  function addMessageToChat(sender, text, receipt = null) {
+  function addMessageToChat(sender, text, receipt = null, suggestions = []) {
     const chatContainer = document.getElementById('chat-messages');
     const wrapper = document.createElement('div');
     wrapper.className = `message-wrapper w-full mb-4 ${sender === 'User' ? 'items-end' : 'items-start'}`;
@@ -630,14 +799,14 @@ document.addEventListener('DOMContentLoaded', () => {
     bubble.innerText = text;
     wrapper.appendChild(bubble);
 
-    // El recibo SQL: la firma de verificabilidad del producto
+    // El recibo: la firma de verificabilidad del producto
     if (receipt?.sql) {
       const details = document.createElement('details');
       details.className = 'sql-receipt';
 
       const summary = document.createElement('summary');
       const label = document.createElement('span');
-      label.innerText = `sql · ${receipt.execution_time}s`;
+      label.innerText = `recibo · ${receipt.execution_time}s`;
       summary.appendChild(label);
 
       if (receipt.cached) {
@@ -658,6 +827,29 @@ document.addEventListener('DOMContentLoaded', () => {
       details.appendChild(summary);
       details.appendChild(pre);
       wrapper.appendChild(details);
+    }
+
+    // Caminos cuando la respuesta falló: la conversación no muere
+    if (suggestions.length) {
+      const hint = document.createElement('p');
+      hint.className = 'suggestion-hint';
+      hint.innerText = 'Prueba con:';
+      wrapper.appendChild(hint);
+
+      const chips = document.createElement('div');
+      chips.className = 'suggestion-chips';
+      suggestions.forEach((s) => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'example-chip';
+        chip.innerText = s;
+        chip.addEventListener('click', () => {
+          chatInput.value = s;
+          chatInput.focus();
+        });
+        chips.appendChild(chip);
+      });
+      wrapper.appendChild(chips);
     }
 
     chatContainer.appendChild(wrapper);
@@ -686,7 +878,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const toast = document.getElementById('toast');
     toast.innerText = message;
     toast.className = `fixed bottom-6 right-6 z-[110] max-w-sm px-4 py-3 rounded-xl text-sm font-medium shadow-lift ${
-      type === 'error' ? 'bg-red-700 text-white' : 'bg-ink text-white'
+      type === 'error' ? 'bg-danger text-white' : 'bg-rail text-white'
     }`;
 
     if (toastTimer) clearTimeout(toastTimer);

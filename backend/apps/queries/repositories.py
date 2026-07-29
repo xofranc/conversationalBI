@@ -37,6 +37,7 @@ class QueryRepository:
         columns:      list,
         chart_type:   str,
         chart_config: dict = None,
+        answer:       str = '',
     ) -> QueryResult:
         return QueryResult.objects.create(
             query       = query,
@@ -45,6 +46,7 @@ class QueryRepository:
             row_count   = len(rows),
             chart_type  = chart_type,
             chart_config = chart_config or QueryRepository._build_chart_config(chart_type, rows, columns),
+            answer      = answer,
         )
 
     @staticmethod

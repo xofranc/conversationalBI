@@ -11,7 +11,9 @@ SCHEMA = {'tables': [{'name': 'main', 'columns': []}]}
 @pytest.fixture
 def mocks():
     with patch('services.ai.ai_query_service.SQLAgent') as mock_agent_cls, \
+         patch('services.ai.ai_query_service.AnswerWriter') as mock_writer_cls, \
          patch('services.ai.ai_query_service.SQLExecutor') as mock_executor:
+        mock_writer_cls.return_value.write.return_value = 'respuesta de prueba'
         yield mock_agent_cls.return_value, mock_executor
 
 

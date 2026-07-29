@@ -209,6 +209,44 @@ class TestExclusionDeIds:
         assert 'id' not in [r['factor'] for r in res['rows']]
 
 
+class TestSummary:
+
+    def test_estadisticos_por_columna(self):
+        df = pd.DataFrame({
+            'monto': [100.0, 200.0, 300.0, 400.0],
+            'ciudad': ['A', 'B', 'C', 'D'],
+        })
+        res = engine.summary({'main': df}, 'resumen de los datos')
+
+        assert res['chart_type'] == 'table'
+        assert len(res['rows']) == 1          # solo la numérica
+        fila = res['rows'][0]
+        assert fila['columna'] == 'monto'
+        assert fila['n'] == 4
+        assert fila['media'] == 250.0
+        assert fila['mediana'] == 250.0
+        assert fila['min'] == 100.0
+        assert fila['max'] == 400.0
+
+    def test_ids_quedan_fuera_del_resumen(self):
+        df = pd.DataFrame({
+            'id_venta': range(1, 11),
+            'monto': [float(i * 10) for i in range(10)],
+        })
+        res = engine.summary({'main': df}, 'describe')
+        assert [r['columna'] for r in res['rows']] == ['monto']
+
+    def test_sin_numericas_lanza_error(self):
+        df = pd.DataFrame({'ciudad': ['A', 'B']})
+        with pytest.raises(engine.AnalysisError, match='columna numérica'):
+            engine.summary({'main': df}, 'resumen')
+
+    def test_dispatch_por_intent(self):
+        df = pd.DataFrame({'monto': [1.0, 2.0, 3.0]})
+        res = engine.run('summary', {'main': df}, 'resumen')
+        assert res['chart_type'] == 'table'
+
+
 class TestDispatcher:
 
     def test_tipo_desconocido_lanza_error(self):

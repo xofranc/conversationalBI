@@ -66,12 +66,49 @@ class SchemaService:
 
     @staticmethod
     def _parse_column(col_name: str, series: pd.Series) -> dict:
-        return {
+        col = {
             "name":     str(col_name),
             "dtype":    SchemaService.infer_dtype(series),
             "nullable": bool(series.isnull().any()),
             "sample":   SchemaService._safe_sample(series),
         }
+        info = SchemaService._column_info(col["dtype"], series)
+        if info:
+            col["info"] = info
+        return col
+
+    # Máximo de valores distintos que se listan para una categórica
+    MAX_INFO_VALUES = 12
+
+    @staticmethod
+    def _column_info(dtype: str, series: pd.Series) -> str:
+        """
+        Resumen compacto de la columna para el prompt del LLM:
+        - categóricas de baja cardinalidad → sus valores frecuentes
+          (así el modelo filtra con los valores reales, no inventados)
+        - fechas y numéricas → rango min–max
+        """
+        limpia = series.dropna()
+        if limpia.empty:
+            return ''
+
+        if dtype == 'str':
+            nunicos = limpia.nunique()
+            if nunicos <= SchemaService.MAX_INFO_VALUES:
+                valores = [str(v) for v in limpia.value_counts().head(SchemaService.MAX_INFO_VALUES).index]
+                return f"valores: {', '.join(valores)}"
+            return f"{nunicos} valores distintos"
+
+        if dtype == 'date':
+            fechas = pd.to_datetime(limpia, format='mixed', errors='coerce').dropna()
+            if fechas.empty:
+                return ''
+            return f"rango: {fechas.min().date().isoformat()} → {fechas.max().date().isoformat()}"
+
+        if dtype in ('int', 'float'):
+            return f"rango: {limpia.min()} → {limpia.max()}"
+
+        return ''
 
     @staticmethod
     def _safe_sample(series: pd.Series) -> list:

@@ -5,7 +5,7 @@ from ..models import QueryHistory, QueryResult, QueryFeedback
 class QueryResultSerializer(serializers.ModelSerializer):
     class Meta:
         model  = QueryResult
-        fields = ['result_json', 'columns', 'row_count', 'chart_type', 'chart_config']
+        fields = ['result_json', 'columns', 'row_count', 'chart_type', 'chart_config', 'answer']
 
 
 class QueryHistorySerializer(serializers.ModelSerializer):

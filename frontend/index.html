@@ -6,34 +6,34 @@
     <title>ConversationalBI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-paper text-ink font-sans antialiased overflow-hidden">
-    <div id="app" class="relative w-full h-screen overflow-hidden">
+  <body class="bg-paper text-ink font-sans antialiased">
+    <div id="app" class="relative w-full min-h-screen lg:h-screen lg:overflow-hidden">
 
       <!-- ═══════════════ Vista de autenticación ═══════════════ -->
       <section id="auth-view" class="absolute inset-0 z-50 flex items-center justify-center bg-paper">
-        <div class="auth-container bg-card border border-line p-8 rounded-xl w-full max-w-md mx-4 shadow-lift">
+        <div class="auth-container bg-card border border-line p-8 rounded-2xl w-full max-w-md mx-4 shadow-lift">
           <div class="text-center mb-8">
-            <p class="font-mono text-xs tracking-[0.2em] uppercase text-leaf mb-3">Business intelligence · local</p>
-            <h1 class="font-serif text-3xl font-semibold text-ink mb-2">ConversationalBI</h1>
+            <p class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-3">// bi conversacional · local</p>
+            <h1 class="font-display text-3xl font-semibold text-ink mb-2 tracking-tight">ConversationalBI</h1>
             <p id="auth-subtitle" class="text-ink-soft text-sm">Inicia sesión para continuar</p>
           </div>
 
           <form id="login-form" class="space-y-5">
             <div>
               <label for="email" class="block text-sm font-medium text-ink mb-1">Email</label>
-              <input type="email" id="email" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-leaf/40 focus:border-leaf text-ink transition-shadow" required>
+              <input type="email" id="email" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
             </div>
             <div>
               <label for="password" class="block text-sm font-medium text-ink mb-1">Contraseña</label>
-              <input type="password" id="password" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-leaf/40 focus:border-leaf text-ink transition-shadow" required>
+              <input type="password" id="password" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
             </div>
-            <button type="submit" class="w-full py-3 bg-leaf hover:bg-leaf-dark text-white font-semibold rounded-lg transition-colors">
+            <button type="submit" class="w-full py-3 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-lg transition-colors">
               Entrar
             </button>
             <p class="text-center text-sm text-ink-soft mt-4">
-              ¿No tienes cuenta? <a href="#" id="show-register" class="text-leaf hover:text-leaf-dark font-medium">Regístrate</a>
+              ¿No tienes cuenta? <a href="#" id="show-register" class="text-petrol hover:text-petrol-dark font-medium">Regístrate</a>
             </p>
           </form>
 
@@ -41,109 +41,137 @@
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label for="reg-first-name" class="block text-sm font-medium text-ink mb-1">Nombre</label>
-                <input type="text" id="reg-first-name" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-leaf/40 focus:border-leaf text-ink transition-shadow" required>
+                <input type="text" id="reg-first-name" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
               </div>
               <div>
                 <label for="reg-last-name" class="block text-sm font-medium text-ink mb-1">Apellido</label>
-                <input type="text" id="reg-last-name" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-leaf/40 focus:border-leaf text-ink transition-shadow" required>
+                <input type="text" id="reg-last-name" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
               </div>
             </div>
             <div>
               <label for="reg-email" class="block text-sm font-medium text-ink mb-1">Email</label>
-              <input type="email" id="reg-email" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-leaf/40 focus:border-leaf text-ink transition-shadow" required>
+              <input type="email" id="reg-email" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
             </div>
             <div>
               <label for="reg-password" class="block text-sm font-medium text-ink mb-1">Contraseña</label>
-              <input type="password" id="reg-password" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-leaf/40 focus:border-leaf text-ink transition-shadow" required>
+              <input type="password" id="reg-password" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
             </div>
-            <button type="submit" class="w-full py-3 bg-leaf hover:bg-leaf-dark text-white font-semibold rounded-lg transition-colors">
+            <button type="submit" class="w-full py-3 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-lg transition-colors">
               Crear cuenta
             </button>
             <p class="text-center text-sm text-ink-soft mt-4">
-              ¿Ya tienes cuenta? <a href="#" id="show-login" class="text-leaf hover:text-leaf-dark font-medium">Inicia sesión</a>
+              ¿Ya tienes cuenta? <a href="#" id="show-login" class="text-petrol hover:text-petrol-dark font-medium">Inicia sesión</a>
             </p>
           </form>
 
-          <div id="auth-error" class="hidden text-red-700 text-sm text-center mt-4"></div>
+          <div id="auth-error" class="hidden text-danger text-sm text-center mt-4"></div>
         </div>
       </section>
 
-      <!-- ═══════════════ Dashboard ═══════════════ -->
-      <section id="dashboard-view" class="absolute inset-0 flex flex-col md:flex-row hidden opacity-0 bg-paper">
+      <!-- ═══════════════ Consola ═══════════════ -->
+      <section id="dashboard-view" class="hidden opacity-0 lg:h-screen flex flex-col lg:flex-row">
 
-        <!-- Rail de conversación -->
-        <aside class="w-full md:w-96 h-full border-r border-line bg-card flex flex-col">
-          <div class="px-6 py-5 border-b border-line">
-            <p class="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-leaf">Business intelligence · local</p>
-            <h2 class="font-serif text-lg font-semibold text-ink">ConversationalBI</h2>
+        <!-- Rail de instrumentos: fuentes de datos + bitácora -->
+        <aside class="w-full lg:w-72 shrink-0 lg:h-full bg-rail text-rail-text flex flex-col lg:overflow-hidden">
+          <div class="px-5 py-5 border-b border-rail-line">
+            <p class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-petrol-bright">// bi conversacional</p>
+            <h2 class="font-display text-lg font-semibold text-white tracking-tight">ConversationalBI</h2>
           </div>
 
-          <div class="p-6 flex-1 overflow-y-auto flex flex-col min-h-0">
-            <!-- Dataset -->
-            <div id="upload-section" class="mb-6">
-              <h3 class="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-ink-soft mb-3">Dataset</h3>
-              <div id="drop-zone" role="button" tabindex="0" aria-label="Subir dataset" class="border-2 border-dashed border-line rounded-xl p-5 text-center hover:border-leaf hover:bg-leaf-pale/40 transition-colors cursor-pointer group">
-                <svg class="w-7 h-7 mx-auto text-ink-soft group-hover:text-leaf transition-colors mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                <p class="text-sm text-ink-soft">Sube tu archivo <span class="font-mono text-xs">CSV · Excel · JSON</span></p>
+          <div class="flex-1 overflow-y-auto custom-scrollbar min-h-0">
+            <!-- Fuentes de datos almacenadas -->
+            <div class="px-5 pt-5">
+              <div class="flex items-baseline justify-between mb-3">
+                <h3 class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-rail-text">Fuentes de datos</h3>
+                <span id="dataset-count" class="font-mono text-[0.6rem] text-rail-text/60">0</span>
+              </div>
+
+              <div id="drop-zone" role="button" tabindex="0" aria-label="Subir dataset" class="border border-dashed border-rail-line rounded-lg px-4 py-3.5 text-center hover:border-petrol-bright hover:bg-rail-raise transition-colors cursor-pointer group mb-3">
+                <p class="font-mono text-[0.7rem] text-rail-text group-hover:text-white transition-colors">
+                  <span class="text-petrol-bright">+</span> subir archivo
+                </p>
+                <p class="font-mono text-[0.6rem] text-rail-text/50 mt-0.5">csv · excel · json</p>
                 <input type="file" id="file-upload" class="hidden" accept=".csv,.xlsx,.json" aria-hidden="true">
               </div>
-              <div id="active-dataset" class="hidden mt-3 px-3 py-2.5 bg-leaf-pale border border-leaf/30 rounded-lg items-center justify-between">
-                <span id="dataset-name" class="text-sm text-leaf-dark font-medium truncate"></span>
-                <button id="remove-dataset" aria-label="Eliminar dataset" class="text-ink-soft hover:text-red-700 ml-2 shrink-0"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-              </div>
+
+              <ul id="dataset-list" class="space-y-1.5 pb-5">
+                <!-- datasets inyectados por JS -->
+              </ul>
             </div>
 
-            <!-- Chat -->
-            <div class="flex-1 flex flex-col min-h-0">
-              <h3 class="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-ink-soft mb-3">Conversación</h3>
-              <div id="chat-messages" aria-live="polite" class="flex-1 overflow-y-auto space-y-4 mb-4 pr-1 custom-scrollbar">
-                <!-- Messages will be injected here -->
-              </div>
-              <div class="relative">
-                <input type="text" id="chat-input" class="w-full px-4 py-3 bg-paper border border-line rounded-xl focus:outline-none focus:ring-2 focus:ring-leaf/40 focus:border-leaf text-ink pr-12 transition-shadow" placeholder="Pregunta sobre tus datos...">
-                <button id="send-btn" aria-label="Enviar pregunta" class="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-leaf hover:text-leaf-dark disabled:opacity-40 disabled:cursor-not-allowed">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-                </button>
-              </div>
+            <!-- Bitácora de consultas -->
+            <div class="px-5 pt-4 pb-5 border-t border-rail-line">
+              <h3 class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-rail-text mb-3">Bitácora</h3>
+              <p id="history-empty" class="font-mono text-[0.65rem] text-rail-text/50 leading-relaxed">
+                Las consultas que hagas quedan registradas aquí.
+              </p>
+              <ul id="history-list" class="space-y-1">
+                <!-- historial inyectado por JS -->
+              </ul>
             </div>
           </div>
 
-          <div class="p-4 border-t border-line">
-            <button id="logout-btn" class="w-full py-2 text-sm text-ink-soft hover:text-ink transition-colors flex items-center justify-center gap-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-              Cerrar sesión
+          <div class="p-4 border-t border-rail-line">
+            <button id="logout-btn" class="w-full py-2 font-mono text-[0.7rem] text-rail-text hover:text-white transition-colors flex items-center justify-center gap-2">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+              salir
             </button>
           </div>
         </aside>
 
-        <!-- Área del informe -->
-        <main class="flex-1 overflow-y-auto relative">
-          <div class="max-w-5xl mx-auto px-8 py-8 h-full flex flex-col">
+        <!-- Conversación -->
+        <section class="w-full lg:w-[26rem] shrink-0 lg:h-full bg-card border-r border-line flex flex-col h-[70vh] lg:overflow-hidden">
+          <div class="px-5 py-4 border-b border-line flex items-baseline justify-between">
+            <h3 class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-ink-soft">Conversación</h3>
+            <span id="chat-dataset" class="font-mono text-[0.6rem] text-petrol truncate max-w-[55%]">sin fuente activa</span>
+          </div>
 
-            <!-- Masthead: fuente arriba a la derecha, folio bajo el titular -->
+          <div id="chat-messages" aria-live="polite" class="flex-1 overflow-y-auto custom-scrollbar px-5 py-4 space-y-4 min-h-0">
+            <!-- Messages will be injected here -->
+          </div>
+
+          <div class="p-4 border-t border-line">
+            <div class="relative">
+              <input type="text" id="chat-input" class="w-full px-4 py-3 bg-paper border border-line rounded-xl focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink pr-12 transition-shadow" placeholder="Pregunta sobre tus datos...">
+              <button id="send-btn" aria-label="Enviar pregunta" class="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-petrol hover:text-petrol-dark disabled:opacity-40 disabled:cursor-not-allowed">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Informe -->
+        <main class="flex-1 lg:h-full overflow-y-auto custom-scrollbar relative">
+          <div class="max-w-4xl mx-auto px-6 lg:px-10 py-8 min-h-full flex flex-col">
+
             <header class="mb-8 pb-6 border-b border-line">
               <div class="flex justify-between items-baseline gap-2 flex-wrap mb-3">
-                <p class="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-leaf">Informe de datos</p>
-                <p id="masthead-dataset" class="font-mono text-[0.65rem] tracking-wider text-ink-soft">sin dataset</p>
+                <p class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-petrol">// informe de datos</p>
+                <p id="masthead-dataset" class="font-mono text-[0.65rem] tracking-wider text-ink-soft">sin fuente</p>
               </div>
               <div class="flex justify-between items-end flex-wrap gap-2">
-                <h1 class="font-serif text-4xl font-semibold text-ink">Análisis conversacional</h1>
+                <h1 class="font-display text-4xl font-semibold text-ink tracking-tight">Análisis conversacional</h1>
                 <p id="masthead-folio" class="font-mono text-xs text-ink-soft">—</p>
               </div>
             </header>
 
             <div id="results-area" class="flex-1 flex flex-col gap-6 pb-8">
               <!-- Empty State -->
-              <div id="empty-state" class="flex-1 flex flex-col items-center justify-center text-center">
-                <div class="w-20 h-20 rounded-2xl bg-leaf-pale border border-leaf/20 flex items-center justify-center mb-6">
-                  <svg class="w-10 h-10 text-leaf" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-4 4v-4z"></path></svg>
+              <div id="empty-state" class="flex-1 flex flex-col items-center justify-center text-center py-10">
+                <div class="font-mono text-[0.65rem] text-ink-soft/60 mb-6 select-none" aria-hidden="true">
+                  <pre class="inline-block text-left leading-snug">┌──────────────────────────┐
+│  SELECT respuesta        │
+│  FROM   tus_datos        │
+│  WHERE  pregunta = '…'   │
+└──────────────────────────┘</pre>
                 </div>
-                <h2 class="font-serif text-3xl font-semibold text-ink mb-3">Hazle una pregunta a tus datos</h2>
-                <p class="text-ink-soft max-w-md mb-8">Sube un CSV, Excel o JSON en el panel izquierdo y pregunta en español. El informe se construye solo: cifras, gráfico y anexo.</p>
-                <p class="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-ink-soft mb-3">Prueba con</p>
+                <h2 class="font-display text-3xl font-semibold text-ink mb-3 tracking-tight">Hazle una pregunta a tus datos</h2>
+                <p class="text-ink-soft max-w-md mb-8 text-sm leading-relaxed">Sube un CSV, Excel o JSON en el panel de fuentes y pregunta en español. Cada respuesta llega con su recibo verificable: SQL o método estadístico, motor y tiempo.</p>
+                <p class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-ink-soft mb-3">prueba con</p>
                 <div class="flex flex-wrap justify-center gap-2 max-w-md">
                   <button type="button" class="example-chip" data-question="Ventas totales por ciudad">ventas totales por ciudad</button>
                   <button type="button" class="example-chip" data-question="Top 5 productos por ingresos">top 5 productos por ingresos</button>
+                  <button type="button" class="example-chip" data-question="Dame un resumen de los datos">resumen de los datos</button>
                   <button type="button" class="example-chip" data-question="¿Cuál es el pronóstico de ventas para los próximos meses?">pronóstico de ventas</button>
                   <button type="button" class="example-chip" data-question="¿Hay anomalías en los montos?">anomalías en los montos</button>
                   <button type="button" class="example-chip" data-question="¿Qué factores explican el monto?">factores del monto</button>
@@ -156,23 +184,23 @@
                 <!-- Cifras destacadas -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
                   <div class="bg-card border border-line rounded-xl p-5 shadow-card">
-                    <span class="font-mono text-[0.65rem] tracking-[0.15em] uppercase text-ink-soft">Filas</span>
-                    <p id="kpi-rows" class="text-3xl font-bold text-ink mt-1 font-mono">—</p>
+                    <span class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-ink-soft">filas</span>
+                    <p id="kpi-rows" class="text-3xl font-semibold text-ink mt-1 font-mono tabular-nums">—</p>
                   </div>
                   <div class="bg-card border border-line rounded-xl p-5 shadow-card">
-                    <span class="font-mono text-[0.65rem] tracking-[0.15em] uppercase text-ink-soft">Tiempo</span>
-                    <p id="kpi-time" class="text-3xl font-bold text-ink mt-1 font-mono">—</p>
+                    <span class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-ink-soft">tiempo</span>
+                    <p id="kpi-time" class="text-3xl font-semibold text-ink mt-1 font-mono tabular-nums">—</p>
                   </div>
-                  <div class="bg-card border border-line rounded-xl p-5 shadow-card border-l-4 border-l-leaf">
-                    <span class="font-mono text-[0.65rem] tracking-[0.15em] uppercase text-ink-soft">Fuente</span>
-                    <p id="kpi-source" class="text-3xl font-bold text-leaf mt-1 font-mono truncate">—</p>
+                  <div class="bg-card border border-line rounded-xl p-5 shadow-card border-l-2 border-l-petrol">
+                    <span class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-ink-soft">motor</span>
+                    <p id="kpi-source" class="text-2xl font-semibold text-petrol mt-1 font-mono truncate">—</p>
                   </div>
                 </div>
 
                 <!-- Figura -->
                 <figure id="chart-container" class="bg-card border border-line rounded-xl p-6 shadow-card w-full hidden m-0">
                   <figcaption class="mb-4">
-                    <span id="figure-label" class="font-mono text-[0.65rem] tracking-[0.15em] uppercase text-leaf">Fig. 1</span>
+                    <span id="figure-label" class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-petrol">fig. 1</span>
                     <p id="figure-title" class="text-sm font-medium text-ink mt-1"></p>
                   </figcaption>
                   <div class="h-[320px]">
@@ -183,12 +211,12 @@
                 <!-- Anexo de datos -->
                 <div id="table-container" class="bg-card border border-line rounded-xl overflow-hidden shadow-card">
                   <div class="px-6 py-4 border-b border-line">
-                    <span class="font-mono text-[0.65rem] tracking-[0.15em] uppercase text-ink-soft">Anexo</span>
+                    <span class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-ink-soft">anexo</span>
                     <p id="annex-caption" class="text-sm font-medium text-ink mt-0.5">Datos del resultado</p>
                   </div>
                   <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
-                      <thead class="font-mono text-[0.65rem] tracking-wider uppercase text-ink-soft bg-paper">
+                      <thead class="font-mono text-[0.6rem] tracking-wider uppercase text-ink-soft bg-paper">
                         <tr id="table-head"></tr>
                       </thead>
                       <tbody id="table-body" class="divide-y divide-line text-ink">
@@ -205,8 +233,8 @@
 
       <!-- Loading Overlay -->
       <div id="global-loader" class="fixed inset-0 z-[100] bg-paper/90 backdrop-blur-sm flex flex-col items-center justify-center hidden opacity-0">
-        <div class="w-14 h-14 border-4 border-line border-t-leaf rounded-full animate-spin"></div>
-        <p id="loader-text" class="mt-4 text-leaf font-medium font-mono text-sm">Procesando...</p>
+        <div class="w-14 h-14 border-4 border-line border-t-petrol rounded-full animate-spin"></div>
+        <p id="loader-text" class="mt-4 text-petrol font-medium font-mono text-sm">Procesando...</p>
       </div>
 
       <!-- Toast de notificaciones -->

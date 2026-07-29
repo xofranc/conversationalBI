@@ -13,6 +13,9 @@ class QueryResult(models.Model):
     result_json = models.JSONField(default=list)
     columns = models.JSONField(default=list)
     row_count = models.PositiveIntegerField(default=0)
+
+    #! Respuesta en lenguaje natural (la conversación, no solo las filas)
+    answer = models.TextField(blank=True)
     chart_type = models.CharField(max_length=10,
                                  choices=QueryHistory.CharType.choices,
                                  default=QueryHistory.CharType.TABLE

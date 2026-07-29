@@ -17,9 +17,10 @@ services:
     env_file: ./backend/.env
     environment:
       OLLAMA_HOST: http://ollama:11434
-      # La primera consulta carga el modelo en RAM (~3-4 min en CPU);
-      # el timeout debe cubrir carga + generación
-      OLLAMA_TIMEOUT: 420
+      # Cada consulta hace dos llamadas al LLM (SQL + narrativa). En CPU
+      # sin GPU la primera (con carga del modelo a RAM) tarda varios
+      # minutos; el timeout debe cubrir carga + generación completa.
+      OLLAMA_TIMEOUT: 600
       ALLOWED_HOSTS: localhost,127.0.0.1,django
     ports:
       - "8000:8000"

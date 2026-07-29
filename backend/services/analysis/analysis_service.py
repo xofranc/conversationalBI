@@ -13,7 +13,10 @@ import time
 
 from django.conf import settings
 
+from apps.dataset.services.database_service import DatabaseService
 from apps.dataset.services.schema_service import SchemaService
+from services.ai.answer_writer import AnswerWriter
+from services.ai.suggester import suggest
 
 from . import engine, intent
 
@@ -24,6 +27,7 @@ _MODEL_LABELS = {
     intent.ANOMALY:  'análisis:anomalías',
     intent.SEGMENT:  'análisis:segmentación',
     intent.DRIVERS:  'análisis:factores',
+    intent.SUMMARY:  'análisis:resumen',
 }
 
 
@@ -38,9 +42,14 @@ class AnalysisService:
         from apps.dataset.repositories import DatasetRepository
         dataset = DatasetRepository.get_by_id(dataset_id)
 
-        file_path = os.path.join(settings.MEDIA_ROOT, dataset.file_path)
-        ext = os.path.splitext(file_path)[1].lower()
-        tables = SchemaService.read_tables(file_path, ext)
+        # Las tablas se leen de la BD SQLite persistida (misma fuente que
+        # el sandbox SQL); datasets antiguos sin db_path usan el archivo.
+        if DatabaseService.exists(dataset.db_path):
+            tables = DatabaseService.read_tables(dataset.db_path)
+        else:
+            file_path = os.path.join(settings.MEDIA_ROOT, dataset.file_path)
+            ext = os.path.splitext(file_path)[1].lower()
+            tables = SchemaService.read_tables(file_path, ext)
 
         base = {
             'sql': '',
@@ -57,6 +66,7 @@ class AnalysisService:
                 'error_msg': str(e),
                 'execution_time': round(time.time() - start, 3),
                 'rows': [], 'columns': [], 'chart_type': 'table', 'chart_config': {},
+                'answer': '', 'suggestions': suggest(dataset.schema_json),
             }
         except Exception as e:
             logger.exception('Fallo inesperado en análisis %s', analysis_type)
@@ -66,7 +76,13 @@ class AnalysisService:
                 'error_msg': 'El análisis falló de forma inesperada. Intenta con otra pregunta.',
                 'execution_time': round(time.time() - start, 3),
                 'rows': [], 'columns': [], 'chart_type': 'table', 'chart_config': {},
+                'answer': '', 'suggestions': suggest(dataset.schema_json),
             }
+
+        metodo = f"-- {result['method']}"
+        answer = AnswerWriter().write(
+            question, metodo, result['rows'], len(result['rows']),
+        )
 
         return {
             **base,
@@ -78,5 +94,7 @@ class AnalysisService:
             'chart_type': result['chart_type'],
             'chart_config': result['chart_config'],
             # Recibo verificable: qué método estadístico produjo la figura
-            'sql': f"-- {result['method']}",
+            'sql': metodo,
+            'answer': answer,
+            'suggestions': [],
         }

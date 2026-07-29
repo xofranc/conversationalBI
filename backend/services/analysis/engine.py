@@ -334,6 +334,50 @@ def drivers(tables: dict, question: str) -> dict:
     }
 
 
+# ── Resumen estadístico ─────────────────────────────────────────────────
+
+def summary(tables: dict, question: str) -> dict:
+    """
+    Estadísticos descriptivos de las columnas numéricas de la primera
+    tabla con medidas: n, media, mediana, desviación, mínimo y máximo.
+    Tabla plana — el gráfico no aporta aquí.
+    """
+    df = _pick_table(
+        tables,
+        lambda d: bool(_numeric_cols(d, _dtypes(d))),
+        'Para resumir necesito al menos una columna numérica.',
+    )
+
+    dtypes = _dtypes(df)
+    num_cols = _numeric_cols(df, dtypes)
+
+    rows = []
+    for col in num_cols:
+        serie = df[col].dropna()
+        if serie.empty:
+            continue
+        rows.append({
+            'columna':   str(col),
+            'n':         int(serie.count()),
+            'media':     _json_safe(round(float(serie.mean()), 2)),
+            'mediana':   _json_safe(round(float(serie.median()), 2)),
+            'desv_est':  _json_safe(round(float(serie.std()), 2)) if len(serie) > 1 else 0,
+            'min':       _json_safe(serie.min()),
+            'max':       _json_safe(serie.max()),
+        })
+
+    if not rows:
+        raise AnalysisError('Las columnas numéricas no tienen datos para resumir.')
+
+    return {
+        'rows': rows,
+        'columns': _columns_meta(rows),
+        'chart_type': 'table',
+        'chart_config': {},
+        'method': f'estadísticos descriptivos sobre {len(rows)} columnas numéricas',
+    }
+
+
 # ── Dispatcher ──────────────────────────────────────────────────────────
 
 _HANDLERS = {
@@ -341,6 +385,7 @@ _HANDLERS = {
     intent.ANOMALY: anomaly,
     intent.SEGMENT: segment,
     intent.DRIVERS: drivers,
+    intent.SUMMARY: summary,
 }
 
 

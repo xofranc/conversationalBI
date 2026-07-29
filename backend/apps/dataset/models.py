@@ -26,6 +26,10 @@ class Dataset(models.Model):
     #! RUta de acceso al archivo subido
     file_path = models.CharField(max_length=500)
     file_size = models.BigIntegerField(default=0)
+
+    #! Base de datos SQLite materializada (relativa a MEDIA_ROOT).
+    #! Las consultas se ejecutan contra ella, no contra el archivo original.
+    db_path = models.CharField(max_length=500, blank=True)
     
     #! contrato con el dataset, con ai engine
     schema_json = models.JSONField(default=dict)

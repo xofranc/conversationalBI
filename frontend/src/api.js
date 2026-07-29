@@ -119,6 +119,10 @@ export const api = {
     ask: (question, datasetId) => api.request('/queries/', {
       method: 'POST',
       body: JSON.stringify({ question, dataset_id: datasetId })
-    })
+    }),
+    history: (datasetId) => api.request(
+      `/queries/${datasetId ? `?dataset_id=${datasetId}` : ''}`
+    ),
+    detail: (id) => api.request(`/queries/${id}/`)
   }
 };

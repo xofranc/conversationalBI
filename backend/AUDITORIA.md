@@ -1,6 +1,6 @@
 # Auditoría ConversationalBI
 
-> **Fecha:** 23/07/2026 · **Actualizada:** 24/07/2026 (P0 + P1-backend + P2 + P3 resueltos — plan completado; ver [Historial](#10-historial))
+> **Fecha:** 23/07/2026 · **Actualizada:** 28/07/2026 (P0-P3 resueltos — plan completado; fase de experiencia conversacional añadida — ver [Historial](#10-historial))
 > **Stack:** Django 6.0 + DRF + SimpleJWT + Ollama + SQLite + Pandas · Vite + Vanilla JS + Tailwind (CDN) · Docker Compose
 > **Alcance:** Backend (`users`, `queries`, `dataset`, `services/ai`, `config`) + Frontend + Infra
 > **Método:** revisión línea por línea + verificación dinámica (`manage.py check`, `makemigrations --check`, ejecución de la suite de tests, introspección de firmas)
@@ -422,6 +422,20 @@
 
 ## 10. Historial
 
+- **28/07/2026 (Conversacional)** — **Nueva fase de producto: experiencia conversacional** (posterior al plan de auditoría). Backend + frontend + infra:
+  - **SQLite persistente por dataset:** `Dataset.db_path` + `DatabaseService` (materialización en el upload, conexión solo-lectura por URI, borrado junto al dataset). `SQLExecutor` y `AnalysisService` ejecutan contra la BD persistida — cierra el cuello de botella #1 de esta auditoría (releer y reconvertir el archivo en cada consulta). Materialización perezosa en `QueryService` para datasets anteriores a la feature (fallback al sandbox en memoria).
+  - **Respuestas en lenguaje natural:** `AnswerWriter` (segunda llamada al LLM, `temperature=0.3`, `num_predict=160`, stop sequences) redacta la respuesta desde las filas; campo `QueryResult.answer` expuesto en el serializer; respaldo determinista si el LLM falla o responde corto.
+  - **Contexto de conversación:** las últimas 3 consultas exitosas del usuario+dataset entran al prompt (`HISTORY_CONTEXT`, sección `CONVERSACIÓN PREVIA`) → preguntas de seguimiento ("y por mes?", "ahora por ciudad").
+  - **Reintento con 0 filas:** `_EmptyResult` + `EMPTY_RESULT_TEMPLATE` (pide revisar filtros contra los valores reales del esquema: tildes, mayúsculas, rangos de fecha).
+  - **Sugerencias al fallar:** `suggester` determinista construido desde el esquema (categórica+numérica → "X total por Y", fecha+numérica → "evolución mensual", etc.); la respuesta incluye `suggestions` y el frontend las muestra como chips clickeables — la conversación no muere en el error.
+  - **Esquema enriquecido:** `SchemaService._column_info` lista los valores reales de categóricas de baja cardinalidad (≤12) y rangos min–max de fechas y numéricas; el prompt incluye `row_count` por tabla. El LLM filtra con valores reales en lugar de inventarlos.
+  - **`ChartSelector.select`:** devuelve `{'chart_type', 'chart_config'}` con `xKey/yKey/nameKey/valueKey` (mismo contrato que el motor de análisis) — el frontend renderiza sin adivinar; `pick` queda como shim de compatibilidad.
+  - **Nuevo intent `SUMMARY`:** `engine.summary` (n, media, mediana, desv. estándar, min, max por columna numérica, excluyendo IDs) + keywords (`resumen`, `describe`, `panorama`, `overview`, ...).
+  - **SQLAgent endurecido:** `seed=42` (reproducibilidad), `num_predict=220`, stop sequences (`PREGUNTA:`, `Ejemplo:`, `/*`); `_clean` extrae el SQL de fences markdown o prosa circundante.
+  - **Prompt principal reescrito:** reglas explícitas de SQLite (fechas como texto ISO con `strftime`/`date`, `LOWER(col) LIKE`, comillas dobles en nombres con espacios/tildes, aliases, LIMIT en rankings y listados) + 3 ejemplos few-shot; plantilla de corrección con las mismas reglas.
+  - **Frontend consola:** biblioteca de fuentes en rail lateral (seleccionar/eliminar, contador, estado), bitácora de consultas clickeable (reabre el resultado vía `GET /queries/:id/`, estados ok/caché/fallo), mensajes del AI con la narrativa `answer`, chips de `suggestions`; nuevo sistema de diseño (superficie clara + rail oscuro, paleta petrol/signal, Space Grotesk/Inter/JetBrains Mono).
+  - **Infra:** timeouts 420→600 s en gunicorn/nginx/Ollama (cada consulta hace ahora dos llamadas al LLM: SQL + narrativa).
+  - **Tests:** 82 → **156 passed** (nuevos: `database_service`, `answer_writer`, `chart_selector`, `summary`, contexto de conversación, reintento con 0 filas, info de columnas, prompt builder). Lint y build del frontend verificados (276 KB).
 - **24/07/2026 (E2E)** — **Verificación de extremo a extremo con LLM real** (Ollama `qwen2.5-coder:7b`, Django :8000, Vite :5173, API llamada a través del proxy de Vite): register → login → upload CSV (status `ready`, schema correcto) → **pregunta real** (`ventas totales por ciudad` → `SELECT ciudad, SUM(ventas) ... GROUP BY ciudad` → resultados correctos, `chart_type: pie`, 1.2 s, 0 reintentos) → hit de caché con `query_id` nuevo → feedback 201 → historial sin `result_json` → refresh con rotación → logout con blacklist. **Dos bugs encontrados y corregidos:**
   1. `backend/.env` tenía `OLLAMA_HOST` y `KE_LLM_API_KEY` concatenados en una línea → el cliente LLM moría con "missing protocol".
   2. El validador rechazaba el `;` final que el LLM suele añadir (falso positivo de multi-statement) → ahora se normaliza un único `;` terminal antes de validar (+ test de regresión). Suite: **82 passed**.

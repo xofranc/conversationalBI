@@ -10,6 +10,7 @@ FORECAST = 'forecast'
 ANOMALY = 'anomaly'
 SEGMENT = 'segment'
 DRIVERS = 'drivers'
+SUMMARY = 'summary'
 
 _KEYWORDS = {
     FORECAST: (
@@ -34,6 +35,12 @@ _KEYWORDS = {
         'que afecta', 'qué explica', 'que explica', 'correlación', 'correlacion',
         'correlacionado', 'relaciona', 'relacionadas', 'impacta', 'determina',
         'mueve', 'detrás de', 'detras de',
+    ),
+    SUMMARY: (
+        'resumen', 'resúmenes', 'describe', 'describir', 'descripción',
+        'descripcion', 'estadísticas', 'estadisticas', 'estadístico',
+        'estadistico', 'panorama', 'visión general', 'vision general',
+        'vista general', 'overview',
     ),
 }
 

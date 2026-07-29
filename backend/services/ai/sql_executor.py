@@ -3,22 +3,23 @@ import sqlite3
 import os
 from django.conf import settings
 
+from apps.dataset.services.database_service import DatabaseService
 from apps.dataset.services.schema_service import SchemaService
 
 
 class SQLExecutor:
 
-    MAX_ROWS = 1000  
-    
+    MAX_ROWS = 1000
+
     @staticmethod
     def run(sql: str, dataset_id: int) -> tuple[list, list]:
         """
-        Ejecuta el SQL contra el archivo del dataset.
+        Ejecuta el SQL contra la base de datos persistida del dataset.
         Retorna (rows, columns) donde:
           - rows:    lista de dicts [{col: val}, ...]
           - columns: lista de dicts [{name, dtype}]
         """
-        
+
         from apps.dataset.repositories import DatasetRepository
 
         # Límite duro e ineludible: el SQL del LLM se envuelve como subquery.
@@ -27,12 +28,8 @@ class SQLExecutor:
         sql = sql.strip().rstrip(';')
         sql = f'SELECT * FROM ({sql}) LIMIT {SQLExecutor.MAX_ROWS}'
 
-        dataset   = DatasetRepository.get_by_id(dataset_id)
-        file_path = os.path.join(settings.MEDIA_ROOT, dataset.file_path)
-        ext       = os.path.splitext(file_path)[1].lower()
-
-        # Carga el archivo en SQLite en memoria
-        conn = SQLExecutor._load_into_sqlite(file_path, ext, dataset.schema_json)
+        dataset = DatasetRepository.get_by_id(dataset_id)
+        conn    = SQLExecutor._connect(dataset)
 
         try:
             df = pd.read_sql_query(sql, conn)
@@ -62,6 +59,20 @@ class SQLExecutor:
         if hasattr(val, 'item'):             # numpy int64, float64, bool_
             return val.item()
         return val
+
+    @staticmethod
+    def _connect(dataset) -> sqlite3.Connection:
+        """
+        Abre la BD SQLite persistida del dataset en modo solo-lectura.
+        Datasets anteriores a la materialización (sin db_path) usan el
+        sandbox en memoria como fallback.
+        """
+        if DatabaseService.exists(dataset.db_path):
+            return DatabaseService.connect_readonly(dataset.db_path)
+
+        file_path = os.path.join(settings.MEDIA_ROOT, dataset.file_path)
+        ext       = os.path.splitext(file_path)[1].lower()
+        return SQLExecutor._load_into_sqlite(file_path, ext, dataset.schema_json)
 
     @staticmethod
     def _load_into_sqlite(file_path: str, ext: str,

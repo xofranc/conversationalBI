@@ -23,6 +23,11 @@ class TestDeteccionDeIntencion:
         assert intent.detect('¿qué influye en el precio?') == 'drivers'
         assert intent.detect('¿qué variables se correlacionan con ingresos?') == 'drivers'
 
+    def test_resumen(self):
+        assert intent.detect('dame un resumen de los datos') == 'summary'
+        assert intent.detect('describe el dataset') == 'summary'
+        assert intent.detect('¿cuáles son las estadísticas de las columnas?') == 'summary'
+
     def test_consulta_sql_normal_no_es_analisis(self):
         assert intent.detect('ventas totales por ciudad') is None
         assert intent.detect('top 5 productos por ingresos') is None
