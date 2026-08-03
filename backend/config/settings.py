@@ -114,12 +114,15 @@ WSGI_APPLICATION = 'config.wsgi.application'
 import sys
 _TESTING = 'pytest' in sys.modules
 
+# .strip() defensivo: un espacio/salto de línea al pegar la URL en un
+# dashboard (Render, etc.) rompe psycopg2.connect() con "invalid dsn"
+# (django-environ tolera esos caracteres, psycopg2 no).
 if _TESTING:
-    DATABASE_URL        = env('CBI_TEST_DATABASE_URL', default='')
-    DATABASE_READER_URL = env('CBI_TEST_DATABASE_READER_URL', default='')
+    DATABASE_URL        = env('CBI_TEST_DATABASE_URL', default='').strip()
+    DATABASE_READER_URL = env('CBI_TEST_DATABASE_READER_URL', default='').strip()
 else:
-    DATABASE_URL        = env('DATABASE_URL', default='')
-    DATABASE_READER_URL = env('DATABASE_READER_URL', default='')
+    DATABASE_URL        = env('DATABASE_URL', default='').strip()
+    DATABASE_READER_URL = env('DATABASE_READER_URL', default='').strip()
 DATABASE_READER_ROLE = env('DATABASE_READER_ROLE', default='bi_reader')
 
 if DATABASE_URL:
