@@ -27,10 +27,10 @@ services:
         value: "false"
       - key: ALLOWED_HOSTS
         value: .onrender.com
-      # Se actualiza con la URL real de Vercel tras el paso 3.2
-      # (cambio de env var → redeploy automático, ~1 min).
+      # URLs permanentes del proyecto en Vercel (las preview con hash
+      # aleatorio cambian en cada deploy, no se whitelistean).
       - key: CORS_ALLOWED_ORIGINS
-        value: https://PENDIENTE-VERCEL.vercel.app
+        value: https://conversational-bi.vercel.app,https://conversational-bi-xofrancs-projects.vercel.app
       # Secretos: Render los pide al aplicar el blueprint.
       - key: DATABASE_URL
         sync: false
