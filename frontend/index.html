@@ -3,244 +3,410 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ConversationalBI</title>
+    <title>ConversationalBI — Pregúntale a tus datos. Exige el recibo.</title>
+    <meta name="description" content="BI conversacional con recibo verificable: sube un CSV, Excel o JSON y hazle preguntas en español. Cada respuesta llega con su prueba: SQL o método estadístico, motor y tiempo.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2312161C'/%3E%3Crect x='10' y='9' width='3' height='14' rx='1' transform='rotate(18 11.5 16)' fill='%233E8FA3'/%3E%3Crect x='15' y='9' width='3' height='14' rx='1' transform='rotate(18 16.5 16)' fill='%233E8FA3'/%3E%3Ccircle cx='23' cy='21' r='2.6' fill='%23C77B21'/%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   </head>
   <body class="bg-paper text-ink font-sans antialiased">
-    <div id="app" class="relative w-full min-h-screen lg:h-screen lg:overflow-hidden">
 
-      <!-- ═══════════════ Vista de autenticación ═══════════════ -->
-      <section id="auth-view" class="absolute inset-0 z-50 flex items-center justify-center bg-paper">
-        <div class="auth-container bg-card border border-line p-8 rounded-2xl w-full max-w-md mx-4 shadow-lift">
-          <div class="text-center mb-8">
-            <p class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-3">// bi conversacional · local</p>
-            <h1 class="font-display text-3xl font-semibold text-ink mb-2 tracking-tight">ConversationalBI</h1>
-            <p id="auth-subtitle" class="text-ink-soft text-sm">Inicia sesión para continuar</p>
+    <!-- ═══════════════ Cabecera ═══════════════ -->
+    <header class="fixed top-0 inset-x-0 z-50 bg-paper/85 backdrop-blur-sm border-b border-line">
+      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
+        <a href="/" class="flex items-baseline gap-2.5 min-w-0">
+          <span class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-petrol hidden sm:inline">// bi conversacional</span>
+          <span class="font-display font-semibold tracking-tight text-ink">ConversationalBI</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-6 font-mono text-[0.7rem] text-ink-soft" aria-label="Secciones">
+          <a href="#como-funciona" class="hover:text-petrol transition-colors">cómo funciona</a>
+          <a href="#repertorio" class="hover:text-petrol transition-colors">repertorio</a>
+          <a href="#recibo" class="hover:text-petrol transition-colors">el recibo</a>
+          <a href="#datos" class="hover:text-petrol transition-colors">datos</a>
+        </nav>
+        <a href="/app.html" class="shrink-0 px-4 py-2 bg-petrol hover:bg-petrol-dark text-white text-sm font-semibold rounded-lg transition-colors">
+          abrir consola →
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <!-- ═══════════════ Hero: la tesis ═══════════════ -->
+      <section class="pt-28 lg:pt-36 pb-14 px-6">
+        <div class="max-w-6xl mx-auto grid lg:grid-cols-[1.02fr_0.98fr] gap-12 lg:gap-16 items-center">
+
+          <div>
+            <p data-hero class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-5">// cada respuesta trae su recibo</p>
+            <h1 class="font-display text-[2.6rem] leading-[1.05] sm:text-5xl lg:text-[3.6rem] font-semibold tracking-tight text-ink mb-6">
+              <span data-hero-line class="block">Pregúntale a tus datos.</span>
+              <span data-hero-line class="block">Exige <span class="ticket-word">el recibo</span>.</span>
+            </h1>
+            <p data-hero class="text-ink-soft text-base lg:text-lg leading-relaxed max-w-lg mb-8">
+              Sube un CSV, Excel o JSON y conversa con él en español. Cada respuesta llega con su prueba:
+              el SQL exacto o el método estadístico, el motor que lo produjo y el tiempo que tardó.
+            </p>
+            <div data-hero class="flex flex-wrap items-center gap-4 mb-8">
+              <a href="/app.html" class="px-6 py-3 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-xl transition-colors">
+                abrir la consola →
+              </a>
+              <a href="#como-funciona" class="font-mono text-[0.75rem] text-ink-soft hover:text-petrol transition-colors">
+                ver cómo funciona ↓
+              </a>
+            </div>
+            <p data-hero class="font-mono text-[0.65rem] leading-relaxed text-ink-soft/80">
+              kimi-k2.7-code vía API&nbsp;&nbsp;·&nbsp;&nbsp;un schema postgres por dataset&nbsp;&nbsp;·&nbsp;&nbsp;el LLM no entrena con tus datos
+            </p>
           </div>
 
-          <form id="login-form" class="space-y-5">
-            <div>
-              <label for="email" class="block text-sm font-medium text-ink mb-1">Email</label>
-              <input type="email" id="email" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
+          <!-- Pieza firma: la consola, viva -->
+          <div data-hero id="demo-card" class="demo-card" role="img"
+               aria-label="Demostración animada: una pregunta en español se convierte en respuesta con recibo SQL y gráfico">
+            <div class="demo-head">
+              <span class="demo-dot" aria-hidden="true"></span>
+              <span class="font-mono text-[0.65rem] text-rail-text truncate">consola · ventas_2024.csv</span>
+              <span id="demo-scene" class="ml-auto font-mono text-[0.6rem] text-rail-text/50 shrink-0 pl-3">// en vivo</span>
             </div>
-            <div>
-              <label for="password" class="block text-sm font-medium text-ink mb-1">Contraseña</label>
-              <input type="password" id="password" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
+            <div id="demo-chat" class="demo-chat"></div>
+            <div class="demo-viz-wrap">
+              <svg id="demo-svg" viewBox="0 0 340 180" class="w-full h-auto block" aria-hidden="true"></svg>
             </div>
-            <button type="submit" class="w-full py-3 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-lg transition-colors">
-              Entrar
-            </button>
-            <p class="text-center text-sm text-ink-soft mt-4">
-              ¿No tienes cuenta? <a href="#" id="show-register" class="text-petrol hover:text-petrol-dark font-medium">Regístrate</a>
-            </p>
-          </form>
+            <div class="demo-foot">
+              <span id="demo-caption" class="font-mono text-[0.6rem] text-rail-text/55">// demostración con datos de ejemplo</span>
+            </div>
+          </div>
 
-          <form id="register-form" class="space-y-5 hidden">
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label for="reg-first-name" class="block text-sm font-medium text-ink mb-1">Nombre</label>
-                <input type="text" id="reg-first-name" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
-              </div>
-              <div>
-                <label for="reg-last-name" class="block text-sm font-medium text-ink mb-1">Apellido</label>
-                <input type="text" id="reg-last-name" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
-              </div>
-            </div>
-            <div>
-              <label for="reg-email" class="block text-sm font-medium text-ink mb-1">Email</label>
-              <input type="email" id="reg-email" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
-            </div>
-            <div>
-              <label for="reg-password" class="block text-sm font-medium text-ink mb-1">Contraseña</label>
-              <input type="password" id="reg-password" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
-            </div>
-            <button type="submit" class="w-full py-3 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-lg transition-colors">
-              Crear cuenta
-            </button>
-            <p class="text-center text-sm text-ink-soft mt-4">
-              ¿Ya tienes cuenta? <a href="#" id="show-login" class="text-petrol hover:text-petrol-dark font-medium">Inicia sesión</a>
-            </p>
-          </form>
-
-          <div id="auth-error" class="hidden text-danger text-sm text-center mt-4"></div>
         </div>
       </section>
 
-      <!-- ═══════════════ Consola ═══════════════ -->
-      <section id="dashboard-view" class="hidden opacity-0 lg:h-screen flex flex-col lg:flex-row">
-
-        <!-- Rail de instrumentos: fuentes de datos + bitácora -->
-        <aside class="w-full lg:w-72 shrink-0 lg:h-full bg-rail text-rail-text flex flex-col lg:overflow-hidden">
-          <div class="px-5 py-5 border-b border-rail-line">
-            <p class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-petrol-bright">// bi conversacional</p>
-            <h2 class="font-display text-lg font-semibold text-white tracking-tight">ConversationalBI</h2>
-          </div>
-
-          <div class="flex-1 overflow-y-auto custom-scrollbar min-h-0">
-            <!-- Fuentes de datos almacenadas -->
-            <div class="px-5 pt-5">
-              <div class="flex items-baseline justify-between mb-3">
-                <h3 class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-rail-text">Fuentes de datos</h3>
-                <span id="dataset-count" class="font-mono text-[0.6rem] text-rail-text/60">0</span>
-              </div>
-
-              <div id="drop-zone" role="button" tabindex="0" aria-label="Subir dataset" class="border border-dashed border-rail-line rounded-lg px-4 py-3.5 text-center hover:border-petrol-bright hover:bg-rail-raise transition-colors cursor-pointer group mb-3">
-                <p class="font-mono text-[0.7rem] text-rail-text group-hover:text-white transition-colors">
-                  <span class="text-petrol-bright">+</span> subir archivo
-                </p>
-                <p class="font-mono text-[0.6rem] text-rail-text/50 mt-0.5">csv · excel · json</p>
-                <input type="file" id="file-upload" class="hidden" accept=".csv,.xlsx,.json" aria-hidden="true">
-              </div>
-
-              <ul id="dataset-list" class="space-y-1.5 pb-5">
-                <!-- datasets inyectados por JS -->
-              </ul>
-            </div>
-
-            <!-- Bitácora de consultas -->
-            <div class="px-5 pt-4 pb-5 border-t border-rail-line">
-              <h3 class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-rail-text mb-3">Bitácora</h3>
-              <p id="history-empty" class="font-mono text-[0.65rem] text-rail-text/50 leading-relaxed">
-                Las consultas que hagas quedan registradas aquí.
-              </p>
-              <ul id="history-list" class="space-y-1">
-                <!-- historial inyectado por JS -->
-              </ul>
-            </div>
-          </div>
-
-          <div class="p-4 border-t border-rail-line">
-            <button id="logout-btn" class="w-full py-2 font-mono text-[0.7rem] text-rail-text hover:text-white transition-colors flex items-center justify-center gap-2">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-              salir
-            </button>
-          </div>
-        </aside>
-
-        <!-- Conversación -->
-        <section class="w-full lg:w-[26rem] shrink-0 lg:h-full bg-card border-r border-line flex flex-col h-[70vh] lg:overflow-hidden">
-          <div class="px-5 py-4 border-b border-line flex items-baseline justify-between">
-            <h3 class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-ink-soft">Conversación</h3>
-            <span id="chat-dataset" class="font-mono text-[0.6rem] text-petrol truncate max-w-[55%]">sin fuente activa</span>
-          </div>
-
-          <div id="chat-messages" aria-live="polite" class="flex-1 overflow-y-auto custom-scrollbar px-5 py-4 space-y-4 min-h-0">
-            <!-- Messages will be injected here -->
-          </div>
-
-          <div class="p-4 border-t border-line">
-            <div class="relative">
-              <input type="text" id="chat-input" class="w-full px-4 py-3 bg-paper border border-line rounded-xl focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink pr-12 transition-shadow" placeholder="Pregunta sobre tus datos...">
-              <button id="send-btn" aria-label="Enviar pregunta" class="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-petrol hover:text-petrol-dark disabled:opacity-40 disabled:cursor-not-allowed">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <!-- Informe -->
-        <main class="flex-1 lg:h-full overflow-y-auto custom-scrollbar relative">
-          <div class="max-w-4xl mx-auto px-6 lg:px-10 py-8 min-h-full flex flex-col">
-
-            <header class="mb-8 pb-6 border-b border-line">
-              <div class="flex justify-between items-baseline gap-2 flex-wrap mb-3">
-                <p class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-petrol">// informe de datos</p>
-                <p id="masthead-dataset" class="font-mono text-[0.65rem] tracking-wider text-ink-soft">sin fuente</p>
-              </div>
-              <div class="flex justify-between items-end flex-wrap gap-2">
-                <h1 class="font-display text-4xl font-semibold text-ink tracking-tight">Análisis conversacional</h1>
-                <p id="masthead-folio" class="font-mono text-xs text-ink-soft">—</p>
-              </div>
-            </header>
-
-            <div id="results-area" class="flex-1 flex flex-col gap-6 pb-8">
-              <!-- Empty State -->
-              <div id="empty-state" class="flex-1 flex flex-col items-center justify-center text-center py-10">
-                <div class="font-mono text-[0.65rem] text-ink-soft/60 mb-6 select-none" aria-hidden="true">
-                  <pre class="inline-block text-left leading-snug">┌──────────────────────────┐
-│  SELECT respuesta        │
-│  FROM   tus_datos        │
-│  WHERE  pregunta = '…'   │
-└──────────────────────────┘</pre>
-                </div>
-                <h2 class="font-display text-3xl font-semibold text-ink mb-3 tracking-tight">Hazle una pregunta a tus datos</h2>
-                <p class="text-ink-soft max-w-md mb-8 text-sm leading-relaxed">Sube un CSV, Excel o JSON en el panel de fuentes y pregunta en español. Cada respuesta llega con su recibo verificable: SQL o método estadístico, motor y tiempo.</p>
-                <p class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-ink-soft mb-3">prueba con</p>
-                <div class="flex flex-wrap justify-center gap-2 max-w-md">
-                  <button type="button" class="example-chip" data-question="Ventas totales por ciudad">ventas totales por ciudad</button>
-                  <button type="button" class="example-chip" data-question="Top 5 productos por ingresos">top 5 productos por ingresos</button>
-                  <button type="button" class="example-chip" data-question="Dame un resumen de los datos">resumen de los datos</button>
-                  <button type="button" class="example-chip" data-question="¿Cuál es el pronóstico de ventas para los próximos meses?">pronóstico de ventas</button>
-                  <button type="button" class="example-chip" data-question="¿Hay anomalías en los montos?">anomalías en los montos</button>
-                  <button type="button" class="example-chip" data-question="¿Qué factores explican el monto?">factores del monto</button>
-                </div>
-              </div>
-
-              <!-- Contenido del informe (oculto al inicio) -->
-              <div id="dashboard-content" class="hidden flex flex-col gap-6 w-full">
-
-                <!-- Cifras destacadas -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-                  <div class="bg-card border border-line rounded-xl p-5 shadow-card">
-                    <span class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-ink-soft">filas</span>
-                    <p id="kpi-rows" class="text-3xl font-semibold text-ink mt-1 font-mono tabular-nums">—</p>
-                  </div>
-                  <div class="bg-card border border-line rounded-xl p-5 shadow-card">
-                    <span class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-ink-soft">tiempo</span>
-                    <p id="kpi-time" class="text-3xl font-semibold text-ink mt-1 font-mono tabular-nums">—</p>
-                  </div>
-                  <div class="bg-card border border-line rounded-xl p-5 shadow-card border-l-2 border-l-petrol">
-                    <span class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-ink-soft">motor</span>
-                    <p id="kpi-source" class="text-2xl font-semibold text-petrol mt-1 font-mono truncate">—</p>
-                  </div>
-                </div>
-
-                <!-- Figura -->
-                <figure id="chart-container" class="bg-card border border-line rounded-xl p-6 shadow-card w-full hidden m-0">
-                  <figcaption class="mb-4">
-                    <span id="figure-label" class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-petrol">fig. 1</span>
-                    <p id="figure-title" class="text-sm font-medium text-ink mt-1"></p>
-                  </figcaption>
-                  <div class="h-[320px]">
-                    <canvas id="chart-1"></canvas>
-                  </div>
-                </figure>
-
-                <!-- Anexo de datos -->
-                <div id="table-container" class="bg-card border border-line rounded-xl overflow-hidden shadow-card">
-                  <div class="px-6 py-4 border-b border-line">
-                    <span class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-ink-soft">anexo</span>
-                    <p id="annex-caption" class="text-sm font-medium text-ink mt-0.5">Datos del resultado</p>
-                  </div>
-                  <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                      <thead class="font-mono text-[0.6rem] tracking-wider uppercase text-ink-soft bg-paper">
-                        <tr id="table-head"></tr>
-                      </thead>
-                      <tbody id="table-body" class="divide-y divide-line text-ink">
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </main>
-      </section>
-
-      <!-- Loading Overlay -->
-      <div id="global-loader" class="fixed inset-0 z-[100] bg-paper/90 backdrop-blur-sm flex flex-col items-center justify-center hidden opacity-0">
-        <div class="w-14 h-14 border-4 border-line border-t-petrol rounded-full animate-spin"></div>
-        <p id="loader-text" class="mt-4 text-petrol font-medium font-mono text-sm">Procesando...</p>
+      <!-- ═══════════════ Cinta de preguntas ═══════════════ -->
+      <div class="marquee border-y border-line py-3 overflow-hidden select-none" aria-hidden="true">
+        <div id="marquee-track" class="marquee-track font-mono text-[0.72rem] text-ink-soft">
+          <span class="marquee-chunk">ventas totales por ciudad&nbsp;&nbsp;·&nbsp;&nbsp;top 5 productos por ingresos&nbsp;&nbsp;·&nbsp;&nbsp;resumen de los datos&nbsp;&nbsp;·&nbsp;&nbsp;pronóstico de ventas&nbsp;&nbsp;·&nbsp;&nbsp;anomalías en los montos&nbsp;&nbsp;·&nbsp;&nbsp;factores del monto&nbsp;&nbsp;·&nbsp;&nbsp;¿y por mes?&nbsp;&nbsp;·&nbsp;&nbsp;ahora por ciudad&nbsp;&nbsp;·&nbsp;&nbsp;</span><span class="marquee-chunk">ventas totales por ciudad&nbsp;&nbsp;·&nbsp;&nbsp;top 5 productos por ingresos&nbsp;&nbsp;·&nbsp;&nbsp;resumen de los datos&nbsp;&nbsp;·&nbsp;&nbsp;pronóstico de ventas&nbsp;&nbsp;·&nbsp;&nbsp;anomalías en los montos&nbsp;&nbsp;·&nbsp;&nbsp;factores del monto&nbsp;&nbsp;·&nbsp;&nbsp;¿y por mes?&nbsp;&nbsp;·&nbsp;&nbsp;ahora por ciudad&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+        </div>
       </div>
 
-      <!-- Toast de notificaciones -->
-      <div id="toast" role="status" class="fixed bottom-6 right-6 z-[110] hidden max-w-sm px-4 py-3 rounded-xl text-sm font-medium shadow-lift"></div>
-    </div>
+      <!-- ═══════════════ Cómo funciona ═══════════════ -->
+      <section id="como-funciona" class="scroll-mt-20 px-6 py-20 lg:py-28">
+        <div class="max-w-6xl mx-auto">
+          <p data-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4">// cómo funciona</p>
+          <h2 data-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-4 max-w-xl">
+            Tres movimientos, ninguna caja negra
+          </h2>
+          <p data-reveal class="text-ink-soft max-w-xl mb-12 lg:mb-16">
+            Del archivo a la respuesta hay un solo camino, y puedes inspeccionarlo entero.
+          </p>
 
-    <script type="module" src="/src/main.js"></script>
+          <div class="grid md:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden" data-reveal-group>
+            <div class="bg-card p-7 lg:p-9">
+              <p class="font-mono text-[0.65rem] text-petrol mb-5">01</p>
+              <h3 class="font-display text-xl font-semibold tracking-tight text-ink mb-3">Sube</h3>
+              <p class="text-sm text-ink-soft leading-relaxed mb-5">
+                Arrastra un CSV, Excel o JSON al panel de fuentes. Se materializa en su propia base
+                SQLite y se infiere el esquema: columnas, tipos y valores de ejemplo.
+              </p>
+              <p class="font-mono text-[0.62rem] text-ink-soft/70">media/dbs/dataset_&lt;id&gt;.sqlite</p>
+            </div>
+            <div class="bg-card p-7 lg:p-9">
+              <p class="font-mono text-[0.65rem] text-petrol mb-5">02</p>
+              <h3 class="font-display text-xl font-semibold tracking-tight text-ink mb-3">Pregunta</h3>
+              <p class="text-sm text-ink-soft leading-relaxed mb-5">
+                Escribe como le hablarías a un analista. Un detector de intención elige el camino:
+                SQL generado por un LLM local, o el motor estadístico si pides pronósticos,
+                anomalías o segmentos.
+              </p>
+              <p class="font-mono text-[0.62rem] text-ink-soft/70">recuerda las últimas 3 consultas — «¿y por mes?» funciona</p>
+            </div>
+            <div class="bg-card p-7 lg:p-9">
+              <p class="font-mono text-[0.65rem] text-petrol mb-5">03</p>
+              <h3 class="font-display text-xl font-semibold tracking-tight text-ink mb-3">Verifica</h3>
+              <p class="text-sm text-ink-soft leading-relaxed mb-5">
+                Toda respuesta trae su recibo: SQL o método, motor, tiempo y si vino del caché.
+                Si una pregunta falla, recibes sugerencias para reformularla.
+              </p>
+              <p class="font-mono text-[0.62rem] text-ink-soft/70">bitácora persistente por fuente de datos</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════ Repertorio ═══════════════ -->
+      <section id="repertorio" class="scroll-mt-20 px-6 py-20 lg:py-28 bg-card border-y border-line">
+        <div class="max-w-6xl mx-auto">
+          <p data-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4">// repertorio</p>
+          <h2 data-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-4 max-w-xl">
+            Seis formas de responder
+          </h2>
+          <p data-reveal class="text-ink-soft max-w-xl mb-12 lg:mb-16">
+            La misma pregunta en español activa el motor correcto. Sin comandos que memorizar:
+            estas son las palabras gatillo reales.
+          </p>
+
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-reveal-group>
+
+            <div class="repertoire-card">
+              <p class="font-mono text-[0.6rem] text-petrol mb-4">camino: llm → sql</p>
+              <h3 class="font-display text-lg font-semibold tracking-tight text-ink mb-2.5">Consulta directa</h3>
+              <p class="text-sm text-ink-soft leading-relaxed mb-5">
+                El LLM local escribe SQL sobre tu esquema, lo valida y lo ejecuta en solo lectura.
+                Una segunda llamada redacta la narrativa.
+              </p>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="trigger-chip">ventas por ciudad</span>
+                <span class="trigger-chip">top 5 productos</span>
+                <span class="trigger-chip">¿y por mes?</span>
+              </div>
+            </div>
+
+            <div class="repertoire-card">
+              <p class="font-mono text-[0.6rem] text-petrol mb-4">chart_type: 'forecast'</p>
+              <h3 class="font-display text-lg font-semibold tracking-tight text-ink mb-2.5">Pronóstico</h3>
+              <p class="text-sm text-ink-soft leading-relaxed mb-5">
+                ExponentialSmoothing con tendencia sobre tu serie temporal, banda de confianza
+                de ±1.96σ y 6 períodos hacia adelante.
+              </p>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="trigger-chip">pronóstico</span>
+                <span class="trigger-chip">proyección</span>
+                <span class="trigger-chip">próximos meses</span>
+              </div>
+            </div>
+
+            <div class="repertoire-card">
+              <p class="font-mono text-[0.6rem] text-petrol mb-4">chart_type: 'anomaly'</p>
+              <h3 class="font-display text-lg font-semibold tracking-tight text-ink mb-2.5">Anomalías</h3>
+              <p class="text-sm text-ink-soft leading-relaxed mb-5">
+                IsolationForest si hay varias columnas numéricas; z-score robusto (mediana/MAD)
+                si hay una. Hasta 20 filas marcadas, ordenadas por score.
+              </p>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="trigger-chip">anomalías</span>
+                <span class="trigger-chip">atípicos</span>
+                <span class="trigger-chip">fuera de lo normal</span>
+              </div>
+            </div>
+
+            <div class="repertoire-card">
+              <p class="font-mono text-[0.6rem] text-petrol mb-4">chart_type: 'segment'</p>
+              <h3 class="font-display text-lg font-semibold tracking-tight text-ink mb-2.5">Segmentación</h3>
+              <p class="text-sm text-ink-soft leading-relaxed mb-5">
+                KMeans escalado sobre las dos columnas de mayor varianza;
+                hasta 300 puntos coloreados por segmento.
+              </p>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="trigger-chip">segmentos</span>
+                <span class="trigger-chip">clusters</span>
+                <span class="trigger-chip">perfiles de</span>
+              </div>
+            </div>
+
+            <div class="repertoire-card">
+              <p class="font-mono text-[0.6rem] text-petrol mb-4">chart_type: 'drivers'</p>
+              <h3 class="font-display text-lg font-semibold tracking-tight text-ink mb-2.5">Factores</h3>
+              <p class="text-sm text-ink-soft leading-relaxed mb-5">
+                Correlación de Spearman de cada columna contra tu métrica;
+                los 5 factores más fuertes, con su signo.
+              </p>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="trigger-chip">qué influye</span>
+                <span class="trigger-chip">qué explica</span>
+                <span class="trigger-chip">correlación</span>
+              </div>
+            </div>
+
+            <div class="repertoire-card">
+              <p class="font-mono text-[0.6rem] text-petrol mb-4">chart_type: 'table'</p>
+              <h3 class="font-display text-lg font-semibold tracking-tight text-ink mb-2.5">Resumen</h3>
+              <p class="text-sm text-ink-soft leading-relaxed mb-5">
+                Estadísticos descriptivos directos — n, media, mediana, desviación y extremos —
+                sin gastar una llamada al LLM.
+              </p>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="trigger-chip">resumen</span>
+                <span class="trigger-chip">describe</span>
+                <span class="trigger-chip">visión general</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════ El sistema en cifras ═══════════════ -->
+      <section class="px-6 py-16 lg:py-20 border-b border-line">
+        <div class="max-w-6xl mx-auto">
+          <p data-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-10">// el sistema en cifras</p>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-10" data-reveal-group>
+            <div>
+              <p class="font-mono text-4xl lg:text-5xl font-semibold text-ink tabular-nums"><span data-count="2">0</span></p>
+              <p class="font-mono text-[0.62rem] tracking-wider uppercase text-ink-soft mt-2 leading-relaxed">llamadas al modelo<br>por consulta</p>
+            </div>
+            <div>
+              <p class="font-mono text-4xl lg:text-5xl font-semibold text-ink tabular-nums"><span data-count="3">0</span></p>
+              <p class="font-mono text-[0.62rem] tracking-wider uppercase text-ink-soft mt-2 leading-relaxed">consultas de memoria<br>conversacional</p>
+            </div>
+            <div>
+              <p class="font-mono text-4xl lg:text-5xl font-semibold text-ink tabular-nums"><span data-count="6">0</span></p>
+              <p class="font-mono text-[0.62rem] tracking-wider uppercase text-ink-soft mt-2 leading-relaxed">períodos de horizonte<br>de pronóstico</p>
+            </div>
+            <div>
+              <p class="font-mono text-4xl lg:text-5xl font-semibold text-ink tabular-nums"><span data-count="20">0</span></p>
+              <p class="font-mono text-[0.62rem] tracking-wider uppercase text-ink-soft mt-2 leading-relaxed">anomalías máx.<br>por consulta</p>
+            </div>
+            <div>
+              <p class="font-mono text-4xl lg:text-5xl font-semibold text-ink tabular-nums"><span data-count="300">0</span></p>
+              <p class="font-mono text-[0.62rem] tracking-wider uppercase text-ink-soft mt-2 leading-relaxed">puntos por<br>segmento</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════ El recibo ═══════════════ -->
+      <section id="recibo" class="scroll-mt-20 px-6 py-20 lg:py-28">
+        <div class="max-w-6xl mx-auto">
+          <p data-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4">// el recibo</p>
+          <h2 data-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-4 max-w-xl">
+            Ninguna respuesta sin prueba
+          </h2>
+          <p data-reveal class="text-ink-soft max-w-xl mb-12 lg:mb-16">
+            Cada respuesta de la consola llega acompañada de su recibo. Esta es su anatomía:
+          </p>
+
+          <div class="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)_minmax(0,1fr)] gap-8 lg:gap-10 items-center">
+
+            <!-- Notas izquierda -->
+            <div class="space-y-8 lg:text-right order-2 lg:order-1" data-reveal-group>
+              <div class="note">
+                <p class="note-index">[1]</p>
+                <p class="text-sm text-ink-soft leading-relaxed">
+                  El tiempo real de ejecución de la consulta — no una estimación.
+                </p>
+              </div>
+              <div class="note">
+                <p class="note-index">[2]</p>
+                <p class="text-sm text-ink-soft leading-relaxed">
+                  El motor que respondió. Si dice caché, nadie recalculó: la versión
+                  del dataset invalida sola las respuestas viejas.
+                </p>
+              </div>
+            </div>
+
+            <!-- El artefacto -->
+            <div class="order-1 lg:order-2" data-reveal>
+              <div class="receipt-artifact shadow-lift">
+                <div class="receipt-artifact-bar">
+                  <span class="font-mono text-[0.72rem] text-ink-soft">recibo · <span class="text-ink font-semibold">0.42s</span><sup class="receipt-marker">1</sup></span>
+                  <span class="sql-badge model">kimi-k2.7-code<sup class="receipt-marker">2</sup></span>
+                </div>
+                <pre class="receipt-artifact-sql">SELECT ciudad, SUM(monto) AS total
+FROM ventas
+GROUP BY ciudad
+ORDER BY total DESC;<sup class="receipt-marker">3</sup></pre>
+                <div class="receipt-artifact-foot">
+                  <span class="font-mono text-[0.62rem] text-ink-soft/70">bitácora · consulta #128 · ventas_2024.csv<sup class="receipt-marker">4</sup></span>
+                </div>
+                <span id="receipt-stamp" class="receipt-stamp" aria-hidden="true">verificable</span>
+              </div>
+            </div>
+
+            <!-- Notas derecha -->
+            <div class="space-y-8 order-3" data-reveal-group>
+              <div class="note">
+                <p class="note-index">[3]</p>
+                <p class="text-sm text-ink-soft leading-relaxed">
+                  El SQL exacto que corrió sobre tus datos. Cópialo y compruébalo tú mismo.
+                </p>
+              </div>
+              <div class="note">
+                <p class="note-index">[4]</p>
+                <p class="text-sm text-ink-soft leading-relaxed">
+                  Toda consulta queda en la bitácora: éxito, fallo o caché, con su resultado.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════ Tus datos, bajo control ═══════════════ -->
+      <section id="datos" class="scroll-mt-20 bg-rail text-rail-text px-6 py-20 lg:py-28">
+        <div class="max-w-6xl mx-auto">
+          <p data-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol-bright mb-4">// tus datos, bajo control</p>
+          <h2 data-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-white mb-12 lg:mb-16 max-w-xl">
+            El LLM no entrena con tus datos
+          </h2>
+
+          <div class="grid lg:grid-cols-[1fr_0.9fr] gap-12 lg:gap-16 items-start">
+            <div class="grid sm:grid-cols-2 gap-x-8 gap-y-10" data-reveal-group>
+              <div>
+                <p class="font-mono text-[0.62rem] tracking-[0.2em] uppercase text-petrol-bright mb-2.5">modelo</p>
+                <p class="text-sm leading-relaxed text-rail-text">
+                  kimi-k2.7-code vía API OpenAI-compatible con retención 0 días:
+                  los prompts no se almacenan ni entrenan modelos.
+                </p>
+              </div>
+              <div>
+                <p class="font-mono text-[0.62rem] tracking-[0.2em] uppercase text-petrol-bright mb-2.5">datos</p>
+                <p class="text-sm leading-relaxed text-rail-text">
+                  Cada dataset se materializa en un schema Postgres aislado.
+                  Las consultas corren con un rol de solo-lectura.
+                </p>
+              </div>
+              <div>
+                <p class="font-mono text-[0.62rem] tracking-[0.2em] uppercase text-petrol-bright mb-2.5">caché</p>
+                <p class="text-sm leading-relaxed text-rail-text">
+                  1 hora por pregunta, invalidada al reprocesar la fuente.
+                  Un lock anti-stampede de 60 s evita duplicar llamadas al modelo.
+                </p>
+              </div>
+              <div>
+                <p class="font-mono text-[0.62rem] tracking-[0.2em] uppercase text-petrol-bright mb-2.5">bitácora</p>
+                <p class="text-sm leading-relaxed text-rail-text">
+                  Éxitos, fallos y hits de caché quedan persistidos con su recibo.
+                  Tus métricas no mienten.
+                </p>
+              </div>
+            </div>
+
+            <div data-reveal class="bg-rail-raise border border-rail-line rounded-xl p-6 overflow-x-auto">
+              <p class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-rail-text/60 mb-4">arquitectura · render + supabase</p>
+              <pre class="font-mono text-[0.68rem] leading-relaxed text-rail-text" aria-label="Diagrama de arquitectura: navegador, django, API del LLM y Postgres">┌───────────┐  /api   ┌─────────┐   prompts   ┌─────────┐
+ │ navegador │ ──────► │ django  │ ──────────► │ LLM API │
+ └───────────┘         └────┬────┘  reten. 0   └─────────┘
+                            │
+                            ▼
+                   supabase postgres
+                 schema ds_‹id› por dataset</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════ Cierre ═══════════════ -->
+      <section class="px-6 py-20 lg:py-28">
+        <div class="max-w-6xl mx-auto text-center">
+          <p data-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-5">// la primera pregunta es tuya</p>
+          <h2 data-reveal class="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-ink mb-8">
+            ¿Qué le preguntarías primero?
+          </h2>
+          <div data-reveal>
+            <a href="/app.html" class="inline-block px-8 py-4 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-xl transition-colors">
+              abrir la consola →
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ═══════════════ Colofón ═══════════════ -->
+    <footer class="border-t border-line px-6 py-8">
+      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p class="font-mono text-[0.62rem] text-ink-soft/80">ConversationalBI · TFG · cada respuesta con su recibo</p>
+        <p class="font-mono text-[0.62rem] text-ink-soft/60">Django + Postgres + Chart.js + GSAP</p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/home.js"></script>
   </body>
 </html>

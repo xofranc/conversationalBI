@@ -34,8 +34,8 @@ class DatasetService:
 
             abs_path = os.path.join(settings.MEDIA_ROOT, dataset.file_path)
 
-            # Materializa la BD SQLite persistente: las consultas y los
-            # análisis se ejecutan contra ella, sin releer el archivo.
+            # Materializa el schema Postgres del dataset: las consultas y
+            # los análisis se ejecutan contra él, sin releer el archivo.
             dataset.db_path = DatabaseService.materialize(dataset.id, abs_path)
             dataset.save(update_fields=["db_path", "updated_at"])
 

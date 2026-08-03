@@ -7,22 +7,23 @@ import pytest
 from apps.dataset.models import Dataset
 from apps.queries.models import QueryHistory
 from apps.queries.services.query_service import QueryService
+from conftest import requires_postgres
 from services.analysis import AnalysisService, engine
 
-pytestmark = pytest.mark.django_db
+pytestmark = [pytest.mark.django_db, requires_postgres]
 
 
 @pytest.fixture(autouse=True)
 def _writer_mockeado():
-    """La narrativa sale del LLM: se mockea para no depender de Ollama."""
+    """La narrativa sale del LLM: se mockea para no depender de la API."""
     with patch('services.analysis.analysis_service.AnswerWriter') as mock_writer_cls:
         mock_writer_cls.return_value.write.return_value = 'respuesta de prueba'
         yield
 
 
 @pytest.fixture
-def csv_mensual(test_user, tmp_path, settings):
-    """Dataset READY con 24 meses de ventas en un MEDIA_ROOT temporal."""
+def csv_mensual(test_user, tmp_path, settings, materialized_dataset):
+    """Dataset READY con 24 meses de ventas, materializado en Postgres."""
     settings.MEDIA_ROOT = str(tmp_path)
     fechas = pd.date_range('2023-01-31', periods=24, freq='ME').strftime('%Y-%m-%d')
     df = pd.DataFrame({
@@ -31,13 +32,14 @@ def csv_mensual(test_user, tmp_path, settings):
         'cantidad': [10 + i % 3 for i in range(24)],
     })
     df.to_csv(tmp_path / 'ventas.csv', index=False)
-    return Dataset.objects.create(
+    ds = Dataset.objects.create(
         user=test_user,
         name='ventas',
         file_path='ventas.csv',
         status=Dataset.Status.READY,
         schema_json={'tables': [{'name': 'main', 'row_count': 24, 'columns': []}]},
     )
+    return materialized_dataset(ds)
 
 
 class TestAnalysisService:
@@ -52,7 +54,7 @@ class TestAnalysisService:
         assert res['chart_config']['yKey'] == 'monto'
         assert len(res['rows']) == 24 + 6
 
-    def test_error_de_negocio_es_consulta_fallida_no_excepcion(self, test_user, tmp_path, settings):
+    def test_error_de_negocio_es_consulta_fallida_no_excepcion(self, test_user, tmp_path, settings, materialized_dataset):
         """Dataset sin fechas: el forecast responde con fallo en español, no con 500."""
         settings.MEDIA_ROOT = str(tmp_path)
         (tmp_path / 'sin_fechas.csv').write_text('ciudad,monto\nBogotá,100\nCali,200\n')
@@ -61,6 +63,7 @@ class TestAnalysisService:
             status=Dataset.Status.READY,
             schema_json={'tables': [{'name': 'main', 'row_count': 2, 'columns': []}]},
         )
+        ds = materialized_dataset(ds)
         res = AnalysisService.execute('forecast', ds.id, 'pronóstico')
 
         assert res['success'] is False

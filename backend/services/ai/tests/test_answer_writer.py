@@ -18,7 +18,7 @@ class TestAnswerWriter:
 
     def test_llm_caido_usa_respaldo_determinista(self):
         writer = AnswerWriter.__new__(AnswerWriter)
-        writer.llm = _LLMFalso(Exception('ollama caído'))
+        writer.llm = _LLMFalso(Exception('LLM caído'))
         rows = [{'ciudad': 'Cali', 'total': 90000000}]
 
         answer = writer.write('¿ciudad top?', 'SELECT ...', rows, 1)
@@ -46,7 +46,7 @@ class _LLMFalso:
     def __init__(self, respuesta):
         self.respuesta = respuesta
 
-    def invoke(self, prompt):
+    def complete(self, prompt):
         if isinstance(self.respuesta, Exception):
             raise self.respuesta
         return self.respuesta

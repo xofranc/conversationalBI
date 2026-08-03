@@ -1,20 +1,16 @@
 # services/analysis/analysis_service.py
 """
-Fachada Django del motor de análisis: carga el archivo del dataset con el
-loader compartido (SchemaService.read_tables — el mismo del sandbox SQLite)
-y delega el cómputo al engine puro.
+Fachada Django del motor de análisis: carga las tablas del schema Postgres
+del dataset (DatabaseService.read_tables — la misma fuente que el SQL de la
+consola) y delega el cómputo al engine puro.
 
 Retorna el mismo contrato que AIQueryService.execute + chart_config y
 method, para que QueryService no distinga un motor del otro.
 """
 import logging
-import os
 import time
 
-from django.conf import settings
-
 from apps.dataset.services.database_service import DatabaseService
-from apps.dataset.services.schema_service import SchemaService
 from services.ai.answer_writer import AnswerWriter
 from services.ai.suggester import suggest
 
@@ -42,14 +38,9 @@ class AnalysisService:
         from apps.dataset.repositories import DatasetRepository
         dataset = DatasetRepository.get_by_id(dataset_id)
 
-        # Las tablas se leen de la BD SQLite persistida (misma fuente que
-        # el sandbox SQL); datasets antiguos sin db_path usan el archivo.
-        if DatabaseService.exists(dataset.db_path):
-            tables = DatabaseService.read_tables(dataset.db_path)
-        else:
-            file_path = os.path.join(settings.MEDIA_ROOT, dataset.file_path)
-            ext = os.path.splitext(file_path)[1].lower()
-            tables = SchemaService.read_tables(file_path, ext)
+        # Las tablas se leen del schema Postgres del dataset (misma fuente
+        # que el SQL de la consola); QueryService garantiza la materialización.
+        tables = DatabaseService.read_tables(dataset.db_path)
 
         base = {
             'sql': '',

@@ -4,14 +4,15 @@ import pandas as pd
 import pytest
 
 from apps.dataset.models import Dataset
+from conftest import requires_postgres
 from services.ai.sql_executor import SQLExecutor
 
 pytestmark = pytest.mark.django_db
 
 
 @pytest.fixture
-def csv_dataset(test_user, tmp_path, settings):
-    """Dataset READY con un CSV real de 5 filas en un MEDIA_ROOT temporal."""
+def csv_dataset(test_user, tmp_path, settings, materialized_dataset):
+    """Dataset READY con un CSV real de 5 filas, materializado en Postgres."""
     settings.MEDIA_ROOT = str(tmp_path)
     (tmp_path / 'ventas.csv').write_text(
         'ciudad,monto\n'
@@ -21,15 +22,17 @@ def csv_dataset(test_user, tmp_path, settings):
         'Cali,80.0\n'
         'Bogota,300.0\n'
     )
-    return Dataset.objects.create(
+    ds = Dataset.objects.create(
         user=test_user,
         name='ventas',
         file_path='ventas.csv',
         status=Dataset.Status.READY,
         schema_json={'tables': [{'name': 'main', 'row_count': 5, 'columns': []}]},
     )
+    return materialized_dataset(ds)
 
 
+@requires_postgres
 class TestLimiteDuro:
 
     def test_sql_sin_limit_se_trunca_a_max_rows(self, csv_dataset, monkeypatch):
@@ -69,6 +72,7 @@ class TestNormalizacionJSON:
         assert SQLExecutor._json_safe(np.int64(5)) == 5
         assert SQLExecutor._json_safe(np.float64(1.5)) == 1.5
 
+    @requires_postgres
     def test_rows_son_json_serializables(self, csv_dataset):
         import json
         rows, columns = SQLExecutor.run('SELECT * FROM main', csv_dataset.id)
@@ -76,18 +80,19 @@ class TestNormalizacionJSON:
         json.dumps(columns)
 
 
+@requires_postgres
 class TestJSONMultiTabla:
-    """El sandbox carga las mismas tablas que promete el schema (loader compartido)."""
+    """El schema Postgres carga las mismas tablas que promete el schema_json."""
 
     @pytest.fixture
-    def json_dataset(self, test_user, tmp_path, settings):
+    def json_dataset(self, test_user, tmp_path, settings, materialized_dataset):
         import json as json_lib
         settings.MEDIA_ROOT = str(tmp_path)
         (tmp_path / 'tienda.json').write_text(json_lib.dumps({
             'ventas':    [{'ciudad': 'Bogota', 'monto': 100}, {'ciudad': 'Cali', 'monto': 50}],
             'productos': [{'nombre': 'A', 'precio': 10}],
         }))
-        return Dataset.objects.create(
+        ds = Dataset.objects.create(
             user=test_user,
             name='tienda',
             file_path='tienda.json',
@@ -97,9 +102,10 @@ class TestJSONMultiTabla:
                 {'name': 'productos', 'row_count': 1, 'columns': []},
             ]},
         )
+        return materialized_dataset(ds)
 
     def test_ambas_tablas_son_consultables(self, json_dataset):
-        rows, _ = SQLExecutor.run('SELECT * FROM ventas WHERE ciudad = "Cali"', json_dataset.id)
+        rows, _ = SQLExecutor.run("SELECT * FROM ventas WHERE ciudad = 'Cali'", json_dataset.id)
         assert rows == [{'ciudad': 'Cali', 'monto': 50}]
 
         rows, _ = SQLExecutor.run('SELECT nombre FROM productos', json_dataset.id)

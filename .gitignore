@@ -28,3 +28,5 @@ media/
 graphify-out/
 vault/
 vault.bak/
+tools/knowledge-engine/knowledge-out/cache
+tools/knowledge-engine/knowledge-out/nodes

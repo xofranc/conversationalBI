@@ -1,36 +1,29 @@
 # ConversationalBI — stack completo
 #
-# Arquitectura real (decisión 24/07/2026, auditoría ítem 16):
-#   - Django sirve la API con gunicorn y persiste en **SQLite** (el código no usa Postgres).
-#   - Caché **LocMem** (el código no usa Redis). Servicios huérfanos eliminados.
-#   - El "worker de IA" no existe: el motor IA corre en-proceso vía Ollama.
-#   - Ollama solo es accesible desde la red interna (no se publica al host).
+# Arquitectura real (migración 31/07/2026):
+#   - Django sirve la API con gunicorn y persiste en SQLite local
+#     (Postgres/Supabase llega con las env vars de la Fase 2).
+#   - Caché **LocMem** (el código no usa Redis).
+#   - El motor IA corre en-proceso contra una API OpenAI-compatible
+#     (OpenCode Go por defecto; Groq/OpenRouter = cambiar env vars).
+#     Ya no hay servicio Ollama.
 #
 # Uso:
-#   cp backend/.env.example backend/.env   # primera vez
+#   cp backend/.env.example backend/.env   # primera vez (rellenar LLM_API_KEY)
 #   docker compose up --build
-#   docker compose exec ollama ollama pull qwen2.5-coder:7b   # primera vez
 
 services:
   django:
     build: ./backend
     env_file: ./backend/.env
     environment:
-      OLLAMA_HOST: http://ollama:11434
-      # Cada consulta hace dos llamadas al LLM (SQL + narrativa). En CPU
-      # sin GPU la primera (con carga del modelo a RAM) tarda varios
-      # minutos; el timeout debe cubrir carga + generación completa.
-      OLLAMA_TIMEOUT: 600
       ALLOWED_HOSTS: localhost,127.0.0.1,django
     ports:
       - "8000:8000"
     volumes:
       - media_data:/app/media        # uploads de datasets persisten
-    depends_on:
-      ollama:
-        condition: service_started
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/admin/login/')"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health/')"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -44,23 +37,5 @@ services:
       django:
         condition: service_healthy
 
-  ollama:
-    image: ollama/ollama:0.6.2
-    environment:
-      # Mantener el modelo cargado: sin GPU la carga en frío tarda minutos
-      OLLAMA_KEEP_ALIVE: 24h
-    volumes:
-      - ollama_models:/root/.ollama
-    # Sin puertos publicados: la API de Ollama no tiene autenticación.
-    # Para GPU (opcional):
-    # deploy:
-    #   resources:
-    #     reservations:
-    #       devices:
-    #         - driver: nvidia
-    #           count: all
-    #           capabilities: [gpu]
-
 volumes:
   media_data:
-  ollama_models:

@@ -1,7 +1,4 @@
 import pandas as pd
-import sqlite3
-import os
-from django.conf import settings
 
 from apps.dataset.services.database_service import DatabaseService
 from apps.dataset.services.schema_service import SchemaService
@@ -14,7 +11,7 @@ class SQLExecutor:
     @staticmethod
     def run(sql: str, dataset_id: int) -> tuple[list, list]:
         """
-        Ejecuta el SQL contra la base de datos persistida del dataset.
+        Ejecuta el SQL contra el schema Postgres del dataset.
         Retorna (rows, columns) donde:
           - rows:    lista de dicts [{col: val}, ...]
           - columns: lista de dicts [{name, dtype}]
@@ -29,7 +26,7 @@ class SQLExecutor:
         sql = f'SELECT * FROM ({sql}) LIMIT {SQLExecutor.MAX_ROWS}'
 
         dataset = DatasetRepository.get_by_id(dataset_id)
-        conn    = SQLExecutor._connect(dataset)
+        conn    = DatabaseService.connect_readonly(dataset.db_path)
 
         try:
             df = pd.read_sql_query(sql, conn)
@@ -61,34 +58,7 @@ class SQLExecutor:
         return val
 
     @staticmethod
-    def _connect(dataset) -> sqlite3.Connection:
-        """
-        Abre la BD SQLite persistida del dataset en modo solo-lectura.
-        Datasets anteriores a la materialización (sin db_path) usan el
-        sandbox en memoria como fallback.
-        """
-        if DatabaseService.exists(dataset.db_path):
-            return DatabaseService.connect_readonly(dataset.db_path)
-
-        file_path = os.path.join(settings.MEDIA_ROOT, dataset.file_path)
-        ext       = os.path.splitext(file_path)[1].lower()
-        return SQLExecutor._load_into_sqlite(file_path, ext, dataset.schema_json)
-
-    @staticmethod
-    def _load_into_sqlite(file_path: str, ext: str,
-                           schema_json: dict) -> sqlite3.Connection:
-        """
-        Carga las tablas del archivo en SQLite en memoria usando el
-        loader compartido (SchemaService.read_tables): las tablas del
-        sandbox coinciden exactamente con las del schema_json.
-        """
-        conn = sqlite3.connect(':memory:')
-        for name, df in SchemaService.read_tables(file_path, ext).items():
-            df.to_sql(name, conn, index=False, if_exists='replace')
-        return conn
-
-    @staticmethod
     def _dtype(series: pd.Series) -> str:
         # Misma heurística que el schema (incluye detección de fechas):
-        # un `date` del schema sigue siendo `date` tras el roundtrip por SQLite
+        # un `date` del schema sigue siendo `date` tras el roundtrip por Postgres
         return SchemaService.infer_dtype(series)

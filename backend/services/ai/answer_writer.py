@@ -1,8 +1,8 @@
 import logging
 
-from langchain_ollama import OllamaLLM
 from django.conf import settings
 
+from .llm_client import LLMClient
 from .prompt_builder import PromptBuilder
 
 logger = logging.getLogger(__name__)
@@ -17,13 +17,11 @@ class AnswerWriter:
     """
 
     def __init__(self):
-        self.llm = OllamaLLM(
-            model         = getattr(settings, 'OLLAMA_MODEL', 'qwen2.5-coder:7b'),
-            base_url      = getattr(settings, 'OLLAMA_HOST', 'http://localhost:11434'),
-            temperature   = 0.3,  # un punto de soltura para prosa natural
-            num_predict   = 160,  # 2-4 frases bastan; en CPU cada token cuesta
-            stop          = ['\n\n', 'PREGUNTA:', 'Pregunta:', 'INSTRUCCIONES:'],
-            client_kwargs = {'timeout': getattr(settings, 'OLLAMA_TIMEOUT', 60)},
+        self.llm = LLMClient(
+            model       = settings.LLM_ANSWER_MODEL,
+            temperature = 0.3,  # un punto de soltura para prosa natural
+            max_tokens  = 160,  # 2-4 frases bastan
+            stop        = ['\n\n', 'PREGUNTA:', 'Pregunta:', 'INSTRUCCIONES:'],
         )
 
     def write(self, question: str, sql: str, rows: list, row_count: int) -> str:
@@ -31,7 +29,7 @@ class AnswerWriter:
             return ''
         try:
             prompt = PromptBuilder.build_answer(question, sql, rows, row_count)
-            answer = self.llm.invoke(prompt).strip()
+            answer = self.llm.complete(prompt).strip()
             # Descarta respuestas vacías o sospechosamente cortas
             if len(answer) >= 15:
                 return ' '.join(answer.split())

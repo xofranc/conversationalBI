@@ -303,3 +303,225 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   HOME — la puerta de entrada a la consola
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Desplazamiento sereno entre secciones (anulado con moción reducida) */
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* La palabra-ticket del titular: el recibo como pieza tipográfica */
+.ticket-word {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.82em;
+  font-weight: 600;
+  color: #0e5e6f;
+  border: 1.5px dashed #0e5e6f;
+  border-radius: 10px;
+  padding: 0.08em 0.3em 0.12em;
+  white-space: nowrap;
+  background: #e2eef1;
+}
+
+/* ── Demo viva del hero ─────────────────────────────────────────────── */
+.demo-card {
+  background: #12161c;
+  border: 1px solid #28303c;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(18, 22, 28, 0.08), 0 12px 32px rgba(18, 22, 28, 0.1);
+}
+
+.demo-head {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 12px 16px;
+  border-bottom: 1px solid #28303c;
+}
+
+.demo-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #3e8fa3;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(62, 143, 163, 0.22);
+}
+
+.demo-chat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px;
+  min-height: 190px;
+}
+
+.demo-chat .message-wrapper {
+  width: 100%;
+}
+
+.demo-chat .chat-message.user {
+  align-self: flex-end;
+}
+
+/* Cursor de tecleo: un bloque que respira */
+.caret {
+  display: inline-block;
+  width: 7px;
+  height: 0.95em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: currentColor;
+  animation: caret-blink 0.85s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  0%, 55% { opacity: 1; }
+  56%, 100% { opacity: 0; }
+}
+
+/* Barra del recibo estático (misma voz que .sql-receipt summary) */
+.receipt-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 6px 10px;
+  color: #5c6672;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.75rem;
+  user-select: none;
+}
+
+.demo-viz-wrap {
+  padding: 4px 16px 8px;
+  min-height: 120px;
+}
+
+.demo-foot {
+  padding: 10px 16px;
+  border-top: 1px solid #28303c;
+}
+
+/* ── Cinta de preguntas ─────────────────────────────────────────────── */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.marquee-chunk {
+  flex-shrink: 0;
+}
+
+/* ── Repertorio ─────────────────────────────────────────────────────── */
+.repertoire-card {
+  background: #f0f2ef;
+  border: 1px solid #dce0d9;
+  border-radius: 14px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.repertoire-card:hover {
+  border-color: #3e8fa3;
+  box-shadow: 0 1px 2px rgba(18, 22, 28, 0.05), 0 4px 16px rgba(18, 22, 28, 0.06);
+}
+
+/* Chips de palabras gatillo: primo informativo del example-chip */
+.trigger-chip {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.66rem;
+  padding: 4px 10px;
+  border: 1px dashed #b9c2b8;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #5c6672;
+}
+
+/* ── Anatomía del recibo ────────────────────────────────────────────── */
+.note {
+  border-top: 1.5px dashed #c77b21;
+  padding-top: 12px;
+  max-width: 22rem;
+}
+
+.note-index {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #c77b21;
+  margin-bottom: 6px;
+}
+
+.receipt-artifact {
+  position: relative;
+  background: #f6f7f4;
+  border: 1.5px dashed #b9c2b8;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.receipt-artifact-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 12px 16px;
+  border-bottom: 1px dashed #b9c2b8;
+}
+
+.receipt-artifact-sql {
+  margin: 0;
+  padding: 16px 18px;
+  background: #ffffff;
+  color: #1b2430;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.receipt-artifact-foot {
+  padding: 10px 16px;
+  border-top: 1px dashed #b9c2b8;
+}
+
+.receipt-marker {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: #c77b21;
+  margin-left: 3px;
+}
+
+/* Sello de verificación: la rúbrica del artefacto */
+.receipt-stamp {
+  position: absolute;
+  right: 14px;
+  bottom: 34px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #0e5e6f;
+  border: 1.5px solid #0e5e6f;
+  border-radius: 6px;
+  padding: 4px 10px;
+  transform: rotate(-7deg);
+  background: rgba(226, 238, 241, 0.85);
+}

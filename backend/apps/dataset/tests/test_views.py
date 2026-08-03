@@ -2,7 +2,8 @@ import pytest
 from unittest.mock import patch
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
-from apps.dataset.models import Dataset 
+from apps.dataset.models import Dataset
+from conftest import requires_postgres
 
 User = get_user_model()
 pytestmark = pytest.mark.django_db
@@ -85,7 +86,8 @@ class TestDatasetUpload:
         assert response.status_code == 201
         assert response.data['name'] == 'Ventas Q1'
 
-    def test_upload_integracion_real(self, client, settings, tmp_path):
+    @requires_postgres
+    def test_upload_integracion_real(self, client, settings, tmp_path, schema_cleanup):
         """Sin mocks: procesa un CSV real y verifica el estado final del dataset.
 
         Este test habría detectado el P0-1 (firma de mark_ready).
@@ -108,11 +110,15 @@ class TestDatasetUpload:
         assert response.data['tables'][0]['row_count'] == 3
 
         ds = Dataset.objects.get(name='Ventas Reales')
+        schema_cleanup.append(ds.db_path)
         assert ds.status == Dataset.Status.READY
         assert ds.column_count == 2
         assert ds.schema_json['tables'][0]['name'] == 'main'
+        # La materialización ya no es un archivo: es el schema ds_<id> en Postgres
+        assert ds.db_path == f'ds_{ds.id}'
 
-    def test_upload_csv_con_fechas_marca_ready(self, client, settings, tmp_path):
+    @requires_postgres
+    def test_upload_csv_con_fechas_marca_ready(self, client, settings, tmp_path, schema_cleanup):
         """Las columnas fecha no deben romper la persistencia del schema (JSONField)."""
         settings.MEDIA_ROOT = tmp_path
         from io import BytesIO
@@ -126,6 +132,7 @@ class TestDatasetUpload:
 
         assert response.status_code == 201, response.data
         assert response.data['status'] == 'ready'
+        schema_cleanup.append(Dataset.objects.get(name='Con Fechas').db_path)
 
     def test_upload_sin_archivo_retorna_400(self, client):
         response = client.post('/api/v1/dataset/', {'name': 'Sin archivo'}, format='multipart')

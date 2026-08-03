@@ -8,6 +8,7 @@ from apps.dataset.models import Dataset
 from apps.queries.models import QueryHistory
 from apps.queries.services.cache_service import CacheService
 from apps.queries.services.query_service import QueryService
+from conftest import requires_postgres
 
 pytestmark = pytest.mark.django_db
 
@@ -106,11 +107,12 @@ class TestPersistenciaAtomica:
 
 
 class TestMaterializacionPerezosa:
-    """Datasets anteriores a la BD persistente se materializan en la
+    """Datasets anteriores a la materialización se convierten en la
     primera consulta, una sola vez."""
 
+    @requires_postgres
     def test_dataset_sin_bd_se_materializa_al_consultar(
-        self, test_user, tmp_path, settings
+        self, test_user, tmp_path, settings, schema_cleanup
     ):
         settings.MEDIA_ROOT = str(tmp_path)
         import pandas as pd
@@ -129,7 +131,8 @@ class TestMaterializacionPerezosa:
             QueryService.execute(PREGUNTA, ds.id, test_user)
 
         ds.refresh_from_db()
-        assert ds.db_path.endswith(f'dataset_{ds.id}.sqlite')
+        assert ds.db_path == f'ds_{ds.id}'
+        schema_cleanup.append(ds.db_path)
 
         # Segunda consulta: ya materializado, no se vuelve a convertir
         with patch('apps.queries.services.query_service.DatabaseService.materialize') as mock_mat:

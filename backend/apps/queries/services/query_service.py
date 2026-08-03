@@ -99,7 +99,7 @@ class QueryService:
                     execution_time = engine_result['execution_time'],
                     success        = engine_result['success'],
                     error_msg      = engine_result['error_msg'],
-                    model_used     = engine_result.get('model_used') or getattr(settings, 'OLLAMA_MODEL', ''),
+                    model_used     = engine_result.get('model_used') or getattr(settings, 'LLM_SQL_MODEL', ''),
                     retry_count    = engine_result['retry_count'],
                     cached         = False,
                 )

@@ -100,13 +100,42 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+#
+# DATABASE_URL presente (Supabase pooler o Postgres local) → Postgres.
+# Sin DATABASE_URL → SQLite de respaldo (solo para correr la suite de
+# tests sin Postgres; el uso real siempre es Postgres).
+#
+# Guard de tests: bajo pytest la BD del .env NUNCA se usa (puede ser el
+# Supabase de producción). La capa Postgres de datasets se ejercita solo
+# con una URL explícita y local:
+#   CBI_TEST_DATABASE_URL=postgres://...localhost... \
+#   CBI_TEST_DATABASE_READER_URL=postgres://...localhost... pytest
+# Sin esas vars, los tests requires_postgres se saltan (conftest.py).
+import sys
+_TESTING = 'pytest' in sys.modules
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if _TESTING:
+    DATABASE_URL        = env('CBI_TEST_DATABASE_URL', default='')
+    DATABASE_READER_URL = env('CBI_TEST_DATABASE_READER_URL', default='')
+else:
+    DATABASE_URL        = env('DATABASE_URL', default='')
+    DATABASE_READER_URL = env('DATABASE_READER_URL', default='')
+DATABASE_READER_ROLE = env('DATABASE_READER_ROLE', default='bi_reader')
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': {
+            **env.db('DATABASE_URL'),
+            'OPTIONS': {'options': '-c statement_timeout=30000'},
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -190,6 +219,10 @@ CACHES = {
 
 
 
-OLLAMA_HOST = os.getenv('OLLAMA_HOST', 'http://localhost:11434')
-OLLAMA_MODEL = os.getenv('OLLAMA_MODEL', "qwen2.5-coder:7b")
-OLLAMA_TIMEOUT = int(os.getenv('OLLAMA_TIMEOUT', '60'))
+#! LLM — cliente agnóstico: cualquier endpoint OpenAI-compatible
+# (OpenCode Go, Groq, OpenRouter, Ollama). Se cambia por env vars.
+LLM_API_KEY      = env('LLM_API_KEY', default='')
+LLM_BASE_URL     = env('LLM_BASE_URL', default='https://opencode.ai/zen/go/v1')
+LLM_SQL_MODEL    = env('LLM_SQL_MODEL', default='kimi-k2.7-code')
+LLM_ANSWER_MODEL = env('LLM_ANSWER_MODEL', default='mimo-v2.5')
+LLM_TIMEOUT      = env.int('LLM_TIMEOUT', default=60)
