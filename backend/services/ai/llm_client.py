@@ -1,4 +1,4 @@
-from openai import OpenAI
+from openai import BadRequestError, OpenAI
 from django.conf import settings
 
 
@@ -21,11 +21,20 @@ class LLMClient:
         self.stop        = stop
 
     def complete(self, prompt: str) -> str:
-        resp = self.client.chat.completions.create(
+        kwargs = dict(
             model       = self.model,
             temperature = self.temperature,
             max_tokens  = self.max_tokens,
             stop        = self.stop,
             messages    = [{'role': 'user', 'content': prompt}],
         )
+        try:
+            resp = self.client.chat.completions.create(**kwargs)
+        except BadRequestError as e:
+            # Algunos modelos solo aceptan temperature=1 (p.ej. kimi-k2.7-code
+            # vía OpenCode Go): reintentar sin el parámetro (default del modelo).
+            if 'temperature' not in str(e):
+                raise
+            kwargs.pop('temperature')
+            resp = self.client.chat.completions.create(**kwargs)
         return resp.choices[0].message.content or ''
