@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ConversationalBI — Pregúntale a tus datos. Exige el recibo.</title>
-    <meta name="description" content="BI conversacional con recibo verificable: sube un CSV, Excel o JSON y hazle preguntas en español. Cada respuesta llega con su prueba: SQL o método estadístico, motor y tiempo.">
+    <title>ConversationalBI — Pregúntale a tus datos</title>
+    <meta name="description" content="BI conversacional con recibo verificable: sube un CSV, Excel o JSON y hazle preguntas en español. Cada respuesta trae su SQL o método estadístico.">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2312161C'/%3E%3Crect x='10' y='9' width='3' height='14' rx='1' transform='rotate(18 11.5 16)' fill='%233E8FA3'/%3E%3Crect x='15' y='9' width='3' height='14' rx='1' transform='rotate(18 16.5 16)' fill='%233E8FA3'/%3E%3Ccircle cx='23' cy='21' r='2.6' fill='%23C77B21'/%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,6 @@
   </head>
   <body class="bg-paper text-ink font-sans antialiased">
 
-    <!-- ═══════════════ Cabecera ═══════════════ -->
     <header class="fixed top-0 inset-x-0 z-50 bg-paper/85 backdrop-blur-sm border-b border-line">
       <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
         <a href="/" class="flex items-baseline gap-2.5 min-w-0">
@@ -20,10 +19,11 @@
           <span class="font-display font-semibold tracking-tight text-ink">ConversationalBI</span>
         </a>
         <nav class="hidden md:flex items-center gap-6 font-mono text-[0.7rem] text-ink-soft" aria-label="Secciones">
-          <a href="#como-funciona" class="hover:text-petrol transition-colors">cómo funciona</a>
-          <a href="#repertorio" class="hover:text-petrol transition-colors">repertorio</a>
-          <a href="#recibo" class="hover:text-petrol transition-colors">el recibo</a>
-          <a href="#datos" class="hover:text-petrol transition-colors">datos</a>
+          <a href="#producto" class="hover:text-petrol transition-colors">producto</a>
+          <a href="#modulos" class="hover:text-petrol transition-colors">módulos</a>
+          <a href="#roadmap" class="hover:text-petrol transition-colors">roadmap</a>
+          <a href="#arquitectura" class="hover:text-petrol transition-colors">arquitectura</a>
+          <a href="#autor" class="hover:text-petrol transition-colors">autor</a>
         </nav>
         <a href="/app.html" class="shrink-0 px-4 py-2 bg-petrol hover:bg-petrol-dark text-white text-sm font-semibold rounded-lg transition-colors">
           abrir consola →
@@ -32,36 +32,34 @@
     </header>
 
     <main>
-      <!-- ═══════════════ Hero: la tesis ═══════════════ -->
-      <section class="pt-28 lg:pt-36 pb-14 px-6">
+      <!-- Hero -->
+      <section class="landing-hero pt-28 lg:pt-36 pb-14 px-6">
         <div class="max-w-6xl mx-auto grid lg:grid-cols-[1.02fr_0.98fr] gap-12 lg:gap-16 items-center">
-
           <div>
-            <p data-hero class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-5">// cada respuesta trae su recibo</p>
+            <p data-landing class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-5">// copilot de datos para empresas</p>
             <h1 class="font-display text-[2.6rem] leading-[1.05] sm:text-5xl lg:text-[3.6rem] font-semibold tracking-tight text-ink mb-6">
-              <span data-hero-line class="block">Pregúntale a tus datos.</span>
-              <span data-hero-line class="block">Exige <span class="ticket-word">el recibo</span>.</span>
+              <span data-landing-line class="block">Pregúntale a tus datos.</span>
+              <span data-landing-line class="block">Obtén respuestas con <span class="ticket-word">recibo</span>.</span>
             </h1>
-            <p data-hero class="text-ink-soft text-base lg:text-lg leading-relaxed max-w-lg mb-8">
-              Sube un CSV, Excel o JSON y conversa con él en español. Cada respuesta llega con su prueba:
-              el SQL exacto o el método estadístico, el motor que lo produjo y el tiempo que tardó.
+            <p data-landing class="text-ink-soft text-base lg:text-lg leading-relaxed max-w-lg mb-8">
+              ConversationalBI transforma datos empresariales en decisiones. Sube un CSV o Excel
+              y conversa con tu información en español: SQL, pronósticos, anomalías y segmentación,
+              todo con trazabilidad completa.
             </p>
-            <div data-hero class="flex flex-wrap items-center gap-4 mb-8">
-              <a href="/app.html" class="px-6 py-3 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-xl transition-colors">
-                abrir la consola →
+            <div data-landing class="flex flex-wrap items-center gap-4 mb-8">
+              <a href="/app.html" class="cta-primary px-6 py-3 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-xl transition-colors">
+                probar la demo →
               </a>
-              <a href="#como-funciona" class="font-mono text-[0.75rem] text-ink-soft hover:text-petrol transition-colors">
-                ver cómo funciona ↓
+              <a href="/roadmap.html" class="font-mono text-[0.75rem] text-ink-soft hover:text-petrol transition-colors">
+                ver roadmap ↓
               </a>
             </div>
-            <p data-hero class="font-mono text-[0.65rem] leading-relaxed text-ink-soft/80">
-              kimi-k2.7-code vía API&nbsp;&nbsp;·&nbsp;&nbsp;un schema postgres por dataset&nbsp;&nbsp;·&nbsp;&nbsp;el LLM no entrena con tus datos
+            <p data-landing class="font-mono text-[0.65rem] leading-relaxed text-ink-soft/80">
+              Supabase Auth · Postgres · Django · Render · Vercel
             </p>
           </div>
 
-          <!-- Pieza firma: la consola, viva -->
-          <div data-hero id="demo-card" class="demo-card" role="img"
-               aria-label="Demostración animada: una pregunta en español se convierte en respuesta con recibo SQL y gráfico">
+          <div data-landing id="demo-card" class="demo-card" role="img" aria-label="Demostración animada de conversación con datos">
             <div class="demo-head">
               <span class="demo-dot" aria-hidden="true"></span>
               <span class="font-mono text-[0.65rem] text-rail-text truncate">consola · ventas_2024.csv</span>
@@ -75,323 +73,197 @@
               <span id="demo-caption" class="font-mono text-[0.6rem] text-rail-text/55">// demostración con datos de ejemplo</span>
             </div>
           </div>
-
         </div>
       </section>
 
-      <!-- ═══════════════ Cinta de preguntas ═══════════════ -->
+      <!-- Marquee -->
       <div class="marquee border-y border-line py-3 overflow-hidden select-none" aria-hidden="true">
         <div id="marquee-track" class="marquee-track font-mono text-[0.72rem] text-ink-soft">
           <span class="marquee-chunk">ventas totales por ciudad&nbsp;&nbsp;·&nbsp;&nbsp;top 5 productos por ingresos&nbsp;&nbsp;·&nbsp;&nbsp;resumen de los datos&nbsp;&nbsp;·&nbsp;&nbsp;pronóstico de ventas&nbsp;&nbsp;·&nbsp;&nbsp;anomalías en los montos&nbsp;&nbsp;·&nbsp;&nbsp;factores del monto&nbsp;&nbsp;·&nbsp;&nbsp;¿y por mes?&nbsp;&nbsp;·&nbsp;&nbsp;ahora por ciudad&nbsp;&nbsp;·&nbsp;&nbsp;</span><span class="marquee-chunk">ventas totales por ciudad&nbsp;&nbsp;·&nbsp;&nbsp;top 5 productos por ingresos&nbsp;&nbsp;·&nbsp;&nbsp;resumen de los datos&nbsp;&nbsp;·&nbsp;&nbsp;pronóstico de ventas&nbsp;&nbsp;·&nbsp;&nbsp;anomalías en los montos&nbsp;&nbsp;·&nbsp;&nbsp;factores del monto&nbsp;&nbsp;·&nbsp;&nbsp;¿y por mes?&nbsp;&nbsp;·&nbsp;&nbsp;ahora por ciudad&nbsp;&nbsp;·&nbsp;&nbsp;</span>
         </div>
       </div>
 
-      <!-- ═══════════════ Cómo funciona ═══════════════ -->
-      <section id="como-funciona" class="scroll-mt-20 px-6 py-20 lg:py-28">
+      <!-- Producto -->
+      <section id="producto" class="scroll-mt-20 px-6 py-20 lg:py-28">
         <div class="max-w-6xl mx-auto">
-          <p data-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4">// cómo funciona</p>
-          <h2 data-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-4 max-w-xl">
-            Tres movimientos, ninguna caja negra
+          <p data-landing-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4">// para qué</p>
+          <h2 data-landing-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-6 max-w-2xl">
+            Datos empresariales que finalmente responden
           </h2>
-          <p data-reveal class="text-ink-soft max-w-xl mb-12 lg:mb-16">
-            Del archivo a la respuesta hay un solo camino, y puedes inspeccionarlo entero.
+          <p data-landing-reveal class="text-ink-soft max-w-2xl mb-12 lg:mb-16 text-lg leading-relaxed">
+            Las empresas acumulan datos en CSV, Excel y sistemas aislados. ConversationalBI
+            reduce la distancia entre una pregunta de negocio y una respuesta accionable:
+            sin dashboards que configurar, sin SQL que escribir, sin caja negra.
           </p>
 
-          <div class="grid md:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden" data-reveal-group>
-            <div class="bg-card p-7 lg:p-9">
+          <div class="grid md:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden" data-landing-group>
+            <div class="bg-card p-7 lg:p-9 glow-card">
               <p class="font-mono text-[0.65rem] text-petrol mb-5">01</p>
               <h3 class="font-display text-xl font-semibold tracking-tight text-ink mb-3">Sube</h3>
-              <p class="text-sm text-ink-soft leading-relaxed mb-5">
-                Arrastra un CSV, Excel o JSON al panel de fuentes. Se materializa en su propia base
-                SQLite y se infiere el esquema: columnas, tipos y valores de ejemplo.
+              <p class="text-sm text-ink-soft leading-relaxed">
+                Arrastra un CSV, Excel o JSON. El sistema detecta el esquema, tipos y valores
+                de ejemplo, y materializa los datos en su propio schema de Postgres.
               </p>
-              <p class="font-mono text-[0.62rem] text-ink-soft/70">media/dbs/dataset_&lt;id&gt;.sqlite</p>
             </div>
-            <div class="bg-card p-7 lg:p-9">
+            <div class="bg-card p-7 lg:p-9 glow-card">
               <p class="font-mono text-[0.65rem] text-petrol mb-5">02</p>
               <h3 class="font-display text-xl font-semibold tracking-tight text-ink mb-3">Pregunta</h3>
-              <p class="text-sm text-ink-soft leading-relaxed mb-5">
-                Escribe como le hablarías a un analista. Un detector de intención elige el camino:
-                SQL generado por un LLM local, o el motor estadístico si pides pronósticos,
-                anomalías o segmentos.
+              <p class="text-sm text-ink-soft leading-relaxed">
+                Escribe en español como le hablarías a un analista. Un detector de intención
+                enruta la consulta hacia SQL, pronóstico, anomalías, segmentación o factores.
               </p>
-              <p class="font-mono text-[0.62rem] text-ink-soft/70">recuerda las últimas 3 consultas — «¿y por mes?» funciona</p>
             </div>
-            <div class="bg-card p-7 lg:p-9">
+            <div class="bg-card p-7 lg:p-9 glow-card">
               <p class="font-mono text-[0.65rem] text-petrol mb-5">03</p>
-              <h3 class="font-display text-xl font-semibold tracking-tight text-ink mb-3">Verifica</h3>
-              <p class="text-sm text-ink-soft leading-relaxed mb-5">
-                Toda respuesta trae su recibo: SQL o método, motor, tiempo y si vino del caché.
-                Si una pregunta falla, recibes sugerencias para reformularla.
+              <h3 class="font-display text-xl font-semibold tracking-tight text-ink mb-3">Decide</h3>
+              <p class="text-sm text-ink-soft leading-relaxed">
+                Cada respuesta trae su recibo: el SQL o método estadístico, el motor, el tiempo
+                y el contexto. Puedes verificar, copiar y auditar todo.
               </p>
-              <p class="font-mono text-[0.62rem] text-ink-soft/70">bitácora persistente por fuente de datos</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ═══════════════ Repertorio ═══════════════ -->
-      <section id="repertorio" class="scroll-mt-20 px-6 py-20 lg:py-28 bg-card border-y border-line">
+      <!-- Módulos -->
+      <section id="modulos" class="scroll-mt-20 px-6 py-20 lg:py-28 bg-card border-y border-line">
         <div class="max-w-6xl mx-auto">
-          <p data-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4">// repertorio</p>
-          <h2 data-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-4 max-w-xl">
-            Seis formas de responder
+          <p data-landing-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4">// módulos</p>
+          <h2 data-landing-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-6 max-w-2xl">
+            Capacidades del copilot
           </h2>
-          <p data-reveal class="text-ink-soft max-w-xl mb-12 lg:mb-16">
-            La misma pregunta en español activa el motor correcto. Sin comandos que memorizar:
-            estas son las palabras gatillo reales.
+          <p data-landing-reveal class="text-ink-soft max-w-2xl mb-12 lg:mb-16">
+            Los primeros módulos ya están en producción. El roadmap se expande hacia recomendaciones,
+            agentes especializados e integraciones con sistemas empresariales.
           </p>
-
-          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-reveal-group>
-
-            <div class="repertoire-card">
-              <p class="font-mono text-[0.6rem] text-petrol mb-4">camino: llm → sql</p>
-              <h3 class="font-display text-lg font-semibold tracking-tight text-ink mb-2.5">Consulta directa</h3>
-              <p class="text-sm text-ink-soft leading-relaxed mb-5">
-                El LLM local escribe SQL sobre tu esquema, lo valida y lo ejecuta en solo lectura.
-                Una segunda llamada redacta la narrativa.
-              </p>
-              <div class="flex flex-wrap gap-1.5">
-                <span class="trigger-chip">ventas por ciudad</span>
-                <span class="trigger-chip">top 5 productos</span>
-                <span class="trigger-chip">¿y por mes?</span>
-              </div>
-            </div>
-
-            <div class="repertoire-card">
-              <p class="font-mono text-[0.6rem] text-petrol mb-4">chart_type: 'forecast'</p>
-              <h3 class="font-display text-lg font-semibold tracking-tight text-ink mb-2.5">Pronóstico</h3>
-              <p class="text-sm text-ink-soft leading-relaxed mb-5">
-                ExponentialSmoothing con tendencia sobre tu serie temporal, banda de confianza
-                de ±1.96σ y 6 períodos hacia adelante.
-              </p>
-              <div class="flex flex-wrap gap-1.5">
-                <span class="trigger-chip">pronóstico</span>
-                <span class="trigger-chip">proyección</span>
-                <span class="trigger-chip">próximos meses</span>
-              </div>
-            </div>
-
-            <div class="repertoire-card">
-              <p class="font-mono text-[0.6rem] text-petrol mb-4">chart_type: 'anomaly'</p>
-              <h3 class="font-display text-lg font-semibold tracking-tight text-ink mb-2.5">Anomalías</h3>
-              <p class="text-sm text-ink-soft leading-relaxed mb-5">
-                IsolationForest si hay varias columnas numéricas; z-score robusto (mediana/MAD)
-                si hay una. Hasta 20 filas marcadas, ordenadas por score.
-              </p>
-              <div class="flex flex-wrap gap-1.5">
-                <span class="trigger-chip">anomalías</span>
-                <span class="trigger-chip">atípicos</span>
-                <span class="trigger-chip">fuera de lo normal</span>
-              </div>
-            </div>
-
-            <div class="repertoire-card">
-              <p class="font-mono text-[0.6rem] text-petrol mb-4">chart_type: 'segment'</p>
-              <h3 class="font-display text-lg font-semibold tracking-tight text-ink mb-2.5">Segmentación</h3>
-              <p class="text-sm text-ink-soft leading-relaxed mb-5">
-                KMeans escalado sobre las dos columnas de mayor varianza;
-                hasta 300 puntos coloreados por segmento.
-              </p>
-              <div class="flex flex-wrap gap-1.5">
-                <span class="trigger-chip">segmentos</span>
-                <span class="trigger-chip">clusters</span>
-                <span class="trigger-chip">perfiles de</span>
-              </div>
-            </div>
-
-            <div class="repertoire-card">
-              <p class="font-mono text-[0.6rem] text-petrol mb-4">chart_type: 'drivers'</p>
-              <h3 class="font-display text-lg font-semibold tracking-tight text-ink mb-2.5">Factores</h3>
-              <p class="text-sm text-ink-soft leading-relaxed mb-5">
-                Correlación de Spearman de cada columna contra tu métrica;
-                los 5 factores más fuertes, con su signo.
-              </p>
-              <div class="flex flex-wrap gap-1.5">
-                <span class="trigger-chip">qué influye</span>
-                <span class="trigger-chip">qué explica</span>
-                <span class="trigger-chip">correlación</span>
-              </div>
-            </div>
-
-            <div class="repertoire-card">
-              <p class="font-mono text-[0.6rem] text-petrol mb-4">chart_type: 'table'</p>
-              <h3 class="font-display text-lg font-semibold tracking-tight text-ink mb-2.5">Resumen</h3>
-              <p class="text-sm text-ink-soft leading-relaxed mb-5">
-                Estadísticos descriptivos directos — n, media, mediana, desviación y extremos —
-                sin gastar una llamada al LLM.
-              </p>
-              <div class="flex flex-wrap gap-1.5">
-                <span class="trigger-chip">resumen</span>
-                <span class="trigger-chip">describe</span>
-                <span class="trigger-chip">visión general</span>
-              </div>
-            </div>
-
+          <div id="modules-preview" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-landing-group>
+            <!-- Rendered by JS -->
+          </div>
+          <div data-landing-reveal class="mt-10 text-center">
+            <a href="/roadmap.html" class="inline-block font-mono text-[0.75rem] text-petrol hover:text-petrol-dark transition-colors">
+              ver roadmap completo →
+            </a>
           </div>
         </div>
       </section>
 
-      <!-- ═══════════════ El sistema en cifras ═══════════════ -->
-      <section class="px-6 py-16 lg:py-20 border-b border-line">
+      <!-- Roadmap preview -->
+      <section id="roadmap" class="scroll-mt-20 px-6 py-20 lg:py-28">
         <div class="max-w-6xl mx-auto">
-          <p data-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-10">// el sistema en cifras</p>
-          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-10" data-reveal-group>
-            <div>
-              <p class="font-mono text-4xl lg:text-5xl font-semibold text-ink tabular-nums"><span data-count="2">0</span></p>
-              <p class="font-mono text-[0.62rem] tracking-wider uppercase text-ink-soft mt-2 leading-relaxed">llamadas al modelo<br>por consulta</p>
-            </div>
-            <div>
-              <p class="font-mono text-4xl lg:text-5xl font-semibold text-ink tabular-nums"><span data-count="3">0</span></p>
-              <p class="font-mono text-[0.62rem] tracking-wider uppercase text-ink-soft mt-2 leading-relaxed">consultas de memoria<br>conversacional</p>
-            </div>
-            <div>
-              <p class="font-mono text-4xl lg:text-5xl font-semibold text-ink tabular-nums"><span data-count="6">0</span></p>
-              <p class="font-mono text-[0.62rem] tracking-wider uppercase text-ink-soft mt-2 leading-relaxed">períodos de horizonte<br>de pronóstico</p>
-            </div>
-            <div>
-              <p class="font-mono text-4xl lg:text-5xl font-semibold text-ink tabular-nums"><span data-count="20">0</span></p>
-              <p class="font-mono text-[0.62rem] tracking-wider uppercase text-ink-soft mt-2 leading-relaxed">anomalías máx.<br>por consulta</p>
-            </div>
-            <div>
-              <p class="font-mono text-4xl lg:text-5xl font-semibold text-ink tabular-nums"><span data-count="300">0</span></p>
-              <p class="font-mono text-[0.62rem] tracking-wider uppercase text-ink-soft mt-2 leading-relaxed">puntos por<br>segmento</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ═══════════════ El recibo ═══════════════ -->
-      <section id="recibo" class="scroll-mt-20 px-6 py-20 lg:py-28">
-        <div class="max-w-6xl mx-auto">
-          <p data-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4">// el recibo</p>
-          <h2 data-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-4 max-w-xl">
-            Ninguna respuesta sin prueba
+          <p data-landing-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4">// estado</p>
+          <h2 data-landing-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-6 max-w-2xl">
+            Proyecto en construcción activa
           </h2>
-          <p data-reveal class="text-ink-soft max-w-xl mb-12 lg:mb-16">
-            Cada respuesta de la consola llega acompañada de su recibo. Esta es su anatomía:
-          </p>
-
-          <div class="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)_minmax(0,1fr)] gap-8 lg:gap-10 items-center">
-
-            <!-- Notas izquierda -->
-            <div class="space-y-8 lg:text-right order-2 lg:order-1" data-reveal-group>
-              <div class="note">
-                <p class="note-index">[1]</p>
-                <p class="text-sm text-ink-soft leading-relaxed">
-                  El tiempo real de ejecución de la consulta — no una estimación.
-                </p>
+          <div class="grid lg:grid-cols-[1fr_0.45fr] gap-10 items-start">
+            <div id="phases-preview" class="space-y-4" data-landing-group>
+              <!-- Rendered by JS -->
+            </div>
+            <div data-landing-reveal class="bg-card border border-line rounded-xl p-6 shadow-card">
+              <p class="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-ink-soft mb-4">progreso</p>
+              <div class="w-full h-2 bg-line rounded-full overflow-hidden mb-3">
+                <div id="progress-preview-bar" class="h-full bg-petrol rounded-full transition-all duration-1000" style="width: 0%"></div>
               </div>
-              <div class="note">
-                <p class="note-index">[2]</p>
-                <p class="text-sm text-ink-soft leading-relaxed">
-                  El motor que respondió. Si dice caché, nadie recalculó: la versión
-                  del dataset invalida sola las respuestas viejas.
-                </p>
+              <p class="font-mono text-2xl font-semibold text-ink"><span id="progress-preview-text">0%</span> completado</p>
+              <p class="text-sm text-ink-soft mt-3 leading-relaxed">
+                Fase actual: <span class="text-signal font-medium">Copilot analítico</span>.
+              </p>
+              <a href="/roadmap.html" class="inline-block mt-5 px-4 py-2 bg-petrol hover:bg-petrol-dark text-white text-sm font-semibold rounded-lg transition-colors">
+                explorar roadmap
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Arquitectura -->
+      <section id="arquitectura" class="scroll-mt-20 px-6 py-20 lg:py-28 bg-rail text-rail-text">
+        <div class="max-w-6xl mx-auto">
+          <p data-landing-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol-bright mb-4">// arquitectura</p>
+          <h2 data-landing-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-white mb-8">
+            Diseñado para ser real, escalable y verificable
+          </h2>
+          <div class="grid lg:grid-cols-[1fr_0.9fr] gap-12 items-start">
+            <div data-landing-reveal class="bg-rail-raise border border-rail-line rounded-xl p-6 overflow-x-auto">
+              <pre class="font-mono text-[0.72rem] leading-relaxed text-rail-text min-w-[24rem]">┌─────────────────────────────────────────────┐
+│  Web (Vite + Chart.js)                      │
+│  iOS (SwiftUI + Charts)                     │
+└───────────────────┬─────────────────────────┘
+                    │
+         Supabase Auth (JWT RS256)
+                    │
+┌───────────────────▼─────────────────────────┐
+│  Django API (Render) + LLMClient              │
+│  OpenAI-compatible endpoint                   │
+└───────────────────┬─────────────────────────┘
+                    │
+     Supabase Postgres (schema ds_‹id›)
+                    │
+     Motor: statsmodels + scikit-learn
+└─────────────────────────────────────────────┘</pre>
+            </div>
+            <div class="space-y-6" data-landing-group>
+              <div class="border-l-2 border-petrol-bright pl-5">
+                <h3 class="font-display text-lg font-semibold text-white mb-2">Autenticación segura</h3>
+                <p class="text-sm text-rail-text leading-relaxed">JWT RS256 firmados por Supabase, validados en Django contra el JWKS público. Sin contraseñas propias.</p>
+              </div>
+              <div class="border-l-2 border-petrol-bright pl-5">
+                <h3 class="font-display text-lg font-semibold text-white mb-2">Datos aislados</h3>
+                <p class="text-sm text-rail-text leading-relaxed">Cada dataset vive en un schema Postgres propio. Las consultas de análisis corren bajo un rol de solo lectura.</p>
+              </div>
+              <div class="border-l-2 border-petrol-bright pl-5">
+                <h3 class="font-display text-lg font-semibold text-white mb-2">Recibo verificable</h3>
+                <p class="text-sm text-rail-text leading-relaxed">SQL, método estadístico, motor y tiempo de ejecución acompañan cada respuesta.</p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
 
-            <!-- El artefacto -->
-            <div class="order-1 lg:order-2" data-reveal>
-              <div class="receipt-artifact shadow-lift">
-                <div class="receipt-artifact-bar">
-                  <span class="font-mono text-[0.72rem] text-ink-soft">recibo · <span class="text-ink font-semibold">0.42s</span><sup class="receipt-marker">1</sup></span>
-                  <span class="sql-badge model">kimi-k2.7-code<sup class="receipt-marker">2</sup></span>
+      <!-- Autor -->
+      <section id="autor" class="scroll-mt-20 px-6 py-20 lg:py-28">
+        <div class="max-w-4xl mx-auto">
+          <div class="author-card bg-card border border-line rounded-2xl p-8 lg:p-12 shadow-lift text-center lg:text-left">
+            <div class="flex flex-col lg:flex-row items-center gap-8">
+              <div class="shrink-0">
+                <img src="/author.jpg" alt="Santiago Vásquez Franco" class="w-32 h-32 lg:w-40 lg:h-40 rounded-full object-cover border-4 border-petrol/10 shadow-card">
+              </div>
+              <div class="flex-1">
+                <p class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-2">// sobre el autor</p>
+                <h2 class="font-display text-3xl font-semibold tracking-tight text-ink mb-3">Santiago Vásquez Franco</h2>
+                <p class="text-ink-soft leading-relaxed mb-6">
+                  Ingeniero de software construyendo ConversationalBI como proyecto de fin de grado.
+                  Me interesa reducir la distancia entre los datos y las personas que los necesitan para decidir.
+                  Trabajo con Django, Python, datos y productos que se pueden desplegar.
+                </p>
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-5">
+                  <a href="https://github.com/xofranc" target="_blank" rel="noopener" class="contact-link">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    GitHub
+                  </a>
+                  <a href="https://www.linkedin.com/in/santiago-vasquez-franco-90aa6528b/" target="_blank" rel="noopener" class="contact-link">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    LinkedIn
+                  </a>
+                  <a href="mailto:santiagofrancco3@gmail.com" class="contact-link">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    Email
+                  </a>
                 </div>
-                <pre class="receipt-artifact-sql">SELECT ciudad, SUM(monto) AS total
-FROM ventas
-GROUP BY ciudad
-ORDER BY total DESC;<sup class="receipt-marker">3</sup></pre>
-                <div class="receipt-artifact-foot">
-                  <span class="font-mono text-[0.62rem] text-ink-soft/70">bitácora · consulta #128 · ventas_2024.csv<sup class="receipt-marker">4</sup></span>
-                </div>
-                <span id="receipt-stamp" class="receipt-stamp" aria-hidden="true">verificable</span>
               </div>
-            </div>
-
-            <!-- Notas derecha -->
-            <div class="space-y-8 order-3" data-reveal-group>
-              <div class="note">
-                <p class="note-index">[3]</p>
-                <p class="text-sm text-ink-soft leading-relaxed">
-                  El SQL exacto que corrió sobre tus datos. Cópialo y compruébalo tú mismo.
-                </p>
-              </div>
-              <div class="note">
-                <p class="note-index">[4]</p>
-                <p class="text-sm text-ink-soft leading-relaxed">
-                  Toda consulta queda en la bitácora: éxito, fallo o caché, con su resultado.
-                </p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      <!-- ═══════════════ Tus datos, bajo control ═══════════════ -->
-      <section id="datos" class="scroll-mt-20 bg-rail text-rail-text px-6 py-20 lg:py-28">
-        <div class="max-w-6xl mx-auto">
-          <p data-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol-bright mb-4">// tus datos, bajo control</p>
-          <h2 data-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-white mb-12 lg:mb-16 max-w-xl">
-            El LLM no entrena con tus datos
-          </h2>
-
-          <div class="grid lg:grid-cols-[1fr_0.9fr] gap-12 lg:gap-16 items-start">
-            <div class="grid sm:grid-cols-2 gap-x-8 gap-y-10" data-reveal-group>
-              <div>
-                <p class="font-mono text-[0.62rem] tracking-[0.2em] uppercase text-petrol-bright mb-2.5">modelo</p>
-                <p class="text-sm leading-relaxed text-rail-text">
-                  kimi-k2.7-code vía API OpenAI-compatible con retención 0 días:
-                  los prompts no se almacenan ni entrenan modelos.
-                </p>
-              </div>
-              <div>
-                <p class="font-mono text-[0.62rem] tracking-[0.2em] uppercase text-petrol-bright mb-2.5">datos</p>
-                <p class="text-sm leading-relaxed text-rail-text">
-                  Cada dataset se materializa en un schema Postgres aislado.
-                  Las consultas corren con un rol de solo-lectura.
-                </p>
-              </div>
-              <div>
-                <p class="font-mono text-[0.62rem] tracking-[0.2em] uppercase text-petrol-bright mb-2.5">caché</p>
-                <p class="text-sm leading-relaxed text-rail-text">
-                  1 hora por pregunta, invalidada al reprocesar la fuente.
-                  Un lock anti-stampede de 60 s evita duplicar llamadas al modelo.
-                </p>
-              </div>
-              <div>
-                <p class="font-mono text-[0.62rem] tracking-[0.2em] uppercase text-petrol-bright mb-2.5">bitácora</p>
-                <p class="text-sm leading-relaxed text-rail-text">
-                  Éxitos, fallos y hits de caché quedan persistidos con su recibo.
-                  Tus métricas no mienten.
-                </p>
-              </div>
-            </div>
-
-            <div data-reveal class="bg-rail-raise border border-rail-line rounded-xl p-6 overflow-x-auto">
-              <p class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-rail-text/60 mb-4">arquitectura · render + supabase</p>
-              <pre class="font-mono text-[0.68rem] leading-relaxed text-rail-text" aria-label="Diagrama de arquitectura: navegador, django, API del LLM y Postgres">┌───────────┐  /api   ┌─────────┐   prompts   ┌─────────┐
- │ navegador │ ──────► │ django  │ ──────────► │ LLM API │
- └───────────┘         └────┬────┘  reten. 0   └─────────┘
-                            │
-                            ▼
-                   supabase postgres
-                 schema ds_‹id› por dataset</pre>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ═══════════════ Cierre ═══════════════ -->
-      <section class="px-6 py-20 lg:py-28">
-        <div class="max-w-6xl mx-auto text-center">
-          <p data-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-5">// la primera pregunta es tuya</p>
-          <h2 data-reveal class="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-ink mb-8">
-            ¿Qué le preguntarías primero?
+      <!-- Cierre -->
+      <section class="px-6 py-20 lg:py-28 bg-card border-t border-line">
+        <div class="max-w-4xl mx-auto text-center">
+          <p data-landing-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-5">// la primera pregunta es tuya</p>
+          <h2 data-landing-reveal class="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-ink mb-8">
+            ¿Le preguntarías a tus datos?
           </h2>
-          <div data-reveal>
-            <a href="/app.html" class="inline-block px-8 py-4 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-xl transition-colors">
+          <div data-landing-reveal>
+            <a href="/app.html" class="cta-primary inline-block px-8 py-4 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-xl transition-colors">
               abrir la consola →
             </a>
           </div>
@@ -399,14 +271,17 @@ ORDER BY total DESC;<sup class="receipt-marker">3</sup></pre>
       </section>
     </main>
 
-    <!-- ═══════════════ Colofón ═══════════════ -->
-    <footer class="border-t border-line px-6 py-8">
+    <footer class="border-t border-line px-6 py-8 bg-paper">
       <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-        <p class="font-mono text-[0.62rem] text-ink-soft/80">ConversationalBI · TFG · cada respuesta con su recibo</p>
-        <p class="font-mono text-[0.62rem] text-ink-soft/60">Django + Postgres + Chart.js + GSAP</p>
+        <p class="font-mono text-[0.62rem] text-ink-soft/80">ConversationalBI · TFG · Santiago Vásquez Franco</p>
+        <div class="flex items-center gap-4">
+          <a href="https://github.com/xofranc" target="_blank" rel="noopener" class="font-mono text-[0.62rem] text-ink-soft/60 hover:text-petrol">GitHub</a>
+          <a href="https://www.linkedin.com/in/santiago-vasquez-franco-90aa6528b/" target="_blank" rel="noopener" class="font-mono text-[0.62rem] text-ink-soft/60 hover:text-petrol">LinkedIn</a>
+          <a href="mailto:santiagofrancco3@gmail.com" class="font-mono text-[0.62rem] text-ink-soft/60 hover:text-petrol">Email</a>
+        </div>
       </div>
     </footer>
 
-    <script type="module" src="/src/home.js"></script>
+    <script type="module" src="/src/landing.js"></script>
   </body>
 </html>

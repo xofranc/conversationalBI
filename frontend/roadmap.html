@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Roadmap · ConversationalBI</title>
+    <meta name="description" content="Estado del proyecto ConversationalBI: fases completadas, módulos en producción y próximos pasos del copilot de datos.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2312161C'/%3E%3Crect x='10' y='9' width='3' height='14' rx='1' transform='rotate(18 11.5 16)' fill='%233E8FA3'/%3E%3Crect x='15' y='9' width='3' height='14' rx='1' transform='rotate(18 16.5 16)' fill='%233E8FA3'/%3E%3Ccircle cx='23' cy='21' r='2.6' fill='%23C77B21'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-paper text-ink font-sans antialiased">
+
+    <header class="fixed top-0 inset-x-0 z-50 bg-paper/85 backdrop-blur-sm border-b border-line">
+      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
+        <a href="/" class="flex items-baseline gap-2.5 min-w-0">
+          <span class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-petrol hidden sm:inline">// bi conversacional</span>
+          <span class="font-display font-semibold tracking-tight text-ink">ConversationalBI</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-6 font-mono text-[0.7rem] text-ink-soft" aria-label="Secciones">
+          <a href="/" class="hover:text-petrol transition-colors">home</a>
+          <a href="/app.html" class="hover:text-petrol transition-colors">demo</a>
+          <a href="https://github.com/xofranc/conversationalBI" target="_blank" rel="noopener" class="hover:text-petrol transition-colors">github</a>
+        </nav>
+        <a href="/app.html" class="shrink-0 px-4 py-2 bg-petrol hover:bg-petrol-dark text-white text-sm font-semibold rounded-lg transition-colors">
+          abrir consola →
+        </a>
+      </div>
+    </header>
+
+    <main class="pt-24">
+      <!-- Hero -->
+      <section class="px-6 py-16 lg:py-24">
+        <div class="max-w-4xl mx-auto text-center">
+          <p class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4">// estado del proyecto</p>
+          <h1 class="font-display text-4xl lg:text-6xl font-semibold tracking-tight text-ink mb-6">
+            Roadmap
+          </h1>
+          <p class="text-ink-soft text-lg max-w-2xl mx-auto mb-8">
+            ConversationalBI está en construcción activa. Aquí puedes ver qué ya funciona, qué estamos desarrollando y qué viene después.
+          </p>
+          <div id="progress-summary" class="inline-flex items-center gap-3 px-5 py-3 bg-card border border-line rounded-full shadow-card">
+            <span class="font-mono text-[0.7rem] text-ink-soft">Progreso general</span>
+            <div class="w-40 h-2 bg-line rounded-full overflow-hidden">
+              <div id="progress-bar" class="h-full bg-petrol rounded-full" style="width: 0%"></div>
+            </div>
+            <span id="progress-text" class="font-mono text-[0.7rem] text-ink font-semibold">0%</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Timeline -->
+      <section class="px-6 py-12 lg:py-20">
+        <div class="max-w-5xl mx-auto">
+          <p class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-8 text-center">// línea de tiempo</p>
+          <div id="timeline" class="relative">
+            <div class="absolute left-1/2 top-0 bottom-0 w-px bg-line -translate-x-1/2 hidden lg:block"></div>
+            <!-- Timeline items rendered here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Modules -->
+      <section class="px-6 py-12 lg:py-20 bg-card border-y border-line">
+        <div class="max-w-6xl mx-auto">
+          <p class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4 text-center">// módulos</p>
+          <h2 class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-12 text-center">
+            Capacidades del copilot
+          </h2>
+          <div id="modules-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Modules rendered here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Architecture -->
+      <section class="px-6 py-12 lg:py-20">
+        <div class="max-w-5xl mx-auto">
+          <p class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4 text-center">// arquitectura</p>
+          <h2 class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-8 text-center">
+            Cómo está construido
+          </h2>
+          <div class="bg-rail text-rail-text rounded-xl p-6 lg:p-8 overflow-x-auto border border-rail-line">
+            <pre class="font-mono text-[0.75rem] leading-relaxed min-w-[32rem]">┌─────────────────────────────────────────────────────────────┐
+│                     Web (Vite + Chart.js)                     │
+│                     iOS (SwiftUI + Charts)                    │
+└─────────────────────────────┬───────────────────────────────┘
+                              │
+                    Supabase Auth (JWT RS256)
+                              │
+┌─────────────────────────────▼───────────────────────────────┐
+│              Django API (Render) + LLMClient                │
+│                    OpenAI-compatible LLM                     │
+└─────────────────────────────┬───────────────────────────────┘
+                              │
+              Supabase Postgres (schema por dataset)
+                              │
+                    Motor de análisis (ML/Stats)
+└─────────────────────────────────────────────────────────────┘</pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-line px-6 py-8">
+      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p class="font-mono text-[0.62rem] text-ink-soft/80">ConversationalBI · TFG · Santiago Vásquez Franco</p>
+        <div class="flex items-center gap-4">
+          <a href="https://github.com/xofranc" target="_blank" rel="noopener" class="font-mono text-[0.62rem] text-ink-soft/60 hover:text-petrol">GitHub</a>
+          <a href="https://www.linkedin.com/in/santiago-vasquez-franco-90aa6528b/" target="_blank" rel="noopener" class="font-mono text-[0.62rem] text-ink-soft/60 hover:text-petrol">LinkedIn</a>
+          <a href="mailto:santiagofrancco3@gmail.com" class="font-mono text-[0.62rem] text-ink-soft/60 hover:text-petrol">Email</a>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/roadmap.js"></script>
+  </body>
+</html>

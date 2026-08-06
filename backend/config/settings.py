@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "apps.users",
     "apps.dataset",
     "apps.queries",
+    "apps.project_status",
     #! API REST
     "rest_framework",
     "corsheaders",

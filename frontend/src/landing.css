@@ -1,0 +1,172 @@
+/* ─────────────────────────────────────────────────────────────────────
+   Landing / Roadmap — estilos adicionales
+   ═════════════════════════════════════════════════════════════════════ */
+
+/* ── Hero de landing ────────────────────────────────────────────────── */
+.landing-hero {
+  min-height: calc(100vh - 4rem);
+  display: flex;
+  align-items: center;
+}
+
+/* ── Timeline ───────────────────────────────────────────────────────── */
+.timeline-item {
+  opacity: 1;
+}
+
+.timeline-node {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.timeline-item:hover .timeline-node {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 6px rgba(14, 94, 111, 0.12);
+}
+
+.timeline-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.timeline-item:hover .timeline-card {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 8px rgba(18, 22, 28, 0.08), 0 12px 32px rgba(18, 22, 28, 0.10);
+  border-color: #3e8fa3;
+}
+
+/* ── Cards de módulos ───────────────────────────────────────────────── */
+.module-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.module-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #0e5e6f, #3e8fa3, #c77b21);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.module-card:hover::before {
+  transform: scaleX(1);
+}
+
+/* ── Badges de estado ────────────────────────────────────────────────── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+}
+
+/* ── Author card ────────────────────────────────────────────────────── */
+.author-card {
+  position: relative;
+}
+
+.author-card::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 1.25rem;
+  background: linear-gradient(135deg, #0e5e6f, #3e8fa3, #c77b21);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.author-card:hover::after {
+  opacity: 0.3;
+}
+
+/* ── Enlaces de contacto ────────────────────────────────────────────── */
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: #5c6672;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.contact-link:hover {
+  color: #0e5e6f;
+  transform: translateX(3px);
+}
+
+/* ── Arquitectura terminal ───────────────────────────────────────────── */
+.architecture-terminal {
+  background: #12161c;
+  border: 1px solid #28303c;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(18, 22, 28, 0.08), 0 12px 32px rgba(18, 22, 28, 0.10);
+}
+
+/* ── CTA principal ─────────────────────────────────────────────────── */
+.cta-primary {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(14, 94, 111, 0.25);
+}
+
+/* ── Animaciones suaves para landing ────────────────────────────────── */
+[data-landing-reveal] {
+  opacity: 1;
+}
+
+/* ── Efecto de glow para destacados ──────────────────────────────────── */
+.glow-card {
+  position: relative;
+}
+
+.glow-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: radial-gradient(circle at 50% 0%, rgba(62, 143, 163, 0.15), transparent 70%);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.glow-card:hover::after {
+  opacity: 1;
+}
+
+/* ── Moción reducida ────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .module-card,
+  .timeline-card,
+  .timeline-node,
+  .cta-primary,
+  .contact-link,
+  .author-card,
+  .glow-card {
+    transition: none;
+  }
+
+  .module-card::before,
+  .author-card::after,
+  .glow-card::after {
+    transition: none;
+  }
+}
