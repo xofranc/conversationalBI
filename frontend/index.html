@@ -183,23 +183,8 @@
             Diseñado para ser real, escalable y verificable
           </h2>
           <div class="grid lg:grid-cols-[1fr_0.9fr] gap-12 items-start">
-            <div data-landing-reveal class="bg-rail-raise border border-rail-line rounded-xl p-6 overflow-x-auto">
-              <pre class="font-mono text-[0.72rem] leading-relaxed text-rail-text min-w-[24rem]">┌─────────────────────────────────────────────┐
-│  Web (Vite + Chart.js)                      │
-│  iOS (SwiftUI + Charts)                     │
-└───────────────────┬─────────────────────────┘
-                    │
-         Supabase Auth (JWT RS256)
-                    │
-┌───────────────────▼─────────────────────────┐
-│  Django API (Render) + LLMClient              │
-│  OpenAI-compatible endpoint                   │
-└───────────────────┬─────────────────────────┘
-                    │
-     Supabase Postgres (schema ds_‹id›)
-                    │
-     Motor: statsmodels + scikit-learn
-└─────────────────────────────────────────────┘</pre>
+            <div data-landing-reveal class="architecture-diagram-wrap">
+              <div id="architecture-diagram" class="architecture-diagram"></div>
             </div>
             <div class="space-y-6" data-landing-group>
               <div class="border-l-2 border-petrol-bright pl-5">

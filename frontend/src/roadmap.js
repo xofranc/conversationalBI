@@ -2,6 +2,7 @@ import './styles.css';
 import './landing.css';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { renderArchitectureDiagram } from './architecture-diagram.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -174,4 +175,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderModules(data.modules || FALLBACK_DATA.modules);
   updateProgress(data.phases || FALLBACK_DATA.phases);
   animate();
+
+  renderArchitectureDiagram('#architecture-diagram', { theme: 'dark' });
 });

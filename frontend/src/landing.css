@@ -106,13 +106,72 @@
   transform: translateX(3px);
 }
 
-/* ── Arquitectura terminal ───────────────────────────────────────────── */
-.architecture-terminal {
+/* ── Arquitectura diagrama ───────────────────────────────────────────── */
+.architecture-diagram-wrap {
   background: #12161c;
   border: 1px solid #28303c;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(18, 22, 28, 0.08), 0 12px 32px rgba(18, 22, 28, 0.10);
+  padding: 1rem;
+}
+
+.architecture-diagram {
+  position: relative;
+  width: 100%;
+  min-height: 220px;
+}
+
+.arch-diagram-svg {
+  overflow: visible;
+}
+
+.arch-node-card {
+  transition: stroke-width 0.2s ease;
+}
+
+.arch-tooltip {
+  position: absolute;
+  pointer-events: none;
+  z-index: 10;
+  max-width: 18rem;
+  padding: 0.75rem 1rem;
+  background: #0e5e6f;
+  color: #f4f6f9;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(62, 143, 163, 0.5);
+  box-shadow: 0 8px 24px rgba(18, 22, 28, 0.35);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.arch-tooltip.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.arch-tooltip strong {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+
+.arch-tooltip span {
+  display: block;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.65rem;
+  color: #a9b4c2;
+  margin-bottom: 0.4rem;
+}
+
+.arch-tooltip p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #f4f6f9;
 }
 
 /* ── CTA principal ─────────────────────────────────────────────────── */

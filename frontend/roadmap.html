@@ -81,23 +81,8 @@
           <h2 class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-8 text-center">
             Cómo está construido
           </h2>
-          <div class="bg-rail text-rail-text rounded-xl p-6 lg:p-8 overflow-x-auto border border-rail-line">
-            <pre class="font-mono text-[0.75rem] leading-relaxed min-w-[32rem]">┌─────────────────────────────────────────────────────────────┐
-│                     Web (Vite + Chart.js)                     │
-│                     iOS (SwiftUI + Charts)                    │
-└─────────────────────────────┬───────────────────────────────┘
-                              │
-                    Supabase Auth (JWT RS256)
-                              │
-┌─────────────────────────────▼───────────────────────────────┐
-│              Django API (Render) + LLMClient                │
-│                    OpenAI-compatible LLM                     │
-└─────────────────────────────┬───────────────────────────────┘
-                              │
-              Supabase Postgres (schema por dataset)
-                              │
-                    Motor de análisis (ML/Stats)
-└─────────────────────────────────────────────────────────────┘</pre>
+          <div class="architecture-diagram-wrap">
+            <div id="architecture-diagram" class="architecture-diagram"></div>
           </div>
         </div>
       </section>
