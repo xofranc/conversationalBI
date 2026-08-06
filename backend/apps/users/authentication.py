@@ -24,7 +24,13 @@ class SupabaseAuth(BaseAuthentication):
 
     def _get_jwks(self):
         if SupabaseAuth._jwks_cache is None:
-            url = f"{settings.SUPABASE_URL.rstrip('/')}/auth/v1/.well-known/jwks.json"
+            supabase_url = settings.SUPABASE_URL
+            if not supabase_url:
+                logger.error("SUPABASE_URL no está configurada")
+                raise AuthenticationFailed(
+                    "SUPABASE_URL no está configurada en el backend"
+                )
+            url = f"{supabase_url.rstrip('/')}/auth/v1/.well-known/jwks.json"
             try:
                 resp = requests.get(url, timeout=5)
                 resp.raise_for_status()
