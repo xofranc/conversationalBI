@@ -3,7 +3,7 @@
 > Hazle preguntas en lenguaje natural a tus datos. La IA genera SQL, ejecuta análisis y responde con gráficas y recibo SQL.
 
 **Web en producción:**
-- Frontend: [https://conversational-bi-xofrancs-projects.vercel.app](https://conversational-bi-xofrancs-projects.vercel.app)
+- Frontend: [https://conversational-bi-eight.vercel.app/](https://conversational-bi-eight.vercel.app/)
 - API: [https://conversationalbi-api.onrender.com/api/v1/health/](https://conversationalbi-api.onrender.com/api/v1/health/)
 
 ---
@@ -257,7 +257,7 @@ Render Free duerme tras inactividad. Configura un cron en [cron-job.org](https:/
 | **1** | Migrar LLM: Ollama → OpenCode Go (`LLMClient`) | ✅ |
 | **2** | Migrar BD: SQLite → Supabase Postgres (schema por dataset) | ✅ |
 | **3** | Deploy web: Render + Vercel + cron + CORS | ✅ |
-| **4** | Migrar auth: DRF SimpleJWT → Supabase Auth | 🔶 en progreso |
+| **4** | Migrar auth: DRF SimpleJWT → Supabase Auth | ✅ |
 | **5** | App iOS nativa (SwiftUI + Swift Charts) | ❌ |
 | **6** | Hardening: Supabase Storage, dominio propio, monitoreo | ❌ |
 

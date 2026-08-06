@@ -11,6 +11,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.112.1",
     "chart.js": "^4.4.1",
     "gsap": "^3.12.5"
   },

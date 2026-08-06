@@ -17,7 +17,7 @@ class TestProfileGet:
 
     def test_requiere_autenticacion(self, api_client):
         response = api_client.get(PROFILE_URL)
-        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        assert response.status_code == status.HTTP_403_FORBIDDEN
 
     def test_retorna_el_perfil_propio(self, auth_client, test_user):
         response = auth_client.get(PROFILE_URL)

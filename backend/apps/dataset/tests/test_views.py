@@ -52,7 +52,7 @@ class TestDatasetList:
 
     def test_requiere_autenticacion(self):
         response = APIClient().get('/api/v1/dataset/')
-        assert response.status_code == 401
+        assert response.status_code == 403
 
 
 class TestDatasetRetrieve:
@@ -138,9 +138,9 @@ class TestDatasetUpload:
         response = client.post('/api/v1/dataset/', {'name': 'Sin archivo'}, format='multipart')
         assert response.status_code == 400
 
-    def test_upload_sin_autenticacion_retorna_401(self):
+    def test_upload_sin_autenticacion_retorna_403(self):
         response = APIClient().post('/api/v1/dataset/', {}, format='multipart')
-        assert response.status_code == 401
+        assert response.status_code == 403
 
 
 class TestDatasetDestroy:
