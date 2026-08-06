@@ -119,12 +119,22 @@
 .architecture-diagram {
   position: relative;
   width: 100%;
-  min-height: 280px;
+  min-height: 260px;
   overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.architecture-diagram::-webkit-scrollbar {
+  height: 6px;
+}
+
+.architecture-diagram::-webkit-scrollbar-thumb {
+  background: #28303c;
+  border-radius: 3px;
 }
 
 .architecture-diagram svg {
-  min-width: 900px;
+  min-width: 100%;
 }
 
 .arch-diagram-svg {
