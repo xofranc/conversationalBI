@@ -50,7 +50,7 @@ class TestQueryCreate:
         response = api_client.post(QUERY_URL, {
             'question': PREGUNTA, 'dataset_id': test_dataset.id,
         }, format='json')
-        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        assert response.status_code == status.HTTP_403_FORBIDDEN
 
     def test_dataset_de_otro_usuario_retorna_403(self, auth_client, otro_dataset):
         response = auth_client.post(QUERY_URL, {

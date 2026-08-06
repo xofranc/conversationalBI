@@ -30,7 +30,7 @@ services:
       # URLs permanentes del proyecto en Vercel (las preview con hash
       # aleatorio cambian en cada deploy, no se whitelistean).
       - key: CORS_ALLOWED_ORIGINS
-        value: https://conversational-bi.vercel.app,https://conversational-bi-xofrancs-projects.vercel.app
+        value: https://conversational-bi-eight.vercel.app
       # Secretos: Render los pide al aplicar el blueprint.
       - key: DATABASE_URL
         sync: false
@@ -46,3 +46,5 @@ services:
         value: mimo-v2.5
       - key: LLM_TIMEOUT
         value: "60"
+      - key: SUPABASE_URL
+        sync: false

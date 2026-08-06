@@ -4,9 +4,10 @@
 > - **Fase 0** ✅ cuentas y env vars (OpenCode Go + Supabase)
 > - **Fase 1** ✅ código migrado a `LLMClient` (OpenAI-compatible); 157 tests verdes. Bloqueo menor: saldo de OpenCode Go agotado (`CreditsError`) — la ruta LLM E2E queda pendiente de recarga
 > - **Fase 2** ✅ **verificada E2E contra Supabase**: migraciones aplicadas, rol `bi_reader` creado (login por pooler con sufijo `.<project-ref>`), upload CSV → schema `ds_1` (900 filas, GRANT SELECT automático), consulta resumen leyendo vía read-only, INSERT bloqueado por privilegios
-> - **Tests**: guard en `settings.py` (bloque `_TESTING`) — `pytest` nunca toca la BD del `.env` (protege Supabase prod). Por defecto: 135 verdes + 22 skips (SQLite). Suite completa: `CBI_TEST_DATABASE_URL=...local... CBI_TEST_DATABASE_READER_URL=...local... pytest` → 157 verdes
+> - **Tests**: guard en `settings.py` (bloque `_TESTING`) — `pytest` nunca toca la BD del `.env` (protege Supabase prod). Por defecto: 126 verdes + 22 skips (SQLite). Suite completa: `CBI_TEST_DATABASE_URL=...local... CBI_TEST_DATABASE_READER_URL=...local... pytest` → 157 verdes
 > - **Fase 3** 🔶 endpoint `/api/v1/health/` + `render.yaml` (Blueprint) listos; landing actualizada al stack cloud (copy "local" eliminado); falta: crear servicio en Render, deploy Vercel, cron anti cold-start
-> - **Fases 4-6** ❌ pendientes
+> - **Fase 4** ✅ auth migrado a Supabase Auth: backend valida JWT RS256 contra JWKS, frontend usa `@supabase/supabase-js`, tests verdes
+> - **Fases 5-6** ❌ pendientes
 
 **Objetivo:** Migrar de stack local (Ollama + SQLite + docker-compose) a cloud (OpenCode Go + Supabase Postgres/Auth + Render + Vercel + iOS SwiftUI), y desplegar a producción.
 

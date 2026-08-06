@@ -1,5 +1,6 @@
 import './styles.css';
 import { api } from './api.js';
+import { supabase } from './supabase.js';
 import { animations } from './animations.js';
 import {
   Chart,
@@ -34,7 +35,7 @@ let figureCount = 0;
 const CHART_COLORS = ['#0E5E6F', '#3E8FA3', '#8FC0C9', '#C77B21', '#5C6672', '#B3402E'];
 const MAX_TABLE_ROWS = 50;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const loginForm = document.getElementById('login-form');
   const registerForm = document.getElementById('register-form');
   const authSubtitle = document.getElementById('auth-subtitle');
@@ -45,7 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const fileInput = document.getElementById('file-upload');
 
   // Sesión activa → directo a la consola
-  if (api.getToken()) {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
     enterDashboard(false);
   }
 
@@ -75,15 +77,14 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       errorEl.classList.add('hidden');
       animations.showLoader('Iniciando sesión...');
-      const res = await api.auth.login(email, password);
+      const { error } = await api.auth.login(email, password);
 
-      if (!res.access || !res.refresh) throw new Error('Tokens no recibidos');
-      api.setTokens(res.access, res.refresh);
+      if (error) throw error;
       animations.hideLoader();
       enterDashboard(true);
     } catch (err) {
       animations.hideLoader();
-      errorEl.innerText = err.data?.detail || err.data?.non_field_errors?.[0] || 'Error al iniciar sesión. Verifica tus credenciales.';
+      errorEl.innerText = err.message || err.data?.detail || 'Error al iniciar sesión. Verifica tus credenciales.';
       errorEl.classList.remove('hidden');
     }
   });
@@ -99,16 +100,17 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       errorEl.classList.add('hidden');
       animations.showLoader('Creando cuenta...');
-      await api.auth.register(email, password, firstName, lastName);
-      const res = await api.auth.login(email, password);
+      const { error: signUpError } = await api.auth.register(email, password, firstName, lastName);
+      if (signUpError) throw signUpError;
 
-      if (!res.access || !res.refresh) throw new Error('Tokens no recibidos');
-      api.setTokens(res.access, res.refresh);
+      const { error: loginError } = await api.auth.login(email, password);
+      if (loginError) throw loginError;
+
       animations.hideLoader();
       enterDashboard(true);
     } catch (err) {
       animations.hideLoader();
-      errorEl.innerText = parseDrfError(err) || 'Error al crear la cuenta.';
+      errorEl.innerText = err.message || parseDrfError(err) || 'Error al crear la cuenta.';
       errorEl.classList.remove('hidden');
     }
   });
@@ -116,15 +118,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Logout ──────────────────────────────────────────────────────────────
   document.getElementById('logout-btn').addEventListener('click', async () => {
     try {
-      await api.auth.logout();   // blacklist del refresh token en el backend
+      await api.auth.logout();
     } catch {
       // Si falla (red, token ya inválido), igual limpiamos la sesión local
     }
     forceLogout();
   });
 
+  // Escucha cambios de sesión desde otros tabs o el SDK
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_OUT' || !session) {
+      forceLogout();
+    }
+  });
+
   function forceLogout() {
-    api.clearTokens();
     datasets = [];
     currentDatasetId = null;
     renderDatasetList();
