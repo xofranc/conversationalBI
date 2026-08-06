@@ -172,12 +172,12 @@ export function renderArchitectureDiagram(containerSelector, { theme = 'dark' } 
   const bgPanel = isLight ? '#FFFFFF' : COLORS.rail;
   const panelBorder = isLight ? '#D4DADF' : COLORS.railLine;
 
-  const nodeW = 132;
-  const nodeH = 76;
-  const gapX = 44;
-  const gapY = 96;
-  const startX = 20;
-  const startY = 40;
+  const nodeW = 180;
+  const nodeH = 100;
+  const gapX = 60;
+  const gapY = 120;
+  const startX = 30;
+  const startY = 50;
 
   const totalW = startX * 2 + NODES.length * nodeW + (NODES.length - 1) * gapX;
   const totalH = startY * 2 + nodeH + gapY;
@@ -233,7 +233,7 @@ export function renderArchitectureDiagram(containerSelector, { theme = 'dark' } 
 
     // Icon
     const iconGroup = svgEl('g', {
-      transform: `translate(14, ${nodeH / 2 - 12})`,
+      transform: `translate(18, 30) scale(1.35)`,
       fill: 'none', stroke: 'currentColor', color: node.stroke,
     });
     node.icon(iconGroup);
@@ -241,8 +241,8 @@ export function renderArchitectureDiagram(containerSelector, { theme = 'dark' } 
 
     // Label
     const label = svgEl('text', {
-      x: nodeW - 12, y: 22,
-      fill: textColor, 'font-size': 12, 'font-weight': 600,
+      x: nodeW - 18, y: 30,
+      fill: textColor, 'font-size': 15, 'font-weight': 600,
       'font-family': 'Space Grotesk, sans-serif',
       'text-anchor': 'end', class: 'arch-node-label',
     });
@@ -251,8 +251,8 @@ export function renderArchitectureDiagram(containerSelector, { theme = 'dark' } 
 
     // Sub
     const sub = svgEl('text', {
-      x: nodeW - 12, y: 40,
-      fill: subColor, 'font-size': 9,
+      x: nodeW - 18, y: 52,
+      fill: subColor, 'font-size': 11,
       'font-family': 'JetBrains Mono, monospace',
       'text-anchor': 'end', class: 'arch-node-sub',
     });
@@ -304,7 +304,7 @@ export function renderArchitectureDiagram(containerSelector, { theme = 'dark' } 
         : { x: (ax + bx) / 2, y: (ay + by) / 2 - 6 };
       const label = svgEl('text', {
         x: mid.x, y: mid.y,
-        fill: subColor, 'font-size': 8,
+        fill: subColor, 'font-size': 10,
         'font-family': 'JetBrains Mono, monospace',
         'text-anchor': 'middle',
       });

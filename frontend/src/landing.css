@@ -119,7 +119,12 @@
 .architecture-diagram {
   position: relative;
   width: 100%;
-  min-height: 220px;
+  min-height: 280px;
+  overflow-x: auto;
+}
+
+.architecture-diagram svg {
+  min-width: 900px;
 }
 
 .arch-diagram-svg {
@@ -134,7 +139,7 @@
   position: absolute;
   pointer-events: none;
   z-index: 10;
-  max-width: 18rem;
+  max-width: 22rem;
   padding: 0.75rem 1rem;
   background: #0e5e6f;
   color: #f4f6f9;
