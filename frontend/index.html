@@ -22,7 +22,7 @@
           <a href="#producto" class="hover:text-petrol transition-colors">producto</a>
           <a href="#modulos" class="hover:text-petrol transition-colors">módulos</a>
           <a href="#roadmap" class="hover:text-petrol transition-colors">roadmap</a>
-          <a href="#arquitectura" class="hover:text-petrol transition-colors">arquitectura</a>
+          <a href="#stack" class="hover:text-petrol transition-colors">stack</a>
           <a href="#autor" class="hover:text-petrol transition-colors">autor</a>
         </nav>
         <a href="/app.html" class="shrink-0 px-4 py-2 bg-petrol hover:bg-petrol-dark text-white text-sm font-semibold rounded-lg transition-colors">
@@ -175,31 +175,33 @@
         </div>
       </section>
 
-      <!-- Arquitectura -->
-      <section id="arquitectura" class="scroll-mt-20 px-6 py-20 lg:py-28 bg-rail text-rail-text">
-        <div class="max-w-6xl mx-auto">
-          <p data-landing-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol-bright mb-4">// arquitectura</p>
-          <h2 data-landing-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-white mb-8">
-            Diseñado para ser real, escalable y verificable
+      <!-- Stack -->
+      <section id="stack" class="scroll-mt-20 px-6 py-20 lg:py-28 bg-card border-y border-line">
+        <div class="max-w-5xl mx-auto text-center">
+          <p data-landing-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4">// stack</p>
+          <h2 data-landing-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-4">
+            Tecnologías que lo hacen funcionar
           </h2>
-          <div class="grid lg:grid-cols-[1fr_0.9fr] gap-12 items-start">
-            <div data-landing-reveal class="architecture-diagram-wrap">
-              <div id="architecture-diagram" class="architecture-diagram"></div>
-            </div>
-            <div class="space-y-6" data-landing-group>
-              <div class="border-l-2 border-petrol-bright pl-5">
-                <h3 class="font-display text-lg font-semibold text-white mb-2">Autenticación segura</h3>
-                <p class="text-sm text-rail-text leading-relaxed">JWT RS256 firmados por Supabase, validados en Django contra el JWKS público. Sin contraseñas propias.</p>
-              </div>
-              <div class="border-l-2 border-petrol-bright pl-5">
-                <h3 class="font-display text-lg font-semibold text-white mb-2">Datos aislados</h3>
-                <p class="text-sm text-rail-text leading-relaxed">Cada dataset vive en un schema Postgres propio. Las consultas de análisis corren bajo un rol de solo lectura.</p>
-              </div>
-              <div class="border-l-2 border-petrol-bright pl-5">
-                <h3 class="font-display text-lg font-semibold text-white mb-2">Recibo verificable</h3>
-                <p class="text-sm text-rail-text leading-relaxed">SQL, método estadístico, motor y tiempo de ejecución acompañan cada respuesta.</p>
-              </div>
-            </div>
+          <p data-landing-reveal class="text-ink-soft max-w-2xl mx-auto mb-12">
+            Un stack moderno y desplegable: backend con Python, datos en Postgres, autenticación con Supabase, frontend con Vite y una app iOS en SwiftUI.
+          </p>
+          <div id="stack-grid" class="flex flex-wrap justify-center gap-3" data-landing-group>
+            <span class="stack-badge"><span class="stack-dot bg-petrol"></span>Python</span>
+            <span class="stack-badge"><span class="stack-dot bg-petrol"></span>Django</span>
+            <span class="stack-badge"><span class="stack-dot bg-teal"></span>Django REST Framework</span>
+            <span class="stack-badge"><span class="stack-dot bg-teal"></span>PostgreSQL</span>
+            <span class="stack-badge"><span class="stack-dot bg-amber"></span>Supabase</span>
+            <span class="stack-badge"><span class="stack-dot bg-amber"></span>Supabase Auth</span>
+            <span class="stack-badge"><span class="stack-dot bg-petrol"></span>OpenAI</span>
+            <span class="stack-badge"><span class="stack-dot bg-teal"></span>statsmodels</span>
+            <span class="stack-badge"><span class="stack-dot bg-teal"></span>scikit-learn</span>
+            <span class="stack-badge"><span class="stack-dot bg-petrol"></span>Vite</span>
+            <span class="stack-badge"><span class="stack-dot bg-teal"></span>Tailwind CSS</span>
+            <span class="stack-badge"><span class="stack-dot bg-teal"></span>Chart.js</span>
+            <span class="stack-badge"><span class="stack-dot bg-amber"></span>SwiftUI</span>
+            <span class="stack-badge"><span class="stack-dot bg-amber"></span>Swift Charts</span>
+            <span class="stack-badge"><span class="stack-dot bg-petrol"></span>Render</span>
+            <span class="stack-badge"><span class="stack-dot bg-teal"></span>Vercel</span>
           </div>
         </div>
       </section>
