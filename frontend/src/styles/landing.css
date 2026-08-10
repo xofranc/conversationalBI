@@ -15,7 +15,9 @@
 }
 
 .timeline-node {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .timeline-item:hover .timeline-node {
@@ -24,12 +26,17 @@
 }
 
 .timeline-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .timeline-item:hover .timeline-card {
   transform: translateY(-4px);
-  box-shadow: 0 4px 8px rgba(18, 22, 28, 0.08), 0 12px 32px rgba(18, 22, 28, 0.10);
+  box-shadow:
+    0 4px 8px rgba(18, 22, 28, 0.08),
+    0 12px 32px rgba(18, 22, 28, 0.1);
   border-color: #3e8fa3;
 }
 
@@ -40,7 +47,7 @@
 }
 
 .module-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -61,7 +68,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -76,7 +83,7 @@
 }
 
 .author-card::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: -2px;
   border-radius: 1.25rem;
@@ -95,10 +102,12 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 0.75rem;
   color: #5c6672;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .contact-link:hover {
@@ -115,12 +124,15 @@
   background: #ffffff;
   border: 1px solid #d4dadf;
   border-radius: 999px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 0.78rem;
   font-weight: 500;
   color: #12161c;
   box-shadow: 0 1px 2px rgba(18, 22, 28, 0.04);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .stack-badge:hover {
@@ -139,7 +151,9 @@
 .cta-primary {
   position: relative;
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .cta-primary:hover {
@@ -158,11 +172,15 @@
 }
 
 .glow-card::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  background: radial-gradient(circle at 50% 0%, rgba(62, 143, 163, 0.15), transparent 70%);
+  background: radial-gradient(
+    circle at 50% 0%,
+    rgba(62, 143, 163, 0.15),
+    transparent 70%
+  );
   z-index: -1;
   opacity: 0;
   transition: opacity 0.3s ease;

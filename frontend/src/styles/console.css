@@ -1,27 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* ── ConversationalBI · consola de datos ────────────────────────────── */
-
-/* Scrollbar sobrio (WebKit + Firefox) */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(14, 94, 111, 0.35) transparent;
-}
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(14, 94, 111, 0.3);
-  border-radius: 10px;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(14, 94, 111, 0.55);
-}
 
 /* ── Burbujas de conversación ───────────────────────────────────────── */
 .chat-message {
@@ -51,7 +28,6 @@
 }
 
 /* ── Recibo verificable (la firma del producto) ─────────────────────── */
-/* Ticket mono con borde perforado y sello: cada respuesta trae prueba. */
 .sql-receipt {
   margin-top: 6px;
   max-width: 85%;
@@ -105,7 +81,6 @@
   word-break: break-word;
 }
 
-/* Sello del recibo: motor o caché, en mayúsculas de bitácora */
 .sql-badge {
   display: inline-block;
   padding: 1px 7px;
@@ -269,7 +244,7 @@
   background: #c77b21;
 }
 
-/* ── Sugerencias tras un fallo: caminos, no callejones ──────────────── */
+/* ── Sugerencias tras un fallo ──────────────────────────────────────── */
 .suggestion-hint {
   margin-top: 6px;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
@@ -287,38 +262,10 @@
   max-width: 85%;
 }
 
-/* Foco visible consistente */
-:focus-visible {
-  outline: 2px solid #0e5e6f;
-  outline-offset: 2px;
-}
-
-/* Moción reducida: la consola no se agita */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
 /* ════════════════════════════════════════════════════════════════════
    HOME — la puerta de entrada a la consola
    ════════════════════════════════════════════════════════════════════ */
 
-/* Desplazamiento sereno entre secciones (anulado con moción reducida) */
-html {
-  scroll-behavior: smooth;
-}
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-}
-
-/* La palabra-ticket del titular: el recibo como pieza tipográfica */
 .ticket-word {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 0.82em;
@@ -374,7 +321,6 @@ html {
   align-self: flex-end;
 }
 
-/* Cursor de tecleo: un bloque que respira */
 .caret {
   display: inline-block;
   width: 7px;
@@ -390,7 +336,6 @@ html {
   56%, 100% { opacity: 0; }
 }
 
-/* Barra del recibo estático (misma voz que .sql-receipt summary) */
 .receipt-bar {
   display: flex;
   align-items: center;
@@ -440,7 +385,6 @@ html {
   box-shadow: 0 1px 2px rgba(18, 22, 28, 0.05), 0 4px 16px rgba(18, 22, 28, 0.06);
 }
 
-/* Chips de palabras gatillo: primo informativo del example-chip */
 .trigger-chip {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 0.66rem;
@@ -508,7 +452,6 @@ html {
   margin-left: 3px;
 }
 
-/* Sello de verificación: la rúbrica del artefacto */
 .receipt-stamp {
   position: absolute;
   right: 14px;

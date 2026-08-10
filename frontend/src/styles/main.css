@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── ConversationalBI · base compartida ─────────────────────────────── */
+
+/* Scrollbar sobrio (WebKit + Firefox) */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(14, 94, 111, 0.35) transparent;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(14, 94, 111, 0.3);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(14, 94, 111, 0.55);
+}
+
+/* Desplazamiento sereno entre secciones (anulado con moción reducida) */
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Foco visible consistente */
+:focus-visible {
+  outline: 2px solid #0e5e6f;
+  outline-offset: 2px;
+}
+
+/* Moción reducida */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

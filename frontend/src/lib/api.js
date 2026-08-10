@@ -1,10 +1,9 @@
-// API Service for ConversationalBI
-// Base URL: en dev y en compose se usa el proxy same-origin (/api/v1).
+// Cliente HTTP para el backend de ConversationalBI.
+// En dev y en compose se usa el proxy same-origin (/api/v1).
 // Sobreescribible con VITE_API_URL (p. ej. http://localhost:8000/api/v1).
 
-import { supabase } from './supabase.js';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
+import { supabase } from "./supabase.js";
+import { API_BASE_URL } from "../config/constants.js";
 
 export const api = {
   async getToken() {
@@ -14,18 +13,18 @@ export const api = {
 
   async _fetch(endpoint, options = {}) {
     const headers = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options.headers,
     };
 
     const token = await this.getToken();
     if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+      headers["Authorization"] = `Bearer ${token}`;
     }
 
     // FormData: el navegador define el boundary multipart
     if (options.body instanceof FormData) {
-      delete headers['Content-Type'];
+      delete headers["Content-Type"];
     }
 
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
@@ -67,27 +66,25 @@ export const api = {
   dataset: {
     upload: (file, name) => {
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('name', name);
-      return api.request('/dataset/', {
-        method: 'POST',
+      formData.append("file", file);
+      formData.append("name", name);
+      return api.request("/dataset/", {
+        method: "POST",
         body: formData,
       });
     },
-    list: () => api.request('/dataset/'),
-    delete: (id) => api.request(`/dataset/${id}/`, { method: 'DELETE' }),
+    list: () => api.request("/dataset/"),
+    delete: (id) => api.request(`/dataset/${id}/`, { method: "DELETE" }),
   },
 
   query: {
     ask: (question, datasetId) =>
-      api.request('/queries/', {
-        method: 'POST',
+      api.request("/queries/", {
+        method: "POST",
         body: JSON.stringify({ question, dataset_id: datasetId }),
       }),
     history: (datasetId) =>
-      api.request(
-        `/queries/${datasetId ? `?dataset_id=${datasetId}` : ''}`
-      ),
+      api.request(`/queries/${datasetId ? `?dataset_id=${datasetId}` : ""}`),
     detail: (id) => api.request(`/queries/${id}/`),
   },
 };
