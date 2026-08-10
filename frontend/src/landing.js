@@ -1,5 +1,6 @@
 import "./styles/main.css";
 import "./styles/landing.css";
+import "./styles/console.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
