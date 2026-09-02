@@ -425,6 +425,10 @@
             return;
           }
           
+          // Set initial states with gsap.set
+          gsap.set(navItems, { x: 30, opacity: 0 });
+          gsap.set(socialLinks, { y: 20, opacity: 0 });
+          
           // Create fluid timeline
           menuTimeline = gsap.timeline({
             onComplete: () => {
@@ -458,16 +462,16 @@
               duration: 0.2,
               ease: 'power2.out'
             }, 0.1)
-            .from(navItems, {
-              x: 30,
-              opacity: 0,
+            .to(navItems, {
+              x: 0,
+              opacity: 1,
               duration: 0.4,
               stagger: 0.06,
               ease: 'power3.out'
             }, 0.2)
-            .from(socialLinks, {
-              y: 20,
-              opacity: 0,
+            .to(socialLinks, {
+              y: 0,
+              opacity: 1,
               duration: 0.3,
               ease: 'power2.out'
             }, 0.4);
