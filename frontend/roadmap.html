@@ -28,6 +28,38 @@
         opacity: 0;
         pointer-events: none;
         will-change: clip-path, opacity;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      /* Loading spinner inside overlay */
+      .cta-loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        opacity: 0;
+      }
+      
+      .cta-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: cta-spin 0.8s linear infinite;
+      }
+      
+      @keyframes cta-spin {
+        to { transform: rotate(360deg); }
+      }
+      
+      .cta-loading-text {
+        color: white;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
       }
     </style>
   </head>
@@ -314,7 +346,12 @@
     </script>
 
     <!-- CTA transition overlay -->
-    <div id="cta-transition-overlay" class="cta-transition-overlay" aria-hidden="true"></div>
+    <div id="cta-transition-overlay" class="cta-transition-overlay" aria-hidden="true">
+      <div class="cta-loading">
+        <div class="cta-spinner"></div>
+        <span class="cta-loading-text">Cargando...</span>
+      </div>
+    </div>
     
     <!-- CTA animation script -->
     <script type="module">
@@ -362,6 +399,7 @@
             const rect = btn.getBoundingClientRect();
             const originX = rect.left + rect.width / 2;
             const originY = rect.top + rect.height / 2;
+            const loading = overlay.querySelector('.cta-loading');
             
             // Bubble animation: clip-path circle expands from button
             overlay.style.transformOrigin = `${originX}px ${originY}px`;
@@ -371,12 +409,23 @@
               clipPath: 'circle(0% at ' + originX + 'px ' + originY + 'px)'
             });
             
+            // Animate overlay expansion
             gsap.to(overlay, {
               clipPath: 'circle(150% at ' + originX + 'px ' + originY + 'px)',
-              duration: 0.6,
-              ease: 'power3.out',
+              duration: 0.5,
+              ease: 'power3.out'
+            });
+            
+            // Show loading spinner after overlay expands
+            gsap.to(loading, {
+              opacity: 1,
+              duration: 0.3,
+              delay: 0.4,
+              ease: 'power2.out',
               onComplete: () => {
-                window.location.href = '/app.html';
+                setTimeout(() => {
+                  window.location.href = '/app.html';
+                }, 800);
               }
             });
             
