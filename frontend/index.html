@@ -11,33 +11,137 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   </head>
   <body class="bg-paper text-ink font-sans antialiased">
+    <!-- Preload: ocultar elementos hasta que carguen los estilos -->
+    <style>
+      .preload-hide { opacity: 0 !important; }
+      body.loaded .preload-hide { opacity: 1 !important; transition: opacity 0.3s ease; }
+    </style>
+    <script>document.addEventListener('DOMContentLoaded', () => document.body.classList.add('loaded'));</script>
 
-    <header class="fixed top-0 inset-x-0 z-50 bg-paper/85 backdrop-blur-sm border-b border-line">
-      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
-        <a href="/" class="flex items-baseline gap-2.5 min-w-0">
-          <span class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-petrol hidden sm:inline">// bi conversacional</span>
+    <!-- ═══════════════ Navbar Kiro-style ═══════════════ -->
+    <nav class="sticky top-0 z-50 transition-all duration-300">
+      <!-- Desktop (≥1024px) -->
+      <div class="hidden lg:flex w-full justify-between p-2 pb-0 mx-auto max-w-7xl">
+        <div class="nav-pill relative flex w-full items-center justify-between rounded-[18px] p-2 pl-6">
+          
+          <!-- Logo -->
+          <a href="/" class="flex items-center gap-2 shrink-0">
+            <span class="font-display font-semibold tracking-tight text-ink text-lg">ConversationalBI</span>
+          </a>
+          
+          <!-- Nav centrado (absolute) -->
+          <ul class="absolute left-1/2 -translate-x-1/2 flex items-center gap-1" role="menubar">
+            <li role="none"><a href="#producto" class="nav-item" role="menuitem">producto</a></li>
+            <li role="none"><a href="#modulos" class="nav-item" role="menuitem">módulos</a></li>
+            <li role="none"><a href="#roadmap" class="nav-item" role="menuitem">roadmap</a></li>
+            <li role="none"><a href="#stack" class="nav-item" role="menuitem">stack</a></li>
+            <li role="none"><a href="#autor" class="nav-item" role="menuitem">autor</a></li>
+          </ul>
+          
+          <!-- Acciones -->
+          <div class="flex items-center gap-3 shrink-0">
+            <a href="/app.html" class="cta-nav-primary group">
+              <span class="cta-expand bg-petrol-dark"></span>
+              <span class="cta-text">abrir consola</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile (<1024px) -->
+      <div class="lg:hidden sticky top-0 z-50 flex justify-between items-center bg-paper/95 backdrop-blur-lg p-4 border-b border-line">
+        <a href="/" class="flex items-center">
           <span class="font-display font-semibold tracking-tight text-ink">ConversationalBI</span>
         </a>
-        <nav class="hidden md:flex items-center gap-6 font-mono text-[0.7rem] text-ink-soft" aria-label="Secciones">
-          <a href="#producto" class="hover:text-petrol transition-colors">producto</a>
-          <a href="#modulos" class="hover:text-petrol transition-colors">módulos</a>
-          <a href="#roadmap" class="hover:text-petrol transition-colors">roadmap</a>
-          <a href="#stack" class="hover:text-petrol transition-colors">stack</a>
-          <a href="#autor" class="hover:text-petrol transition-colors">autor</a>
-        </nav>
-        <a href="/app.html" class="shrink-0 px-4 py-2 bg-petrol hover:bg-petrol-dark text-white text-sm font-semibold rounded-lg transition-colors">
-          abrir consola →
-        </a>
+        <button id="mobile-menu-btn" class="hamburger-btn preload-hide" aria-label="Abrir menú" aria-expanded="false">
+          <svg id="icon-menu" class="hamburger-icon visible" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+          <svg id="icon-close" class="hamburger-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L6 18M6 6l12 12"></path>
+          </svg>
+        </button>
       </div>
-    </header>
+
+      <!-- Mobile menu — circular clip-path reveal -->
+      <div id="mobile-menu-fullscreen" class="mobile-menu-fullscreen" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+        <button id="mobile-menu-close" class="mobile-menu-close" aria-label="Cerrar menú">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L6 18M6 6l12 12"></path>
+          </svg>
+        </button>
+
+        <nav aria-label="Navegación móvil">
+          <ul class="mobile-nav-list">
+            <li>
+              <a href="#producto" class="mobile-nav-item">
+                <span class="mobile-nav-number">01</span>
+                <span class="mobile-nav-label">Producto</span>
+                <svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a href="#modulos" class="mobile-nav-item">
+                <span class="mobile-nav-number">02</span>
+                <span class="mobile-nav-label">Módulos</span>
+                <svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a href="#roadmap" class="mobile-nav-item">
+                <span class="mobile-nav-number">03</span>
+                <span class="mobile-nav-label">Roadmap</span>
+                <svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a href="#stack" class="mobile-nav-item">
+                <span class="mobile-nav-number">04</span>
+                <span class="mobile-nav-label">Stack</span>
+                <svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a href="#autor" class="mobile-nav-item">
+                <span class="mobile-nav-number">05</span>
+                <span class="mobile-nav-label">Autor</span>
+                <svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="mobile-menu-social">
+          <a href="https://github.com/xofranc" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/santiago-vasquez-franco-90aa6528b/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          </a>
+          <a href="mailto:santiagofrancco3@gmail.com" aria-label="Email">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </a>
+        </div>
+      </div>
+    </nav>
 
     <main>
       <!-- Hero -->
-      <section class="landing-hero pt-28 lg:pt-36 pb-14 px-6">
+      <section class="landing-hero pt-28 lg:pt-36 pb-14 px-6" aria-labelledby="hero-heading">
         <div class="max-w-6xl mx-auto grid lg:grid-cols-[1.02fr_0.98fr] gap-12 lg:gap-16 items-center">
           <div>
-            <p data-landing class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-5">// copilot de datos para empresas</p>
-            <h1 class="font-display text-[2.6rem] leading-[1.05] sm:text-5xl lg:text-[3.6rem] font-semibold tracking-tight text-ink mb-6">
+            <p data-landing class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-5" aria-hidden="true">// copilot de datos para empresas</p>
+            <h1 id="hero-heading" class="font-display text-[2.6rem] leading-[1.05] sm:text-5xl lg:text-[3.6rem] font-semibold tracking-tight text-ink mb-6">
               <span data-landing-line class="block">Pregúntale a tus datos.</span>
               <span data-landing-line class="block">Obtén respuestas con <span class="ticket-word">recibo</span>.</span>
             </h1>
@@ -47,14 +151,14 @@
               todo con trazabilidad completa.
             </p>
             <div data-landing class="flex flex-wrap items-center gap-4 mb-8">
-              <a href="/app.html" class="cta-primary px-6 py-3 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-xl transition-colors">
+              <a href="/app.html" class="cta-primary px-6 py-3 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-xl transition-colors" aria-describedby="hero-heading">
                 probar la demo →
               </a>
-              <a href="/roadmap.html" class="font-mono text-[0.75rem] text-ink-soft hover:text-petrol transition-colors">
+              <a href="/roadmap.html" class="font-mono text-[0.75rem] text-ink-soft hover:text-petrol transition-colors" aria-label="Ver roadmap del proyecto">
                 ver roadmap ↓
               </a>
             </div>
-            <p data-landing class="font-mono text-[0.65rem] leading-relaxed text-ink-soft/80">
+            <p data-landing class="font-mono text-[0.65rem] leading-relaxed text-ink-soft/80" aria-label="Tecnologías utilizadas">
               Supabase Auth · Postgres · Django · Render · Vercel
             </p>
           </div>
@@ -63,9 +167,9 @@
             <div class="demo-head">
               <span class="demo-dot" aria-hidden="true"></span>
               <span class="font-mono text-[0.65rem] text-rail-text truncate">consola · ventas_2024.csv</span>
-              <span id="demo-scene" class="ml-auto font-mono text-[0.6rem] text-rail-text/50 shrink-0 pl-3">// en vivo</span>
+              <span id="demo-scene" class="ml-auto font-mono text-[0.6rem] text-rail-text/50 shrink-0 pl-3" aria-live="polite">// en vivo</span>
             </div>
-            <div id="demo-chat" class="demo-chat"></div>
+            <div id="demo-chat" class="demo-chat" aria-live="polite" aria-label="Mensajes de demostración"></div>
             <div class="demo-viz-wrap">
               <svg id="demo-svg" viewBox="0 0 340 180" class="w-full h-auto block" aria-hidden="true"></svg>
             </div>
@@ -77,17 +181,17 @@
       </section>
 
       <!-- Marquee -->
-      <div class="marquee border-y border-line py-3 overflow-hidden select-none" aria-hidden="true">
+      <div class="marquee border-y border-line py-3 overflow-hidden select-none" aria-hidden="true" role="presentation">
         <div id="marquee-track" class="marquee-track font-mono text-[0.72rem] text-ink-soft">
           <span class="marquee-chunk">ventas totales por ciudad&nbsp;&nbsp;·&nbsp;&nbsp;top 5 productos por ingresos&nbsp;&nbsp;·&nbsp;&nbsp;resumen de los datos&nbsp;&nbsp;·&nbsp;&nbsp;pronóstico de ventas&nbsp;&nbsp;·&nbsp;&nbsp;anomalías en los montos&nbsp;&nbsp;·&nbsp;&nbsp;factores del monto&nbsp;&nbsp;·&nbsp;&nbsp;¿y por mes?&nbsp;&nbsp;·&nbsp;&nbsp;ahora por ciudad&nbsp;&nbsp;·&nbsp;&nbsp;</span><span class="marquee-chunk">ventas totales por ciudad&nbsp;&nbsp;·&nbsp;&nbsp;top 5 productos por ingresos&nbsp;&nbsp;·&nbsp;&nbsp;resumen de los datos&nbsp;&nbsp;·&nbsp;&nbsp;pronóstico de ventas&nbsp;&nbsp;·&nbsp;&nbsp;anomalías en los montos&nbsp;&nbsp;·&nbsp;&nbsp;factores del monto&nbsp;&nbsp;·&nbsp;&nbsp;¿y por mes?&nbsp;&nbsp;·&nbsp;&nbsp;ahora por ciudad&nbsp;&nbsp;·&nbsp;&nbsp;</span>
         </div>
       </div>
 
       <!-- Producto -->
-      <section id="producto" class="scroll-mt-20 px-6 py-20 lg:py-28">
+      <section id="producto" class="scroll-mt-20 px-6 py-20 lg:py-28" aria-labelledby="producto-heading">
         <div class="max-w-6xl mx-auto">
-          <p data-landing-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4">// para qué</p>
-          <h2 data-landing-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-6 max-w-2xl">
+          <p data-landing-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4" aria-hidden="true">// para qué</p>
+          <h2 id="producto-heading" data-landing-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-6 max-w-2xl">
             Datos empresariales que finalmente responden
           </h2>
           <p data-landing-reveal class="text-ink-soft max-w-2xl mb-12 lg:mb-16 text-lg leading-relaxed">
@@ -96,25 +200,25 @@
             sin dashboards que configurar, sin SQL que escribir, sin caja negra.
           </p>
 
-          <div class="grid md:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden" data-landing-group>
-            <div class="bg-card p-7 lg:p-9 glow-card">
-              <p class="font-mono text-[0.65rem] text-petrol mb-5">01</p>
+          <div class="grid md:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden" data-landing-group role="list" aria-label="Pasos para usar ConversationalBI">
+            <div class="bg-card p-7 lg:p-9 glow-card" role="listitem">
+              <p class="font-mono text-[0.65rem] text-petrol mb-5" aria-hidden="true">01</p>
               <h3 class="font-display text-xl font-semibold tracking-tight text-ink mb-3">Sube</h3>
               <p class="text-sm text-ink-soft leading-relaxed">
                 Arrastra un CSV, Excel o JSON. El sistema detecta el esquema, tipos y valores
                 de ejemplo, y materializa los datos en su propio schema de Postgres.
               </p>
             </div>
-            <div class="bg-card p-7 lg:p-9 glow-card">
-              <p class="font-mono text-[0.65rem] text-petrol mb-5">02</p>
+            <div class="bg-card p-7 lg:p-9 glow-card" role="listitem">
+              <p class="font-mono text-[0.65rem] text-petrol mb-5" aria-hidden="true">02</p>
               <h3 class="font-display text-xl font-semibold tracking-tight text-ink mb-3">Pregunta</h3>
               <p class="text-sm text-ink-soft leading-relaxed">
                 Escribe en español como le hablarías a un analista. Un detector de intención
                 enruta la consulta hacia SQL, pronóstico, anomalías, segmentación o factores.
               </p>
             </div>
-            <div class="bg-card p-7 lg:p-9 glow-card">
-              <p class="font-mono text-[0.65rem] text-petrol mb-5">03</p>
+            <div class="bg-card p-7 lg:p-9 glow-card" role="listitem">
+              <p class="font-mono text-[0.65rem] text-petrol mb-5" aria-hidden="true">03</p>
               <h3 class="font-display text-xl font-semibold tracking-tight text-ink mb-3">Decide</h3>
               <p class="text-sm text-ink-soft leading-relaxed">
                 Cada respuesta trae su recibo: el SQL o método estadístico, el motor, el tiempo
@@ -126,10 +230,10 @@
       </section>
 
       <!-- Módulos -->
-      <section id="modulos" class="scroll-mt-20 px-6 py-20 lg:py-28 bg-card border-y border-line">
+      <section id="modulos" class="scroll-mt-20 px-6 py-20 lg:py-28 bg-card border-y border-line" aria-labelledby="modulos-heading">
         <div class="max-w-6xl mx-auto">
-          <p data-landing-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4">// módulos</p>
-          <h2 data-landing-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-6 max-w-2xl">
+          <p data-landing-reveal class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-4" aria-hidden="true">// módulos</p>
+          <h2 id="modulos-heading" data-landing-reveal class="font-display text-3xl lg:text-4xl font-semibold tracking-tight text-ink mb-6 max-w-2xl">
             Capacidades del copilot
           </h2>
           <p data-landing-reveal class="text-ink-soft max-w-2xl mb-12 lg:mb-16">
@@ -270,5 +374,64 @@
     </footer>
 
     <script type="module" src="/src/landing.js"></script>
+    
+    <!-- Nav-pill spotlight -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.nav-pill').forEach(pill => {
+          pill.addEventListener('mousemove', (e) => {
+            const rect = pill.getBoundingClientRect();
+            pill.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
+            pill.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
+          });
+        });
+      });
+    </script>
+
+    <!-- Mobile menu script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const closeBtn = document.getElementById('mobile-menu-close');
+        const fullscreenMenu = document.getElementById('mobile-menu-fullscreen');
+        const iconMenu = document.getElementById('icon-menu');
+        const iconClose = document.getElementById('icon-close');
+        
+        function openMenu() {
+          fullscreenMenu.classList.add('active');
+          iconMenu.classList.remove('visible');
+          iconMenu.classList.add('hidden');
+          iconClose.classList.remove('hidden');
+          iconClose.classList.add('visible');
+          menuBtn.setAttribute('aria-expanded', 'true');
+          document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMenu() {
+          fullscreenMenu.classList.remove('active');
+          iconMenu.classList.remove('hidden');
+          iconMenu.classList.add('visible');
+          iconClose.classList.remove('visible');
+          iconClose.classList.add('hidden');
+          menuBtn.setAttribute('aria-expanded', 'false');
+          document.body.style.overflow = '';
+        }
+        
+        menuBtn?.addEventListener('click', openMenu);
+        closeBtn?.addEventListener('click', closeMenu);
+        
+        // Close on nav item click
+        fullscreenMenu?.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', closeMenu);
+        });
+        
+        // Close on escape
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && fullscreenMenu.classList.contains('active')) {
+            closeMenu();
+          }
+        });
+      });
+    </script>
   </body>
 </html>

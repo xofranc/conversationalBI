@@ -118,14 +118,15 @@ export function buildBars(group) {
   });
 
   const tl = gsap.timeline();
-  tl.from(bars, {
-    scaleY: 0,
-    transformOrigin: "50% 100%",
+  gsap.set(bars, { scaleY: 0, transformOrigin: "50% 100%" });
+  gsap.set(labels, { opacity: 0 });
+  tl.to(bars, {
+    scaleY: 1,
     duration: 0.55,
     stagger: 0.08,
     ease: "power3.out",
   });
-  tl.from(labels, { opacity: 0, duration: 0.3, stagger: 0.03 }, "-=0.35");
+  tl.to(labels, { opacity: 1, duration: 0.3, stagger: 0.03 }, "-=0.35");
   return tl;
 }
 
@@ -189,18 +190,18 @@ export function buildScatter(group) {
   group.append(...dots, ...marks);
 
   const tl = gsap.timeline();
-  tl.from(dots, {
-    scale: 0,
-    transformOrigin: "50% 50%",
+  gsap.set(dots, { scale: 0, transformOrigin: "50% 50%" });
+  gsap.set(marks, { scale: 0, transformOrigin: "50% 50%" });
+  tl.to(dots, {
+    scale: 1,
     duration: 0.35,
     ease: "back.out(2)",
     stagger: { each: 0.035, from: "random" },
   });
-  tl.from(
+  tl.to(
     marks,
     {
-      scale: 0,
-      transformOrigin: "50% 50%",
+      scale: 1,
       duration: 0.5,
       ease: "back.out(2.5)",
       stagger: 0.12,
@@ -283,31 +284,33 @@ export function buildForecast(group) {
     strokeDasharray: () => realPath.getTotalLength(),
     strokeDashoffset: () => realPath.getTotalLength(),
   });
+  gsap.set(dots, { scale: 0, transformOrigin: "50% 50%" });
+  gsap.set([splitLine, realTag, predTag, band, predPath], { opacity: 0 });
+  
   tl.to(realPath, {
     strokeDashoffset: 0,
     duration: 0.95,
     ease: "power2.inOut",
   });
-  tl.from(
+  tl.to(
     dots,
     {
-      scale: 0,
-      transformOrigin: "50% 50%",
+      scale: 1,
       duration: 0.25,
       stagger: 0.03,
       ease: "back.out(2)",
     },
     "-=0.6",
   );
-  tl.from(
+  tl.to(
     [splitLine, realTag, predTag],
-    { opacity: 0, duration: 0.3 },
+    { opacity: 1, duration: 0.3 },
     "-=0.1",
   );
-  tl.from(band, { opacity: 0, duration: 0.45 }, "-=0.05");
-  tl.from(
+  tl.to(band, { opacity: 1, duration: 0.45 }, "-=0.05");
+  tl.to(
     predPath,
-    { opacity: 0, duration: 0.5, ease: "power2.out" },
+    { opacity: 1, duration: 0.5, ease: "power2.out" },
     "-=0.25",
   );
   return tl;
@@ -337,11 +340,15 @@ export function sceneTimeline(scene, chat, svg, sceneLabel) {
   const vizGroup = svgEl("g");
 
   const tl = gsap.timeline();
+  gsap.set(userWrap, { y: 10, opacity: 0 });
+  gsap.set(aiBubble, { y: 10, opacity: 0 });
+  gsap.set(receipt, { y: 8, opacity: 0 });
+  
   tl.call(() => {
     sceneLabel.textContent = `// ${scene.label}`;
     chat.appendChild(userWrap);
   });
-  tl.from(userWrap, { y: 10, opacity: 0, duration: 0.28, ease: "power2.out" });
+  tl.to(userWrap, { y: 0, opacity: 1, duration: 0.28, ease: "power2.out" });
 
   const typer = { n: 0 };
   tl.to(typer, {
@@ -361,10 +368,10 @@ export function sceneTimeline(scene, chat, svg, sceneLabel) {
     null,
     "+=0.4",
   );
-  tl.from(aiBubble, { y: 10, opacity: 0, duration: 0.3, ease: "power2.out" });
-  tl.from(
+  tl.to(aiBubble, { y: 0, opacity: 1, duration: 0.3, ease: "power2.out" });
+  tl.to(
     receipt,
-    { y: 8, opacity: 0, duration: 0.3, ease: "power2.out" },
+    { y: 0, opacity: 1, duration: 0.3, ease: "power2.out" },
     "-=0.12",
   );
   tl.call(() => svg.appendChild(vizGroup), null, "+=0.2");

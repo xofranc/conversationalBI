@@ -285,6 +285,9 @@
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(18, 22, 28, 0.08), 0 12px 32px rgba(18, 22, 28, 0.1);
+  width: 100%;
+  min-height: 770px;
+  max-height: 770px;
 }
 
 .demo-head {
@@ -353,7 +356,7 @@
 }
 
 .demo-foot {
-  padding: 10px 16px;
+  padding: 4px 10px;
   border-top: 1px solid #28303c;
 }
 

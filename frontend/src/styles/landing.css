@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────────────────────────────────
-   Landing / Roadmap — estilos adicionales
+   Landing / Roadmap — estilos adicionales (GSAP Optimized)
    ═════════════════════════════════════════════════════════════════════ */
 
 /* ── Hero de landing ────────────────────────────────────────────────── */
@@ -12,12 +12,11 @@
 /* ── Timeline ───────────────────────────────────────────────────────── */
 .timeline-item {
   opacity: 1;
+  will-change: transform, opacity;
 }
 
 .timeline-node {
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  will-change: transform, box-shadow;
 }
 
 .timeline-item:hover .timeline-node {
@@ -26,10 +25,7 @@
 }
 
 .timeline-card {
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
+  will-change: transform, box-shadow, border-color;
 }
 
 .timeline-item:hover .timeline-card {
@@ -44,6 +40,7 @@
 .module-card {
   position: relative;
   overflow: hidden;
+  will-change: transform, box-shadow;
 }
 
 .module-card::before {
@@ -56,7 +53,7 @@
   background: linear-gradient(90deg, #0e5e6f, #3e8fa3, #c77b21);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.4s ease;
+  will-change: transform;
 }
 
 .module-card:hover::before {
@@ -80,6 +77,7 @@
 /* ── Author card ────────────────────────────────────────────────────── */
 .author-card {
   position: relative;
+  will-change: box-shadow;
 }
 
 .author-card::after {
@@ -90,7 +88,7 @@
   background: linear-gradient(135deg, #0e5e6f, #3e8fa3, #c77b21);
   z-index: -1;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  will-change: opacity;
 }
 
 .author-card:hover::after {
@@ -105,9 +103,7 @@
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 0.75rem;
   color: #5c6672;
-  transition:
-    color 0.2s ease,
-    transform 0.2s ease;
+  will-change: transform;
 }
 
 .contact-link:hover {
@@ -129,10 +125,7 @@
   font-weight: 500;
   color: #12161c;
   box-shadow: 0 1px 2px rgba(18, 22, 28, 0.04);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
+  will-change: transform, box-shadow;
 }
 
 .stack-badge:hover {
@@ -151,9 +144,7 @@
 .cta-primary {
   position: relative;
   overflow: hidden;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  will-change: transform, box-shadow;
 }
 
 .cta-primary:hover {
@@ -162,13 +153,11 @@
 }
 
 /* ── Animaciones suaves para landing ────────────────────────────────── */
-[data-landing-reveal] {
-  opacity: 1;
-}
 
 /* ── Efecto de glow para destacados ──────────────────────────────────── */
 .glow-card {
   position: relative;
+  will-change: box-shadow;
 }
 
 .glow-card::after {
@@ -183,7 +172,7 @@
   );
   z-index: -1;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  will-change: opacity;
 }
 
 .glow-card:hover::after {
@@ -198,13 +187,26 @@
   .cta-primary,
   .contact-link,
   .author-card,
-  .glow-card {
+  .glow-card,
+  .stack-badge {
+    will-change: auto;
     transition: none;
   }
 
   .module-card::before,
   .author-card::after,
   .glow-card::after {
+    will-change: auto;
     transition: none;
+  }
+
+  .timeline-item:hover .timeline-node,
+  .timeline-item:hover .timeline-card,
+  .module-card:hover::before,
+  .contact-link:hover,
+  .stack-badge:hover,
+  .cta-primary:hover {
+    transform: none;
+    box-shadow: none;
   }
 }
