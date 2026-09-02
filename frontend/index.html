@@ -648,8 +648,22 @@
               ease: 'power2.inOut'
             }, 0.6)
             .call(() => {
+              // Hide overlay before navigating
+              overlay.style.opacity = '0';
+              overlay.style.pointerEvents = 'none';
+              overlay.style.visibility = 'hidden';
               window.location.href = '/app.html?transition=1';
             }, null, 1.2);
+            
+            // Fallback: hide overlay if navigation fails
+            setTimeout(() => {
+              if (overlay.style.opacity !== '0') {
+                overlay.style.opacity = '0';
+                overlay.style.pointerEvents = 'none';
+                overlay.style.visibility = 'hidden';
+                gsap.killTweensOf(overlay);
+              }
+            }, 3000);
             
             gsap.to(btn, {
               scale: 1.1,
