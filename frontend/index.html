@@ -688,6 +688,13 @@
               // Show body
               document.documentElement.style.visibility = 'visible';
               
+              // Fallback: always hide overlay after 2s
+              setTimeout(() => {
+                overlay.style.opacity = '0';
+                overlay.style.pointerEvents = 'none';
+                overlay.style.visibility = 'hidden';
+              }, 2000);
+              
               // Import GSAP and animate
               import('/src/gsap.js').then(({ default: gsap }) => {
                 gsap.to(overlay, {
@@ -701,6 +708,11 @@
                     overlay.style.visibility = 'hidden';
                   }
                 });
+              }).catch(() => {
+                // If GSAP fails to load, just hide overlay
+                overlay.style.opacity = '0';
+                overlay.style.pointerEvents = 'none';
+                overlay.style.visibility = 'hidden';
               });
             } else {
               document.documentElement.style.visibility = 'visible';
