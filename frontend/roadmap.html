@@ -500,12 +500,13 @@
               import('/src/gsap.js').then(({ default: gsap }) => {
                 gsap.to(overlay, {
                   clipPath: 'circle(0% at 50% 50%)',
-                  duration: 0.5,
-                  delay: 0.2,
+                  duration: 0.4,
+                  delay: 0.1,
                   ease: 'power3.inOut',
                   onComplete: () => {
                     overlay.style.opacity = '0';
                     overlay.style.pointerEvents = 'none';
+                    overlay.style.visibility = 'hidden';
                   }
                 });
               });
