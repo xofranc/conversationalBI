@@ -8,12 +8,177 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+      /* Preload */
+      .preload-hide { opacity: 0 !important; }
+      body.loaded .preload-hide { opacity: 1 !important; transition: opacity 0.3s ease; }
+      
+      /* Nav pill styles */
+      .nav-pill {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(16px) saturate(180%);
+        -webkit-backdrop-filter: blur(16px) saturate(180%);
+        box-shadow: 0 4px 24px rgba(14, 94, 111, 0.08);
+      }
+      .nav-pill::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        opacity: 0;
+        background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(14, 94, 111, 0.1), transparent 40%);
+        transition: opacity 0.3s;
+        pointer-events: none;
+      }
+      .nav-pill:hover::after { opacity: 1; }
+      
+      .nav-item {
+        padding: 6px 14px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #5C6672;
+        border-radius: 10px;
+        transition: all 0.2s ease;
+      }
+      .nav-item:hover {
+        color: #0E5E6F;
+        background: rgba(14, 94, 111, 0.08);
+      }
+      
+      /* CTA feedback */
+      .cta-nav-primary {
+        transform: scale(1);
+        transition: transform 100ms ease-out;
+      }
+      .cta-nav-primary:active {
+        transform: scale(0.97);
+        transition: transform 60ms ease-out;
+      }
+      
+      /* CTA transition overlay */
+      .cta-transition-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: #0E5E6F;
+        opacity: 0;
+        pointer-events: none;
+        will-change: transform, opacity;
+      }
+    </style>
   </head>
   <body class="bg-paper text-ink font-sans antialiased">
-    <div id="app" class="relative w-full min-h-screen lg:h-screen lg:overflow-hidden">
+    <script>document.addEventListener('DOMContentLoaded', () => document.body.classList.add('loaded'));</script>
+
+    <!-- ═══════════════ Navbar Kiro-style ═══════════════ -->
+    <nav class="sticky top-0 z-50 transition-all duration-300">
+      <!-- Desktop (≥1024px) -->
+      <div class="hidden lg:flex w-full justify-between p-2 pb-0 mx-auto max-w-7xl">
+        <div class="nav-pill relative flex w-full items-center justify-between rounded-[18px] p-2 pl-6">
+          
+          <!-- Logo -->
+          <a href="/" class="flex items-center gap-2 shrink-0">
+            <span class="font-display font-semibold tracking-tight text-ink text-lg">ConversationalBI</span>
+          </a>
+          
+          <!-- Nav centrado (absolute) -->
+          <ul class="absolute left-1/2 -translate-x-1/2 flex items-center gap-1" role="menubar">
+            <li role="none"><a href="/" class="nav-item" role="menuitem">home</a></li>
+            <li role="none"><a href="/app.html" class="nav-item" role="menuitem">demo</a></li>
+            <li role="none"><a href="/roadmap.html" class="nav-item" role="menuitem">roadmap</a></li>
+            <li role="none"><a href="https://github.com/xofranc/conversationalBI" target="_blank" rel="noopener" class="nav-item" role="menuitem">github</a></li>
+          </ul>
+          
+          <!-- Acciones -->
+          <div class="flex items-center gap-3 shrink-0">
+            <a href="/roadmap.html" class="cta-nav-secondary group">
+              <span class="cta-expand bg-petrol-dark"></span>
+              <span class="cta-text">roadmap</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile (<1024px) -->
+      <div class="lg:hidden sticky top-0 z-50 flex justify-between items-center bg-paper/95 backdrop-blur-lg p-4 border-b border-line">
+        <a href="/" class="flex items-center">
+          <span class="font-display font-semibold tracking-tight text-ink">ConversationalBI</span>
+        </a>
+        <button id="mobile-menu-btn" class="hamburger-btn preload-hide" aria-label="Abrir menú" aria-expanded="false">
+          <svg id="icon-menu" class="hamburger-icon visible" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+          <svg id="icon-close" class="hamburger-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L6 18M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile menu — circular clip-path reveal -->
+      <div id="mobile-menu-fullscreen" class="mobile-menu-fullscreen" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+        <button id="mobile-menu-close" class="mobile-menu-close" aria-label="Cerrar menú">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L6 18M6 6l12 12"></path>
+          </svg>
+        </button>
+
+        <nav aria-label="Navegación móvil">
+          <ul class="mobile-nav-list">
+            <li>
+              <a href="/" class="mobile-nav-item">
+                <span class="mobile-nav-number">01</span>
+                <span class="mobile-nav-label">Home</span>
+                <svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a href="/app.html" class="mobile-nav-item">
+                <span class="mobile-nav-number">02</span>
+                <span class="mobile-nav-label">Demo</span>
+                <svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a href="/roadmap.html" class="mobile-nav-item">
+                <span class="mobile-nav-number">03</span>
+                <span class="mobile-nav-label">Roadmap</span>
+                <svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/xofranc/conversationalBI" target="_blank" rel="noopener" class="mobile-nav-item">
+                <span class="mobile-nav-number">04</span>
+                <span class="mobile-nav-label">GitHub</span>
+                <svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Social links -->
+        <div class="mobile-menu-social flex gap-4 mt-8">
+          <a href="https://github.com/xofranc/conversationalBI" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          </a>
+          <a href="mailto:santiagofrancco3@gmail.com" aria-label="Email">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <div id="app" class="relative w-full min-h-screen lg:min-h-0 lg:flex lg:flex-col lg:flex-1">
 
       <!-- ═══════════════ Vista de autenticación ═══════════════ -->
-      <section id="auth-view" class="absolute inset-0 z-50 flex items-center justify-center bg-paper">
+      <section id="auth-view" class="relative z-40 flex items-center justify-center bg-paper min-h-[calc(100vh-60px)]">
         <div class="auth-container bg-card border border-line p-8 rounded-2xl w-full max-w-md mx-4 shadow-lift">
           <div class="text-center mb-8">
             <p class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-3">// bi conversacional · local</p>
@@ -74,7 +239,7 @@
       </section>
 
       <!-- ═══════════════ Consola ═══════════════ -->
-      <section id="dashboard-view" class="hidden opacity-0 lg:h-screen flex flex-col lg:flex-row">
+      <section id="dashboard-view" class="hidden opacity-0 flex flex-col lg:flex-row lg:flex-1">
 
         <!-- Rail de instrumentos: fuentes de datos + bitácora -->
         <aside class="w-full lg:w-72 shrink-0 lg:h-full bg-rail text-rail-text flex flex-col lg:overflow-hidden">
@@ -245,6 +410,62 @@
       <!-- Toast de notificaciones -->
       <div id="toast" role="status" class="fixed bottom-6 right-6 z-[110] hidden max-w-sm px-4 py-3 rounded-xl text-sm font-medium shadow-lift"></div>
     </div>
+
+    <!-- CTA transition overlay -->
+    <div id="cta-transition-overlay" class="cta-transition-overlay" aria-hidden="true"></div>
+
+    <!-- Mobile menu script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const closeBtn = document.getElementById('mobile-menu-close');
+        const fullscreenMenu = document.getElementById('mobile-menu-fullscreen');
+        const iconMenu = document.getElementById('icon-menu');
+        const iconClose = document.getElementById('icon-close');
+        
+        function openMenu() {
+          fullscreenMenu.classList.add('active');
+          iconMenu.classList.remove('visible');
+          iconMenu.classList.add('hidden');
+          iconClose.classList.remove('hidden');
+          iconClose.classList.add('visible');
+          menuBtn.setAttribute('aria-expanded', 'true');
+          document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMenu() {
+          fullscreenMenu.classList.remove('active');
+          iconMenu.classList.remove('hidden');
+          iconMenu.classList.add('visible');
+          iconClose.classList.remove('visible');
+          iconClose.classList.add('hidden');
+          menuBtn.setAttribute('aria-expanded', 'false');
+          document.body.style.overflow = '';
+        }
+        
+        menuBtn?.addEventListener('click', openMenu);
+        closeBtn?.addEventListener('click', closeMenu);
+        
+        fullscreenMenu?.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', closeMenu);
+        });
+        
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && fullscreenMenu.classList.contains('active')) {
+            closeMenu();
+          }
+        });
+
+        // Nav pill mouse tracking
+        document.querySelectorAll('.nav-pill').forEach(pill => {
+          pill.addEventListener('mousemove', (e) => {
+            const rect = pill.getBoundingClientRect();
+            pill.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
+            pill.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
+          });
+        });
+      });
+    </script>
 
     <script type="module" src="/src/main.js"></script>
   </body>
