@@ -644,7 +644,7 @@
               ease: 'power2.inOut'
             }, 0.6)
             .call(() => {
-              window.location.href = '/app.html';
+              window.location.href = '/app.html?transition=1';
             }, null, 1.2);
             
             gsap.to(btn, {
@@ -656,6 +656,42 @@
             });
           });
         });
+      });
+    </script>
+
+    <!-- Reverse animation on page load -->
+    <script type="module">
+      import gsap from '/src/gsap.js';
+      
+      document.addEventListener('DOMContentLoaded', () => {
+        const overlay = document.getElementById('cta-transition-overlay');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        // Check if we came from a transition (URL param)
+        const params = new URLSearchParams(window.location.search);
+        const fromTransition = params.get('transition');
+        
+        if (fromTransition && overlay && !prefersReducedMotion) {
+          // Remove param from URL
+          window.history.replaceState({}, '', window.location.pathname);
+          
+          // Set overlay to fullscreen
+          gsap.set(overlay, {
+            opacity: 1,
+            clipPath: 'circle(150% at 50% 50%)'
+          });
+          
+          // Animate overlay contracting to center
+          gsap.to(overlay, {
+            clipPath: 'circle(0% at 50% 50%)',
+            duration: 0.6,
+            delay: 0.3,
+            ease: 'power3.inOut',
+            onComplete: () => {
+              gsap.set(overlay, { opacity: 0, clipPath: 'circle(0% at 50% 50%)' });
+            }
+          });
+        }
       });
     </script>
   </body>
