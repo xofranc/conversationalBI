@@ -69,33 +69,47 @@
         justify-content: center;
       }
       
-      /* Loading spinner inside overlay */
+      /* Modern preloader */
       .cta-loading {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 16px;
+        gap: 24px;
         opacity: 0;
       }
       
-      .cta-spinner {
-        width: 40px;
-        height: 40px;
-        border: 3px solid rgba(255, 255, 255, 0.3);
-        border-top-color: white;
-        border-radius: 50%;
-        animation: cta-spin 0.8s linear infinite;
-      }
-      
-      @keyframes cta-spin {
-        to { transform: rotate(360deg); }
-      }
-      
-      .cta-loading-text {
+      .cta-preloader-logo {
+        font-family: 'Instrument Serif', serif;
+        font-size: clamp(24px, 5vw, 36px);
         color: white;
-        font-size: 14px;
-        font-weight: 500;
-        letter-spacing: 0.02em;
+        letter-spacing: -0.02em;
+        overflow: hidden;
+      }
+      
+      .cta-preloader-logo span {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(100%);
+      }
+      
+      .cta-preloader-line {
+        width: 60px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 1px;
+        overflow: hidden;
+        position: relative;
+      }
+      
+      .cta-preloader-line::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 0;
+        background: white;
+        border-radius: 1px;
       }
     </style>
   </head>
@@ -446,8 +460,10 @@
     <!-- CTA transition overlay -->
     <div id="cta-transition-overlay" class="cta-transition-overlay" aria-hidden="true">
       <div class="cta-loading">
-        <div class="cta-spinner"></div>
-        <span class="cta-loading-text">Cargando...</span>
+        <div class="cta-preloader-logo">
+          <span>C</span><span>o</span><span>n</span><span>v</span><span>e</span><span>r</span><span>s</span><span>a</span><span>t</span><span>i</span><span>o</span><span>n</span><span>a</span><span>l</span><span>B</span><span>I</span>
+        </div>
+        <div class="cta-preloader-line"></div>
       </div>
     </div>
 
@@ -610,6 +626,8 @@
             const originX = rect.left + rect.width / 2;
             const originY = rect.top + rect.height / 2;
             const loading = overlay.querySelector('.cta-loading');
+            const logoLetters = overlay.querySelectorAll('.cta-preloader-logo span');
+            const line = overlay.querySelector('.cta-preloader-line');
             
             // Bubble animation: clip-path circle expands from button
             overlay.style.transformOrigin = `${originX}px ${originY}px`;
@@ -619,25 +637,33 @@
               clipPath: 'circle(0% at ' + originX + 'px ' + originY + 'px)'
             });
             
-            // Animate overlay expansion
-            gsap.to(overlay, {
+            // Create timeline for loading animation
+            const tl = gsap.timeline();
+            
+            tl.to(overlay, {
               clipPath: 'circle(150% at ' + originX + 'px ' + originY + 'px)',
               duration: 0.5,
               ease: 'power3.out'
-            });
-            
-            // Show loading spinner after overlay expands
-            gsap.to(loading, {
+            })
+            .to(loading, {
               opacity: 1,
-              duration: 0.3,
-              delay: 0.4,
-              ease: 'power2.out',
-              onComplete: () => {
-                setTimeout(() => {
-                  window.location.href = '/roadmap.html';
-                }, 800);
-              }
-            });
+              duration: 0.2
+            }, 0.3)
+            .to(logoLetters, {
+              opacity: 1,
+              y: 0,
+              duration: 0.4,
+              stagger: 0.03,
+              ease: 'power3.out'
+            }, 0.4)
+            .to(line, {
+              width: '60px',
+              duration: 0.8,
+              ease: 'power2.inOut'
+            }, 0.6)
+            .call(() => {
+              window.location.href = '/roadmap.html';
+            }, null, 1.2);
             
             gsap.to(btn, {
               scale: 1.1,
