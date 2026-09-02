@@ -527,6 +527,81 @@
       });
     </script>
 
+    <!-- CTA animation script for roadmap button -->
+    <script type="module">
+      import gsap from '/src/gsap.js';
+      
+      document.addEventListener('DOMContentLoaded', () => {
+        const overlay = document.getElementById('cta-transition-overlay');
+        const roadmapBtns = document.querySelectorAll('a[href="/roadmap.html"]');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        roadmapBtns.forEach(btn => {
+          btn.addEventListener('pointerdown', () => {
+            gsap.to(btn, {
+              scale: 0.95,
+              duration: 0.1,
+              ease: 'power2.out'
+            });
+          });
+          
+          btn.addEventListener('pointerup', () => {
+            gsap.to(btn, {
+              scale: 1,
+              duration: 0.2,
+              ease: 'back.out(2)'
+            });
+          });
+          
+          btn.addEventListener('pointerleave', () => {
+            gsap.to(btn, {
+              scale: 1,
+              duration: 0.2,
+              ease: 'power2.out'
+            });
+          });
+          
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            if (prefersReducedMotion) {
+              window.location.href = '/roadmap.html';
+              return;
+            }
+            
+            const rect = btn.getBoundingClientRect();
+            const originX = rect.left + rect.width / 2;
+            const originY = rect.top + rect.height / 2;
+            
+            // Bubble animation: clip-path circle expands from button
+            overlay.style.transformOrigin = `${originX}px ${originY}px`;
+            
+            gsap.set(overlay, { 
+              opacity: 1,
+              clipPath: 'circle(0% at ' + originX + 'px ' + originY + 'px)'
+            });
+            
+            gsap.to(overlay, {
+              clipPath: 'circle(150% at ' + originX + 'px ' + originY + 'px)',
+              duration: 0.6,
+              ease: 'power3.out',
+              onComplete: () => {
+                window.location.href = '/roadmap.html';
+              }
+            });
+            
+            gsap.to(btn, {
+              scale: 1.1,
+              duration: 0.15,
+              ease: 'power2.out',
+              yoyo: true,
+              repeat: 1
+            });
+          });
+        });
+      });
+    </script>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
