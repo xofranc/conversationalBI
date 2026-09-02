@@ -433,5 +433,41 @@
         });
       });
     </script>
+
+    <!-- CTA transition overlay -->
+    <div id="cta-transition-overlay" class="cta-transition-overlay" aria-hidden="true"></div>
+    
+    <!-- CTA animation script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const overlay = document.getElementById('cta-transition-overlay');
+        const ctaButtons = document.querySelectorAll('a[href="/app.html"]');
+        
+        ctaButtons.forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Get button position for origin
+            const rect = btn.getBoundingClientRect();
+            const originX = rect.left + rect.width / 2;
+            const originY = rect.top + rect.height / 2;
+            
+            // Set transform origin to button center
+            overlay.style.transformOrigin = `${originX}px ${originY}px`;
+            
+            // Add expanding class to button
+            btn.classList.add('expanding');
+            
+            // Activate overlay
+            overlay.classList.add('active');
+            
+            // Navigate after animation
+            setTimeout(() => {
+              window.location.href = '/app.html';
+            }, 600);
+          });
+        });
+      });
+    </script>
   </body>
 </html>

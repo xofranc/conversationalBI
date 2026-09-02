@@ -133,6 +133,7 @@ html {
   justify-content: center;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
 }
 
 .cta-nav-primary:hover {
@@ -152,6 +153,49 @@ html {
 .cta-nav-primary .cta-text {
   position: relative;
   z-index: 20;
+}
+
+/* CTA expand animation */
+.cta-nav-primary.expanding .cta-expand {
+  animation: cta-expand-fill 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes cta-expand-fill {
+  0% {
+    transform: translateY(50%) scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(3);
+    opacity: 1;
+  }
+}
+
+/* Full-screen transition overlay */
+.cta-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #0E5E6F;
+  transform: scale(0);
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.cta-transition-overlay.active {
+  animation: overlay-expand 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes overlay-expand {
+  0% {
+    transform: scale(0);
+    border-radius: 50%;
+  }
+  100% {
+    transform: scale(1);
+    border-radius: 0;
+  }
 }
 
 /* CTA secundario (outline) - GSAP Optimized */

@@ -9,6 +9,34 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+      /* CTA expand animation */
+      .cta-nav-primary.expanding .cta-expand {
+        animation: cta-expand-fill 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+      @keyframes cta-expand-fill {
+        0% { transform: translateY(50%) scale(0); opacity: 1; }
+        100% { transform: translateY(0) scale(3); opacity: 1; }
+      }
+      /* Full-screen transition overlay */
+      .cta-transition-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: #0E5E6F;
+        transform: scale(0);
+        border-radius: 50%;
+        pointer-events: none;
+        will-change: transform;
+      }
+      .cta-transition-overlay.active {
+        animation: overlay-expand 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+      @keyframes overlay-expand {
+        0% { transform: scale(0); border-radius: 50%; }
+        100% { transform: scale(1); border-radius: 0; }
+      }
+    </style>
   </head>
   <body class="bg-paper text-ink font-sans antialiased">
     <!-- Preload: ocultar elementos hasta que carguen los estilos -->
@@ -230,6 +258,42 @@
           if (e.key === 'Escape' && panel.classList.contains('active')) {
             closeMenu();
           }
+        });
+      });
+    </script>
+
+    <!-- CTA transition overlay -->
+    <div id="cta-transition-overlay" class="cta-transition-overlay" aria-hidden="true"></div>
+    
+    <!-- CTA animation script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const overlay = document.getElementById('cta-transition-overlay');
+        const ctaButtons = document.querySelectorAll('a[href="/app.html"]');
+        
+        ctaButtons.forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Get button position for origin
+            const rect = btn.getBoundingClientRect();
+            const originX = rect.left + rect.width / 2;
+            const originY = rect.top + rect.height / 2;
+            
+            // Set transform origin to button center
+            overlay.style.transformOrigin = `${originX}px ${originY}px`;
+            
+            // Add expanding class to button
+            btn.classList.add('expanding');
+            
+            // Activate overlay
+            overlay.classList.add('active');
+            
+            // Navigate after animation
+            setTimeout(() => {
+              window.location.href = '/app.html';
+            }, 600);
+          });
         });
       });
     </script>
