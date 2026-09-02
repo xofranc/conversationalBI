@@ -287,27 +287,17 @@ html {
   position: fixed;
   inset: 0;
   z-index: 55;
-  background: rgba(14, 94, 111, 0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  clip-path: circle(0% at calc(100% - 48px) 48px);
-  transition: 
-    clip-path 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-    visibility 0s 0.4s;
+  background: rgba(14, 94, 111, 0.95);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 2.5rem;
   overflow-y: auto;
   visibility: hidden;
-}
-
-.mobile-menu-fullscreen.active {
-  clip-path: circle(150% at calc(100% - 48px) 48px);
-  visibility: visible;
-  transition: 
-    clip-path 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-    visibility 0s 0s;
+  opacity: 0;
+  will-change: clip-path, opacity;
 }
 
 /* Close button inside menu */
