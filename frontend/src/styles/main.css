@@ -189,7 +189,7 @@ html {
   background: #0E5E6F;
   opacity: 0;
   pointer-events: none;
-  will-change: transform, opacity;
+  will-change: clip-path, opacity;
 }
 
 /* CTA secundario (outline) - GSAP Optimized */

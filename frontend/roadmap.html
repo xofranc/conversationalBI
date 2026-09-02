@@ -27,7 +27,7 @@
         background: #0E5E6F;
         opacity: 0;
         pointer-events: none;
-        will-change: transform, opacity;
+        will-change: clip-path, opacity;
       }
     </style>
   </head>
@@ -363,23 +363,18 @@
             const originX = rect.left + rect.width / 2;
             const originY = rect.top + rect.height / 2;
             
-            const maxDim = Math.max(window.innerWidth, window.innerHeight);
-            const scaleToCover = (maxDim * 1.5) / Math.max(rect.width, rect.height);
-            
+            // Bubble animation: clip-path circle expands from button
             overlay.style.transformOrigin = `${originX}px ${originY}px`;
             
-            // Reverse animation: start full screen, shrink to button
             gsap.set(overlay, { 
               opacity: 1,
-              scale: scaleToCover,
-              borderRadius: '0%'
+              clipPath: 'circle(0% at ' + originX + 'px ' + originY + 'px)'
             });
             
             gsap.to(overlay, {
-              scale: 0,
-              borderRadius: '50%',
-              duration: 0.5,
-              ease: 'power3.inOut',
+              clipPath: 'circle(150% at ' + originX + 'px ' + originY + 'px)',
+              duration: 0.6,
+              ease: 'power3.out',
               onComplete: () => {
                 window.location.href = '/app.html';
               }

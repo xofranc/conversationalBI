@@ -565,7 +565,6 @@
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
         ctaButtons.forEach(btn => {
-          // Instant feedback on pointer-down (Apple Design principle: Response)
           btn.addEventListener('pointerdown', () => {
             gsap.to(btn, {
               scale: 0.95,
@@ -598,36 +597,27 @@
               return;
             }
             
-            // Get button position for origin
             const rect = btn.getBoundingClientRect();
             const originX = rect.left + rect.width / 2;
             const originY = rect.top + rect.height / 2;
             
-            // Calculate scale to cover entire viewport
-            const maxDim = Math.max(window.innerWidth, window.innerHeight);
-            const scaleToCover = (maxDim * 1.5) / Math.max(rect.width, rect.height);
-            
-            // Set transform origin to button center
+            // Bubble animation: clip-path circle expands from button
             overlay.style.transformOrigin = `${originX}px ${originY}px`;
             
-            // Animate overlay: scale from 0 to cover, with spring-like easing
             gsap.set(overlay, { 
               opacity: 1,
-              scale: 0,
-              borderRadius: '50%'
+              clipPath: 'circle(0% at ' + originX + 'px ' + originY + 'px)'
             });
             
             gsap.to(overlay, {
-              scale: scaleToCover,
-              borderRadius: '0%',
-              duration: 0.5,
-              ease: 'power3.inOut',
+              clipPath: 'circle(150% at ' + originX + 'px ' + originY + 'px)',
+              duration: 0.6,
+              ease: 'power3.out',
               onComplete: () => {
                 window.location.href = '/app.html';
               }
             });
             
-            // Button pulse effect
             gsap.to(btn, {
               scale: 1.1,
               duration: 0.15,
