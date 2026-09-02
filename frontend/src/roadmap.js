@@ -9,6 +9,7 @@ import {
   MODULE_STATUS_CONFIG,
 } from "./config/constants.js";
 import { formatDate } from "./utils/format.js";
+import { mountParticleNetwork } from "./particle-network.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -77,58 +78,127 @@ function updateProgress(phases) {
 function animate() {
   if (REDUCED) return;
 
-  gsap.from("#progress-bar", {
-    width: "0%",
-    duration: 1.2,
-    ease: "power2.out",
-  });
-
-  gsap.utils.toArray(".timeline-item").forEach((item, i) => {
-    gsap.from(item, {
-      y: 40,
-      opacity: 0,
-      duration: 0.7,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: item,
-        start: "top 85%",
-        once: true,
+  // Progress bar animation
+  const progressBar = document.getElementById("progress-bar");
+  if (progressBar) {
+    const targetWidth = progressBar.style.width || "0%";
+    gsap.set(progressBar, { width: "0%" });
+    
+    ScrollTrigger.create({
+      trigger: progressBar,
+      start: "top 90%",
+      once: true,
+      onEnter: () => {
+        gsap.to(progressBar, {
+          width: targetWidth,
+          duration: 1.2,
+          ease: "power3.out",
+        });
       },
-      delay: i * 0.08,
+    });
+  }
+
+  // Timeline items animation
+  gsap.utils.toArray(".timeline-item").forEach((item) => {
+    gsap.set(item, { y: 40, opacity: 0 });
+    
+    ScrollTrigger.create({
+      trigger: item,
+      start: "top 85%",
+      once: true,
+      onEnter: () => {
+        gsap.to(item, {
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          ease: "power3.out",
+        });
+      },
     });
   });
 
-  gsap.utils.toArray(".module-card").forEach((card, i) => {
-    gsap.from(card, {
-      y: 24,
-      opacity: 0,
-      duration: 0.6,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: card,
-        start: "top 88%",
-        once: true,
+  // Timeline nodes animation (scale pop)
+  gsap.utils.toArray(".timeline-node").forEach((node) => {
+    gsap.set(node, { scale: 0, transformOrigin: "50% 50%" });
+    
+    ScrollTrigger.create({
+      trigger: node,
+      start: "top 85%",
+      once: true,
+      onEnter: () => {
+        gsap.to(node, {
+          scale: 1,
+          duration: 0.5,
+          ease: "back.out(2)",
+        });
       },
-      delay: i * 0.05,
+    });
+  });
+
+  // Module cards animation
+  gsap.utils.toArray(".module-card").forEach((card) => {
+    gsap.set(card, { y: 24, opacity: 0 });
+    
+    ScrollTrigger.create({
+      trigger: card,
+      start: "top 88%",
+      once: true,
+      onEnter: () => {
+        gsap.to(card, {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: "power3.out",
+        });
+      },
+    });
+  });
+
+  // Section headers animation
+  gsap.utils.toArray("h2").forEach((heading) => {
+    gsap.set(heading, { y: 20, opacity: 0 });
+    
+    ScrollTrigger.create({
+      trigger: heading,
+      start: "top 90%",
+      once: true,
+      onEnter: () => {
+        gsap.to(heading, {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: "power3.out",
+        });
+      },
     });
   });
 }
 
 async function loadData() {
   try {
-    const response = await fetch(STATUS_ENDPOINT);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+    
+    const response = await fetch(STATUS_ENDPOINT, {
+      signal: controller.signal
+    });
+    
+    clearTimeout(timeout);
+    
     if (!response.ok) throw new Error("Network response was not ok");
     return await response.json();
   } catch (err) {
     console.warn(
       "No se pudo cargar el estado del proyecto; usando datos locales.",
-      err,
+      err.message || err,
     );
     return FALLBACK_DATA;
   }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  mountParticleNetwork();
+
   const data = await loadData();
   renderTimeline(data.phases || FALLBACK_DATA.phases);
   renderModules(data.modules || FALLBACK_DATA.modules);
