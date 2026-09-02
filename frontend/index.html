@@ -611,123 +611,55 @@
             const rect = btn.getBoundingClientRect();
             const originX = rect.left + rect.width / 2;
             const originY = rect.top + rect.height / 2;
-            const loading = overlay.querySelector('.cta-loading');
-            const logoLetters = overlay.querySelectorAll('.cta-preloader-logo span');
-            const line = overlay.querySelector('.cta-preloader-line');
             
-            // Bubble animation: clip-path circle expands from button
+            // Set overlay origin and show
             overlay.style.transformOrigin = `${originX}px ${originY}px`;
+            overlay.style.opacity = '1';
+            overlay.style.clipPath = `circle(0% at ${originX}px ${originY}px)`;
+            overlay.style.pointerEvents = 'all';
             
-            gsap.set(overlay, { 
-              opacity: 1,
-              clipPath: 'circle(0% at ' + originX + 'px ' + originY + 'px)'
-            });
-            
-            // Create timeline for loading animation
-            const tl = gsap.timeline();
-            
-            tl.to(overlay, {
-              clipPath: 'circle(150% at ' + originX + 'px ' + originY + 'px)',
-              duration: 0.5,
-              ease: 'power3.out'
-            })
-            .to(loading, {
-              opacity: 1,
-              duration: 0.2
-            }, 0.3)
-            .to(logoLetters, {
-              opacity: 1,
-              y: 0,
-              duration: 0.4,
-              stagger: 0.03,
-              ease: 'power3.out'
-            }, 0.4)
-            .to(line, {
-              width: '60px',
-              duration: 0.8,
-              ease: 'power2.inOut'
-            }, 0.6)
-            .call(() => {
-              window.location.href = '/app.html?transition=1';
-            }, null, 1.4);
-            
-            // Fallback: hide overlay if navigation fails
-            setTimeout(() => {
-              if (overlay.style.opacity !== '0') {
-                overlay.style.opacity = '0';
-                overlay.style.pointerEvents = 'none';
-                overlay.style.visibility = 'hidden';
-                gsap.killTweensOf(overlay);
+            // Animate bubble expansion
+            gsap.to(overlay, {
+              clipPath: `circle(150% at ${originX}px ${originY}px)`,
+              duration: 0.6,
+              ease: 'power3.out',
+              onComplete: () => {
+                // Navigate after animation
+                window.location.href = '/app.html?transition=1';
               }
-            }, 4000);
-            
-            gsap.to(btn, {
-              scale: 1.1,
-              duration: 0.15,
-              ease: 'power2.out',
-              yoyo: true,
-              repeat: 1
             });
           });
         });
       });
     </script>
 
-    <!-- Reverse animation on page load - inline script for immediate execution -->
+    <!-- Reverse animation on page load -->
     <script>
       (function() {
-        const params = new URLSearchParams(window.location.search);
-        const fromTransition = params.get('transition');
+        var params = new URLSearchParams(window.location.search);
+        var fromTransition = params.get('transition');
         
         if (fromTransition) {
-          // Hide body immediately until animation is ready
-          document.documentElement.style.visibility = 'hidden';
-          
           window.history.replaceState({}, '', window.location.pathname);
           
-          document.addEventListener('DOMContentLoaded', function() {
-            const overlay = document.getElementById('cta-transition-overlay');
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          // Simple approach: use CSS animation
+          var overlay = document.getElementById('cta-transition-overlay');
+          if (overlay) {
+            overlay.style.opacity = '1';
+            overlay.style.clipPath = 'circle(150% at 50% 50%)';
+            overlay.style.pointerEvents = 'all';
+            overlay.style.transition = 'clip-path 0.5s ease-in-out, opacity 0.5s ease-in-out 0.3s';
             
-            if (overlay && !prefersReducedMotion) {
-              // Set overlay to fullscreen immediately
-              overlay.style.opacity = '1';
-              overlay.style.clipPath = 'circle(150% at 50% 50%)';
-              overlay.style.pointerEvents = 'all';
-              
-              // Show body
-              document.documentElement.style.visibility = 'visible';
-              
-              // Fallback: always hide overlay after 2s
-              setTimeout(() => {
-                overlay.style.opacity = '0';
-                overlay.style.pointerEvents = 'none';
-                overlay.style.visibility = 'hidden';
-              }, 2000);
-              
-              // Import GSAP and animate
-              import('/src/gsap.js').then(({ default: gsap }) => {
-                gsap.to(overlay, {
-                  clipPath: 'circle(0% at 50% 50%)',
-                  duration: 0.4,
-                  delay: 0.1,
-                  ease: 'power3.inOut',
-                  onComplete: () => {
-                    overlay.style.opacity = '0';
-                    overlay.style.pointerEvents = 'none';
-                    overlay.style.visibility = 'hidden';
-                  }
-                });
-              }).catch(() => {
-                // If GSAP fails to load, just hide overlay
-                overlay.style.opacity = '0';
-                overlay.style.pointerEvents = 'none';
-                overlay.style.visibility = 'hidden';
-              });
-            } else {
-              document.documentElement.style.visibility = 'visible';
-            }
-          });
+            setTimeout(function() {
+              overlay.style.clipPath = 'circle(0% at 50% 50%)';
+              overlay.style.opacity = '0';
+            }, 100);
+            
+            setTimeout(function() {
+              overlay.style.pointerEvents = 'none';
+              overlay.style.transition = '';
+            }, 800);
+          }
         }
       })();
     </script>
