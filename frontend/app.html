@@ -629,6 +629,9 @@
             const rect = btn.getBoundingClientRect();
             const originX = rect.left + rect.width / 2;
             const originY = rect.top + rect.height / 2;
+            const loading = overlay.querySelector('.cta-loading');
+            const logoLetters = overlay.querySelectorAll('.cta-preloader-logo span');
+            const line = overlay.querySelector('.cta-preloader-line');
             
             // Set overlay origin and show
             overlay.style.transformOrigin = `${originX}px ${originY}px`;
@@ -636,16 +639,33 @@
             overlay.style.clipPath = `circle(0% at ${originX}px ${originY}px)`;
             overlay.style.pointerEvents = 'all';
             
-            // Animate bubble expansion
-            gsap.to(overlay, {
+            // Create timeline for loading animation
+            const tl = gsap.timeline();
+            
+            tl.to(overlay, {
               clipPath: `circle(150% at ${originX}px ${originY}px)`,
-              duration: 0.6,
-              ease: 'power3.out',
-              onComplete: () => {
-                // Navigate after animation
-                window.location.href = '/roadmap.html?transition=1';
-              }
-            });
+              duration: 0.5,
+              ease: 'power3.out'
+            })
+            .to(loading, {
+              opacity: 1,
+              duration: 0.2
+            }, 0.3)
+            .to(logoLetters, {
+              opacity: 1,
+              y: 0,
+              duration: 0.4,
+              stagger: 0.03,
+              ease: 'power3.out'
+            }, 0.4)
+            .to(line, {
+              width: '60px',
+              duration: 0.8,
+              ease: 'power2.inOut'
+            }, 0.6)
+            .call(() => {
+              window.location.href = '/roadmap.html?transition=1';
+            }, null, 1.2);
           });
         });
       });
