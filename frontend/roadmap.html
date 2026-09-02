@@ -467,40 +467,50 @@
       });
     </script>
 
-    <!-- Reverse animation on page load -->
-    <script type="module">
-      import gsap from '/src/gsap.js';
-      
-      document.addEventListener('DOMContentLoaded', () => {
-        const overlay = document.getElementById('cta-transition-overlay');
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        
-        // Check if we came from a transition (URL param)
+    <!-- Reverse animation on page load - inline script for immediate execution -->
+    <script>
+      (function() {
         const params = new URLSearchParams(window.location.search);
         const fromTransition = params.get('transition');
         
-        if (fromTransition && overlay && !prefersReducedMotion) {
-          // Remove param from URL
+        if (fromTransition) {
+          // Hide body immediately until animation is ready
+          document.documentElement.style.visibility = 'hidden';
+          
           window.history.replaceState({}, '', window.location.pathname);
           
-          // Set overlay to fullscreen
-          gsap.set(overlay, {
-            opacity: 1,
-            clipPath: 'circle(150% at 50% 50%)'
-          });
-          
-          // Animate overlay contracting to center
-          gsap.to(overlay, {
-            clipPath: 'circle(0% at 50% 50%)',
-            duration: 0.6,
-            delay: 0.3,
-            ease: 'power3.inOut',
-            onComplete: () => {
-              gsap.set(overlay, { opacity: 0, clipPath: 'circle(0% at 50% 50%)' });
+          document.addEventListener('DOMContentLoaded', function() {
+            const overlay = document.getElementById('cta-transition-overlay');
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            
+            if (overlay && !prefersReducedMotion) {
+              // Set overlay to fullscreen immediately
+              overlay.style.opacity = '1';
+              overlay.style.clipPath = 'circle(150% at 50% 50%)';
+              overlay.style.pointerEvents = 'all';
+              
+              // Show body
+              document.documentElement.style.visibility = 'visible';
+              
+              // Import GSAP and animate
+              import('/src/gsap.js').then(({ default: gsap }) => {
+                gsap.to(overlay, {
+                  clipPath: 'circle(0% at 50% 50%)',
+                  duration: 0.5,
+                  delay: 0.2,
+                  ease: 'power3.inOut',
+                  onComplete: () => {
+                    overlay.style.opacity = '0';
+                    overlay.style.pointerEvents = 'none';
+                  }
+                });
+              });
+            } else {
+              document.documentElement.style.visibility = 'visible';
             }
           });
         }
-      });
+      })();
     </script>
   </body>
 </html>
