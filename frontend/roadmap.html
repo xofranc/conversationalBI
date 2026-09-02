@@ -10,13 +10,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-      /* CTA expand animation */
-      .cta-nav-primary.expanding .cta-expand {
-        animation: cta-expand-fill 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      /* CTA feedback - instant on press */
+      .cta-nav-primary, .cta-primary {
+        transform: scale(1);
+        transition: transform 100ms ease-out;
       }
-      @keyframes cta-expand-fill {
-        0% { transform: translateY(50%) scale(0); opacity: 1; }
-        100% { transform: translateY(0) scale(3); opacity: 1; }
+      .cta-nav-primary:active, .cta-primary:active {
+        transform: scale(0.97);
+        transition: transform 60ms ease-out;
       }
       /* Full-screen transition overlay */
       .cta-transition-overlay {
@@ -24,17 +25,9 @@
         inset: 0;
         z-index: 9999;
         background: #0E5E6F;
-        transform: scale(0);
-        border-radius: 50%;
+        opacity: 0;
         pointer-events: none;
-        will-change: transform;
-      }
-      .cta-transition-overlay.active {
-        animation: overlay-expand 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-      }
-      @keyframes overlay-expand {
-        0% { transform: scale(0); border-radius: 50%; }
-        100% { transform: scale(1); border-radius: 0; }
+        will-change: transform, opacity;
       }
     </style>
   </head>
@@ -266,33 +259,80 @@
     <div id="cta-transition-overlay" class="cta-transition-overlay" aria-hidden="true"></div>
     
     <!-- CTA animation script -->
-    <script>
+    <script type="module">
+      import gsap from '/src/gsap.js';
+      
       document.addEventListener('DOMContentLoaded', () => {
         const overlay = document.getElementById('cta-transition-overlay');
         const ctaButtons = document.querySelectorAll('a[href="/app.html"]');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
         ctaButtons.forEach(btn => {
+          // Instant feedback on pointer-down
+          btn.addEventListener('pointerdown', () => {
+            gsap.to(btn, {
+              scale: 0.95,
+              duration: 0.1,
+              ease: 'power2.out'
+            });
+          });
+          
+          btn.addEventListener('pointerup', () => {
+            gsap.to(btn, {
+              scale: 1,
+              duration: 0.2,
+              ease: 'back.out(2)'
+            });
+          });
+          
+          btn.addEventListener('pointerleave', () => {
+            gsap.to(btn, {
+              scale: 1,
+              duration: 0.2,
+              ease: 'power2.out'
+            });
+          });
+          
           btn.addEventListener('click', (e) => {
             e.preventDefault();
             
-            // Get button position for origin
+            if (prefersReducedMotion) {
+              window.location.href = '/app.html';
+              return;
+            }
+            
             const rect = btn.getBoundingClientRect();
             const originX = rect.left + rect.width / 2;
             const originY = rect.top + rect.height / 2;
             
-            // Set transform origin to button center
+            const maxDim = Math.max(window.innerWidth, window.innerHeight);
+            const scaleToCover = (maxDim * 1.5) / Math.max(rect.width, rect.height);
+            
             overlay.style.transformOrigin = `${originX}px ${originY}px`;
             
-            // Add expanding class to button
-            btn.classList.add('expanding');
+            gsap.set(overlay, { 
+              opacity: 1,
+              scale: 0,
+              borderRadius: '50%'
+            });
             
-            // Activate overlay
-            overlay.classList.add('active');
+            gsap.to(overlay, {
+              scale: scaleToCover,
+              borderRadius: '0%',
+              duration: 0.5,
+              ease: 'power3.inOut',
+              onComplete: () => {
+                window.location.href = '/app.html';
+              }
+            });
             
-            // Navigate after animation
-            setTimeout(() => {
-              window.location.href = '/app.html';
-            }, 600);
+            gsap.to(btn, {
+              scale: 1.1,
+              duration: 0.15,
+              ease: 'power2.out',
+              yoyo: true,
+              repeat: 1
+            });
           });
         });
       });

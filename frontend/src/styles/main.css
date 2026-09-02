@@ -134,10 +134,18 @@ html {
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  transform: scale(1);
+  transition: transform 100ms ease-out;
 }
 
 .cta-nav-primary:hover {
   color: white;
+  transform: scale(1.02);
+}
+
+.cta-nav-primary:active {
+  transform: scale(0.97);
+  transition: transform 60ms ease-out;
 }
 
 .cta-nav-primary .cta-expand {
@@ -155,20 +163,22 @@ html {
   z-index: 20;
 }
 
-/* CTA expand animation */
-.cta-nav-primary.expanding .cta-expand {
-  animation: cta-expand-fill 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+/* CTA primary (hero) - larger button */
+.cta-primary {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transform: scale(1);
+  transition: transform 100ms ease-out;
 }
 
-@keyframes cta-expand-fill {
-  0% {
-    transform: translateY(50%) scale(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(0) scale(3);
-    opacity: 1;
-  }
+.cta-primary:hover {
+  transform: scale(1.02);
+}
+
+.cta-primary:active {
+  transform: scale(0.97);
+  transition: transform 60ms ease-out;
 }
 
 /* Full-screen transition overlay */
@@ -177,25 +187,9 @@ html {
   inset: 0;
   z-index: 9999;
   background: #0E5E6F;
-  transform: scale(0);
-  border-radius: 50%;
+  opacity: 0;
   pointer-events: none;
-  will-change: transform;
-}
-
-.cta-transition-overlay.active {
-  animation: overlay-expand 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes overlay-expand {
-  0% {
-    transform: scale(0);
-    border-radius: 50%;
-  }
-  100% {
-    transform: scale(1);
-    border-radius: 0;
-  }
+  will-change: transform, opacity;
 }
 
 /* CTA secundario (outline) - GSAP Optimized */
