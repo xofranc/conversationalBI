@@ -23,3 +23,13 @@ When the user types `/ke`, run the knowledge engine to update the vault:
 - `ke --single backend/apps/dataset/models.py --no-llm` — single file
 
 Before answering codebase questions, first check vault/Home.md for the index. Use the vault as primary context for architecture understanding, then fall back to graphify for specific queries.
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues using the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+Single-context layout (`CONTEXT.md` + `docs/adr/` at repo root). See `docs/agents/domain.md`.

@@ -67,12 +67,8 @@ class SupabaseAuth(BaseAuthentication):
             },
         )
         if not created:
-            user.first_name = metadata.get(
-                "first_name", user.first_name
-            )[:30]
-            user.last_name = metadata.get(
-                "last_name", user.last_name
-            )[:30]
+            user.first_name = metadata.get("first_name", user.first_name)[:30]
+            user.last_name = metadata.get("last_name", user.last_name)[:30]
             user.save(update_fields=["first_name", "last_name"])
 
         # Asegurar que exista el perfil asociado
