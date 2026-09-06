@@ -251,5 +251,8 @@ LOGGING = {
     "loggers": {
         "apps.dataset": {"handlers": ["console"], "level": "INFO"},
         "apps.core": {"handlers": ["console"], "level": "INFO"},
+        "apps.queries": {"handlers": ["console"], "level": "INFO"},
+        "services.ai": {"handlers": ["console"], "level": "INFO"},
+        "services.analysis": {"handlers": ["console"], "level": "INFO"},
     },
 }

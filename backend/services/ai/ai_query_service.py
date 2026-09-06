@@ -40,18 +40,23 @@ class AIQueryService:
         rows        = []
         columns     = []
 
+        logger.info('[AIQueryService] question="%s", dataset_id=%s', question, dataset_id)
         start = time.time()
 
         for attempt in range(MAX_RETRIES):
             try:
+                logger.info('[AIQueryService] Intento %d/%d - llamando LLM...', attempt + 1, MAX_RETRIES)
                 sql = agent.run(prompt)
+                logger.info('[AIQueryService] SQL generado: %s', sql[:200] if sql else '(vacío)')
 
                 if sql.strip().startswith('NO_SQL_POSSIBLE'):
                     error_msg = 'Esa pregunta no se puede responder con las columnas de esta fuente.'
                     break
 
                 SQLValidator.assert_safe(sql)
+                logger.info('[AIQueryService] SQL validado OK, ejecutando...')
                 rows, columns = SQLExecutor.run(sql, dataset_id)
+                logger.info('[AIQueryService] SQL ejecutado: %s filas, %s columnas', len(rows), len(columns))
 
                 # Resultado vacío: tan fallo para el usuario como un error.
                 # Se reintenta con los valores de ejemplo del esquema.
@@ -63,14 +68,13 @@ class AIQueryService:
                 break
 
             except SecurityError as e:
-                # Violación de seguridad: fail-fast, sin reintentos ni gasto de LLM
-                logger.warning('SQL rechazado por seguridad: %s', e)
+                logger.warning('[AIQueryService] SQL rechazado por seguridad: %s', e)
                 error_msg   = str(e)
                 retry_count = attempt
                 break
 
             except _EmptyResult as e:
-                logger.info('Intento %d/%d sin filas, reintentando con pistas', attempt + 1, MAX_RETRIES)
+                logger.info('[AIQueryService] Intento %d/%d sin filas, reintentando con pistas', attempt + 1, MAX_RETRIES)
                 error_msg   = str(e)
                 retry_count = attempt + 1
                 prompt      = PromptBuilder.build_empty_result(
@@ -80,7 +84,7 @@ class AIQueryService:
                 )
 
             except Exception as e:
-                logger.warning('Intento %d/%d falló: %s', attempt + 1, MAX_RETRIES, e)
+                logger.warning('[AIQueryService] Intento %d/%d falló: %s', attempt + 1, MAX_RETRIES, e)
                 error_msg   = str(e)
                 retry_count = attempt + 1
                 prompt      = PromptBuilder.build_correction(
@@ -89,6 +93,8 @@ class AIQueryService:
                     previous_sql = sql,
                     error        = error_msg,
                 )
+
+        logger.info('[AIQueryService] Finalizado: success=%s, retries=%s, time=%.3fs', success, retry_count, time.time() - start)
 
         selection = ChartSelector.select(columns, rows) if success else {
             'chart_type': 'table', 'chart_config': {},

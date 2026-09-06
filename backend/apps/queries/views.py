@@ -40,6 +40,7 @@ class QueryViewSet(viewsets.GenericViewSet):
 
     # ── POST /queries/ ────────────────────────────────────────────────────
     def create(self, request):
+        logger.info('=== QUERY INICIO ===')
         serializer = QueryRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -47,40 +48,32 @@ class QueryViewSet(viewsets.GenericViewSet):
         session_id = request.headers.get('X-Session-ID')
         if session_id:
             user = DemoService.get_demo_user(session_id)
+            logger.info('[QueryView] Modo demo: session_id=%s, user_id=%s', session_id, user.id)
         else:
             user = request.user
+            logger.info('[QueryView] Modo auth: user_id=%s', user.id)
 
         question   = serializer.validated_data['question']
         dataset_id = serializer.validated_data['dataset_id']
+        logger.info('[QueryView] question="%s", dataset_id=%s', question, dataset_id)
 
-        ''' 
-        Guard de cuota antes de ejecutar la consulta 
-        
-        Tener en cuenta mas adelante, para la implementación de planes, que quizás queramos diferenciar entre tipos de consultas (ej: consultas simples vs consultas con gráficos) y asignarles diferentes costos. Por ahora, todas las consultas cuentan igual para la cuota.
-        
-        if not UserService.can_query(user):
-            return Response(
-                {'error': 'Has alcanzado el límite de consultas de tu plan.'},
-                status=status.HTTP_429_TOO_MANY_REQUESTS
-            )
-            
-            
-        '''
         # Guard de acceso al dataset
         if not UserService.can_access_dataset(user, dataset_id):
+            logger.warning('[QueryView] Sin acceso al dataset %s', dataset_id)
             return Response(
                 {'error': 'No tienes acceso a este dataset.'},
                 status=status.HTTP_403_FORBIDDEN
             )
 
         try:
+            logger.info('[QueryView] Ejecutando QueryService.execute...')
             result = QueryService.execute(question, dataset_id, user)
-        except APIException:
-            # Errores de dominio (404 dataset inexistente, 400 dataset no listo):
-            # los gestiona el exception handler de DRF con su status propio.
+            logger.info('[QueryView] Query OK: success=%s', result.get('success'))
+        except APIException as e:
+            logger.warning('[QueryView] APIException: %s', e)
             raise
         except Exception:
-            logger.exception('Error interno ejecutando consulta (dataset_id=%s)', dataset_id)
+            logger.exception('[QueryView] Error interno ejecutando consulta (dataset_id=%s)', dataset_id)
             return Response(
                 {'error': 'Error interno al procesar la consulta.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR

@@ -1,8 +1,11 @@
 # apps/queries/services/pipeline/engine_router.py
+import logging
 from .base import Middleware
 from services.ai import AIQueryService
 from services.analysis import AnalysisService, detect as detect_analysis
 from apps.queries.repositories import QueryRepository
+
+logger = logging.getLogger(__name__)
 
 # How many previous queries to include as conversation context
 HISTORY_CONTEXT = 3
@@ -17,11 +20,15 @@ class EngineRouter(Middleware):
         dataset = context['dataset']
         user = context['user']
         
+        logger.info('[EngineRouter] question="%s", dataset_id=%s', question, dataset_id)
+        
         # Detect if statistical analysis is needed
         analysis_type = detect_analysis(question)
+        logger.info('[EngineRouter] analysis_type=%s', analysis_type)
         
         if analysis_type:
             # Statistical analysis engine
+            logger.info('[EngineRouter] Usando AnalysisService...')
             engine_result = AnalysisService.execute(
                 analysis_type=analysis_type,
                 dataset_id=dataset_id,
@@ -30,6 +37,7 @@ class EngineRouter(Middleware):
         else:
             # LLM engine with conversation context
             history = self._conversation_context(user, dataset_id)
+            logger.info('[EngineRouter] Usando AIQueryService, history_items=%s', len(history))
             engine_result = AIQueryService.execute(
                 question=question,
                 dataset_id=dataset_id,
@@ -37,6 +45,7 @@ class EngineRouter(Middleware):
                 history=history,
             )
         
+        logger.info('[EngineRouter] engine_result: success=%s, sql=%s', engine_result.get('success'), engine_result.get('sql', '')[:100])
         context['engine_result'] = engine_result
         return context
     
