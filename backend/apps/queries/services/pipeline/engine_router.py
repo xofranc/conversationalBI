@@ -2,7 +2,7 @@
 from .base import Middleware
 from services.ai import AIQueryService
 from services.analysis import AnalysisService, detect as detect_analysis
-from ..repositories import QueryRepository
+from apps.queries.repositories import QueryRepository
 
 # How many previous queries to include as conversation context
 HISTORY_CONTEXT = 3
@@ -42,7 +42,7 @@ class EngineRouter(Middleware):
     
     def _conversation_context(self, user, dataset_id: int) -> list:
         """Get recent successful queries for conversation context."""
-        from ..models import QueryHistory
+        from apps.queries.models import QueryHistory
         
         recientes = (
             QueryHistory.objects

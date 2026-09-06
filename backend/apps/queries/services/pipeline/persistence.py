@@ -3,7 +3,7 @@ from django.conf import settings
 from django.db import transaction
 
 from .base import Middleware
-from ..repositories import QueryRepository
+from apps.queries.repositories import QueryRepository
 
 
 class Persistence(Middleware):

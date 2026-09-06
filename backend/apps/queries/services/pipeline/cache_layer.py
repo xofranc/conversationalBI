@@ -3,7 +3,7 @@ import time
 
 from .base import Middleware
 from ..cache_service import CacheService
-from ..repositories import QueryRepository
+from apps.queries.repositories import QueryRepository
 from apps.users.services import UserService
 
 
