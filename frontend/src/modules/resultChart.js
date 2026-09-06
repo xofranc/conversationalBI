@@ -1,4 +1,4 @@
-import { chartRegistry } from "./charts/chartRegistry.js";
+import { chartRegistry } from "./charts/ChartRegistry.js";
 
 export function renderChart(res) {
   const container = document.getElementById("chart-container");

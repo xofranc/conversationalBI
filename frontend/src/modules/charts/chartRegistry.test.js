@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { chartRegistry } from './chartRegistry.js';
+import { chartRegistry } from './ChartRegistry.js';
 
 vi.mock('chart.js', () => ({
   Chart: vi.fn().mockImplementation(() => ({
