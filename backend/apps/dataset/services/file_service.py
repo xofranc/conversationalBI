@@ -1,6 +1,9 @@
 import os
 import uuid
+import logging
 from django.conf import settings
+
+logger = logging.getLogger(__name__)
 
 
 ALLOWED_EXTENSIONS = ['.csv', '.xlsx', '.json']
@@ -31,12 +34,16 @@ class FileService:
         rel_dir = os.path.join('datasets', str(user_id))
         abs_dir = os.path.join(settings.MEDIA_ROOT, rel_dir)
         
+        logger.info('[FileService.save] Creando directorio: %s', abs_dir)
         os.makedirs(abs_dir, exist_ok=True)
         
-        with open(os.path.join(abs_dir, filename), 'wb') as dest:
+        dest_path = os.path.join(abs_dir, filename)
+        logger.info('[FileService.save] Escribiendo archivo: %s (%s bytes)', dest_path, file.size)
+        with open(dest_path, 'wb') as dest:
             for chunk in file.chunks():
                 dest.write(chunk)
-                
+        
+        logger.info('[FileService.save] Archivo guardado OK: %s', dest_path)
         return os.path.join(rel_dir, filename)
     
     

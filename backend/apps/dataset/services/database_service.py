@@ -1,5 +1,6 @@
 import os
 import re
+import logging
 
 import pandas as pd
 import psycopg2
@@ -8,6 +9,8 @@ from psycopg2.extras import execute_values
 from django.conf import settings
 
 from .schema_service import SchemaService
+
+logger = logging.getLogger(__name__)
 
 _SCHEMA_RE = re.compile(r'^[a-z_][a-z0-9_]*$')
 
@@ -55,17 +58,22 @@ class DatabaseService:
         Convierte el archivo del dataset a tablas Postgres en su schema.
         Retorna el nombre del schema (para Dataset.db_path).
         """
+        logger.info('[materialize] dataset_id=%s, file=%s', dataset_id, abs_file_path)
         ext = os.path.splitext(abs_file_path)[1].lower()
         tables = SchemaService.read_tables(abs_file_path, ext)
+        logger.info('[materialize] Tables leídas: %s', list(tables.keys()))
 
         schema = DatabaseService.schema_name(dataset_id)
+        logger.info('[materialize] Conectando a Postgres...')
         conn = DatabaseService._connect()
         conn.autocommit = True
+        logger.info('[materialize] Conexión OK, creando schema %s', schema)
         try:
             with conn.cursor() as cur:
                 cur.execute(pgsql.SQL('CREATE SCHEMA IF NOT EXISTS {}').format(pgsql.Identifier(schema)))
                 for name, df in tables.items():
                     clean = name.replace('.', '_')
+                    logger.info('[materialize] Procesando tabla %s: %s filas, %s columnas', clean, len(df), len(df.columns))
                     cols_def = pgsql.SQL(', ').join(
                         pgsql.SQL('{} {}').format(
                             pgsql.Identifier(str(c)),
@@ -87,10 +95,12 @@ class DatabaseService:
                             pgsql.SQL('INSERT INTO {} ({}) VALUES %s').format(table, cols_list).as_string(conn),
                             rows,
                         )
+                        logger.info('[materialize] %s filas insertadas en %s', len(rows), clean)
                 DatabaseService._grant_reader(cur, schema)
         finally:
             conn.close()
 
+        logger.info('[materialize] OK schema=%s', schema)
         return schema
 
     @staticmethod

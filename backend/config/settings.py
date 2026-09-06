@@ -219,3 +219,17 @@ LLM_TIMEOUT = env.int("LLM_TIMEOUT", default=60)
 
 
 SUPABASE_URL = env("SUPABASE_URL", default="")
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "apps.dataset": {"handlers": ["console"], "level": "INFO"},
+        "apps.core": {"handlers": ["console"], "level": "INFO"},
+    },
+}

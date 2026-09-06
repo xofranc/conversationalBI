@@ -66,35 +66,46 @@ class DatasetViewSet(viewsets.GenericViewSet):
     #! POST /datasets/ → upload de un nuevo dataset
     
     def create(self,request):
+        logger.info('=== UPLOAD INICIO ===')
+        logger.info('Headers: session_id=%s, content_type=%s', request.headers.get('X-Session-ID'), request.content_type)
+
         serializer = DatasetUploadSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        
+        file = serializer.validated_data['file']
+        name = serializer.validated_data['name']
+        logger.info('Archivo validado: name=%s, size=%s, content_type=%s', file.name, file.size, getattr(file, 'content_type', 'N/A'))
         
         # Obtener usuario (autenticado o demo)
         session_id = request.headers.get('X-Session-ID')
         if session_id:
             user = DemoService.get_demo_user(session_id)
+            logger.info('Modo demo: session_id=%s, user_id=%s, email=%s', session_id, user.id, user.email)
         else:
             user = request.user
+            logger.info('Modo auth: user_id=%s', user.id)
         
         try:
             dataset = DatasetService.create(
-                file        = serializer.validated_data['file'],
+                file        = file,
                 user        = user,
-                name        = serializer.validated_data['name'],
+                name        = name,
                 description = serializer.validated_data.get('description', ''),
             )
         except ValueError as e:                          
+            logger.warning('Upload rechazado (ValueError): %s', e)
             return Response(
                 {'error': str(e)},
                 status=status.HTTP_400_BAD_REQUEST
             )
         except Exception:
-            logger.exception('Error procesando upload de dataset (user_id=%s)', user.id)
+            logger.exception('Error procesando upload de dataset (user_id=%s, file=%s)', user.id, file.name)
             return Response(
                 {'error': 'Error al procesar el archivo.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+        logger.info('=== UPLOAD OK === dataset_id=%s, name=%s', dataset.id, dataset.name)
         return Response(
             DatasetDetailSerializer(dataset).data,       
             status=status.HTTP_201_CREATED

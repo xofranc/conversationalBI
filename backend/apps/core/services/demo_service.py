@@ -1,8 +1,11 @@
 # apps/core/services/demo_service.py
+import logging
 from django.db import transaction
 from apps.dataset.models import Dataset
 from apps.dataset.services import DatasetService
 from apps.core.models import DemoSession
+
+logger = logging.getLogger(__name__)
 
 
 class DemoService:
@@ -15,6 +18,7 @@ class DemoService:
             session_id=session_id,
             defaults={'session_id': session_id}
         )
+        logger.info('[DemoService] session_id=%s, created=%s', session_id, created)
         return session
     
     @staticmethod
@@ -26,6 +30,7 @@ class DemoService:
         from apps.users.models import User
         
         email = f"demo_{session_id}@demo.local"
+        logger.info('[DemoService.get_demo_user] session_id=%s, email=%s', session_id, email)
         user, created = User.objects.get_or_create(
             email=email,
             defaults={
@@ -34,6 +39,7 @@ class DemoService:
                 'is_active': True,
             }
         )
+        logger.info('[DemoService.get_demo_user] user_id=%s, created=%s', user.id, created)
         return user
     
     @staticmethod
