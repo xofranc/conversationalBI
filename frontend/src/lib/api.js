@@ -4,6 +4,7 @@
 
 import { supabase } from "./supabase.js";
 import { API_BASE_URL } from "../config/constants.js";
+import { getSessionId, isDemoMode } from "../modules/session.js";
 
 export const api = {
   async getToken() {
@@ -17,9 +18,14 @@ export const api = {
       ...options.headers,
     };
 
-    const token = await this.getToken();
-    if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
+    // En modo demo, usar X-Session-ID
+    if (isDemoMode()) {
+      headers["X-Session-ID"] = getSessionId();
+    } else {
+      const token = await this.getToken();
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
     }
 
     // FormData: el navegador define el boundary multipart

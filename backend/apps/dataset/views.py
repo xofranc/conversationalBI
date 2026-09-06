@@ -11,6 +11,8 @@ from .serializers.datasetDetail import DatasetDetailSerializer
 from .services import DatasetService
 from .permissions import IsDatasetOwner
 from .models import Dataset
+from apps.core.permissions import IsAuthenticatedOrDemo
+from apps.core.services.demo_service import DemoService
 
 logger = logging.getLogger(__name__)
 
@@ -29,12 +31,18 @@ class DatasetViewSet(viewsets.GenericViewSet):
         
     """
     
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrDemo]
     parser_classes = [MultiPartParser, FormParser]
     
     #! Queryset base: siempre es filtrado por el usuario
     
     def get_queryset(self):
+        # En modo demo, filtrar por session_id
+        session_id = self.request.headers.get('X-Session-ID')
+        if session_id:
+            user = DemoService.get_demo_user(session_id)
+            return Dataset.objects.filter(user=user).prefetch_related('tables')
+        
         return Dataset.objects.filter(
             user=self.request.user
         ).prefetch_related('tables')
@@ -51,19 +59,27 @@ class DatasetViewSet(viewsets.GenericViewSet):
     #! Permisos dinamicos segun la accion 
     def get_permissions(self):
         if self.action in ('retrieve', 'destroy', "schema"):
-            return [IsAuthenticated(), IsDatasetOwner()]
-        return [IsAuthenticated()]
+            return [IsAuthenticatedOrDemo()]
+        return [IsAuthenticatedOrDemo()]
     
+
     #! POST /datasets/ → upload de un nuevo dataset
     
     def create(self,request):
         serializer = DatasetUploadSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
+        # Obtener usuario (autenticado o demo)
+        session_id = request.headers.get('X-Session-ID')
+        if session_id:
+            user = DemoService.get_demo_user(session_id)
+        else:
+            user = request.user
+        
         try:
             dataset = DatasetService.create(
                 file        = serializer.validated_data['file'],
-                user        = request.user,
+                user        = user,
                 name        = serializer.validated_data['name'],
                 description = serializer.validated_data.get('description', ''),
             )
@@ -73,7 +89,7 @@ class DatasetViewSet(viewsets.GenericViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
         except Exception:
-            logger.exception('Error procesando upload de dataset (user_id=%s)', request.user.id)
+            logger.exception('Error procesando upload de dataset (user_id=%s)', user.id)
             return Response(
                 {'error': 'Error al procesar el archivo.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -100,8 +116,15 @@ class DatasetViewSet(viewsets.GenericViewSet):
     def destroy(self, request, pk=None):
         dataset = self.get_object()
 
+        # Obtener usuario (autenticado o demo)
+        session_id = request.headers.get('X-Session-ID')
+        if session_id:
+            user = DemoService.get_demo_user(session_id)
+        else:
+            user = request.user
+
         try: 
-            DatasetService.delete(dataset.id, request.user)
+            DatasetService.delete(dataset.id, user)
         except PermissionError as e:
             return Response(
                 {'error': str(e)},
@@ -134,4 +157,3 @@ class DatasetViewSet(viewsets.GenericViewSet):
             'name': dataset.name,
             'row_count': dataset.row_count
         })
-        

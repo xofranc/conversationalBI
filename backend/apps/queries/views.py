@@ -17,13 +17,23 @@ from .serializers import (
 )
 from .services import QueryService
 from apps.users.services import UserService
+from apps.core.permissions import IsAuthenticatedOrDemo
+from apps.core.services.demo_service import DemoService
 
 logger = logging.getLogger(__name__)
 
 class QueryViewSet(viewsets.GenericViewSet):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrDemo]
 
     def get_queryset(self):
+        # En modo demo, filtrar por session_id
+        session_id = self.request.headers.get('X-Session-ID')
+        if session_id:
+            user = DemoService.get_demo_user(session_id)
+            return QueryHistory.objects.filter(
+                user=user
+            ).select_related('result')
+        
         return QueryHistory.objects.filter(
             user=self.request.user
         ).select_related('result')
@@ -33,7 +43,13 @@ class QueryViewSet(viewsets.GenericViewSet):
         serializer = QueryRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        user       = request.user
+        # Obtener usuario (autenticado o demo)
+        session_id = request.headers.get('X-Session-ID')
+        if session_id:
+            user = DemoService.get_demo_user(session_id)
+        else:
+            user = request.user
+
         question   = serializer.validated_data['question']
         dataset_id = serializer.validated_data['dataset_id']
 
@@ -89,9 +105,16 @@ class QueryViewSet(viewsets.GenericViewSet):
         
     # ── GET /queries/{id}/ → detalle ──────────────────────────────────────
     def retrieve(self, request, pk=None):
+        # En modo demo, filtrar por session_id
+        session_id = request.headers.get('X-Session-ID')
+        if session_id:
+            user = DemoService.get_demo_user(session_id)
+        else:
+            user = request.user
+
         try:
             query = QueryHistory.objects.select_related('result').get(
-                pk=pk, user=request.user
+                pk=pk, user=user
             )
         except QueryHistory.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -100,8 +123,15 @@ class QueryViewSet(viewsets.GenericViewSet):
     # ── POST /queries/{id}/feedback/ ──────────────────────────────────────
     @action(detail=True, methods=['post'], url_path='feedback')
     def feedback(self, request, pk=None):
+        # En modo demo, filtrar por session_id
+        session_id = request.headers.get('X-Session-ID')
+        if session_id:
+            user = DemoService.get_demo_user(session_id)
+        else:
+            user = request.user
+
         try:
-            query = QueryHistory.objects.get(pk=pk, user=request.user)
+            query = QueryHistory.objects.get(pk=pk, user=user)
         except QueryHistory.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
