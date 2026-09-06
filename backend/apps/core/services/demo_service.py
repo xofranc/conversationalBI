@@ -2,7 +2,7 @@
 from django.db import transaction
 from apps.dataset.models import Dataset
 from apps.dataset.services import DatasetService
-from .models import DemoSession
+from apps.core.models import DemoSession
 
 
 class DemoService:
