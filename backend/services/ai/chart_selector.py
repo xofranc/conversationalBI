@@ -1,3 +1,15 @@
+REQUIRED_KEYS = {
+    'line':     ['xKey', 'yKey'],
+    'pie':      ['nameKey', 'valueKey'],
+    'bar':      ['xKey', 'yKey'],
+    'scatter':  ['xKey', 'yKey'],
+    'forecast': ['xKey', 'yKey', 'splitKey'],
+    'anomaly':  ['xKey', 'yKey'],
+    'segment':  ['xKey', 'yKey', 'segmentKey'],
+    'drivers':  ['xKey', 'yKey'],
+}
+
+
 class ChartSelector:
 
     @staticmethod
@@ -48,3 +60,9 @@ class ChartSelector:
             }
 
         return empty
+
+    @staticmethod
+    def validate_config(chart_type: str, chart_config: dict) -> bool:
+        """Valida que chart_config tenga todas las keys requeridas para el chart_type."""
+        required = REQUIRED_KEYS.get(chart_type, [])
+        return all(key in chart_config for key in required)
