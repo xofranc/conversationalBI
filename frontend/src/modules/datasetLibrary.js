@@ -2,12 +2,7 @@ import { api } from "../lib/api.js";
 import { state } from "./state.js";
 import { showToast } from "../utils/ui.js";
 import { animations } from "../animations.js";
-
-let callbacks = {};
-
-export function initDatasetLibrary(cbs) {
-  callbacks = cbs;
-}
+import { eventBus } from "../lib/eventBus.js";
 
 export function activeDataset() {
   return state.datasets.find((d) => d.id === state.currentDatasetId) || null;
@@ -71,7 +66,7 @@ export function selectDataset(id) {
   state.currentDatasetId = id;
   renderDatasetList();
   syncDatasetLabels();
-  if (callbacks.onSelect) callbacks.onSelect(activeDataset());
+  eventBus.emit('DATASET_SELECTED', { dataset: activeDataset() });
 }
 
 export async function removeDataset(id) {
@@ -89,7 +84,7 @@ export async function removeDataset(id) {
   }
   renderDatasetList();
   syncDatasetLabels();
-  if (callbacks.onRemove) callbacks.onRemove(wasActive);
+  eventBus.emit('DATASET_REMOVED', { wasActive });
   showToast("Fuente de datos eliminada.", "success");
 }
 
@@ -113,7 +108,6 @@ export async function loadLibrary(selectId = null) {
 
   renderDatasetList();
   syncDatasetLabels();
-  if (callbacks.onLoad) callbacks.onLoad();
 }
 
 export function setupUpload() {
@@ -158,7 +152,7 @@ export function setupUpload() {
       animations.showLoader("Procesando dataset...");
       const name = file.name.replace(/\.[^.]+$/, "");
       const dataset = await api.dataset.upload(file, name);
-      if (callbacks.onUpload) callbacks.onUpload(dataset);
+      eventBus.emit('DATASET_UPLOADED', { dataset });
     } catch (err) {
       showToast(
         `Error al cargar el archivo. ${err?.data ? JSON.stringify(err.data) : ""}`.trim(),

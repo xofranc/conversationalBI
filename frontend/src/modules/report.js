@@ -4,6 +4,7 @@ import { formatFolio } from "../utils/format.js";
 import { MAX_TABLE_ROWS } from "../config/constants.js";
 import { renderChart } from "./resultChart.js";
 import { renderTable } from "./reportTable.js";
+import { eventBus } from "../lib/eventBus.js";
 
 export function resetReport(clearChat) {
   if (state.resultChart) {
@@ -51,3 +52,27 @@ export function renderResult(res, question) {
   state.resultChart = renderChart(res);
   renderTable(res);
 }
+
+// Auto-suscripción
+eventBus.on('QUERY_COMPLETED', ({ res, question }) => {
+  renderResult(res, question);
+});
+
+eventBus.on('HISTORY_RESTORED', ({ query }) => {
+  renderResult(
+    {
+      success: query.success,
+      error_msg: query.error_msg,
+      sql: query.sql_generated,
+      execution_time: query.execution_time,
+      model_used: query.model_used,
+      cached: query.cached,
+      data: query.result.result_json,
+      columns: query.result.columns,
+      chart_type: query.result.chart_type,
+      chart_config: query.result.chart_config,
+      row_count: query.result.row_count,
+    },
+    query.question,
+  );
+});

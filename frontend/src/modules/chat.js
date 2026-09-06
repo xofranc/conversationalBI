@@ -3,13 +3,12 @@ import { api } from "../lib/api.js";
 import { animations } from "../animations.js";
 import { showToast } from "../utils/ui.js";
 import { parseDrfError } from "../utils/format.js";
+import { eventBus } from "../lib/eventBus.js";
 
-let callbacks = {};
 let chatInput;
 let sendBtn;
 
-export function initChat(cbs) {
-  callbacks = cbs;
+export function initChat() {
   chatInput = document.getElementById("chat-input");
   sendBtn = document.getElementById("send-btn");
 
@@ -18,7 +17,6 @@ export function initChat(cbs) {
     if (e.key === "Enter") sendMessage();
   });
 
-  // Chips de ejemplo: la pantalla vacía invita a actuar
   document.querySelectorAll(".example-chip").forEach((chip) => {
     chip.addEventListener("click", () => {
       chatInput.value = chip.dataset.question;
@@ -63,8 +61,8 @@ export async function sendMessage() {
           model_used: res.model_used,
         },
       );
-      if (callbacks.onResult) callbacks.onResult(res, text);
-      if (callbacks.onHistoryUpdate) callbacks.onHistoryUpdate();
+      eventBus.emit('QUERY_COMPLETED', { res, question: text });
+      eventBus.emit('HISTORY_UPDATE');
     } else {
       addMessageToChat(
         "AI",
@@ -72,12 +70,12 @@ export async function sendMessage() {
         null,
         res.suggestions || [],
       );
-      if (callbacks.onHistoryUpdate) callbacks.onHistoryUpdate();
+      eventBus.emit('HISTORY_UPDATE');
     }
   } catch (err) {
     if (err.status === 401) {
       showToast("Tu sesión expiró. Inicia sesión de nuevo.", "error");
-      if (callbacks.onSessionExpired) callbacks.onSessionExpired();
+      eventBus.emit('SESSION_EXPIRED');
       return;
     }
     showToast(

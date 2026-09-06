@@ -2,12 +2,7 @@ import { api } from "../lib/api.js";
 import { state } from "./state.js";
 import { showToast } from "../utils/ui.js";
 import { parseDrfError } from "../utils/format.js";
-
-let callbacks = {};
-
-export function initHistory(cbs) {
-  callbacks = cbs;
-}
+import { eventBus } from "../lib/eventBus.js";
 
 export async function loadHistory() {
   if (!state.currentDatasetId) {
@@ -66,9 +61,7 @@ export async function openHistoryQuery(id) {
       showToast("Esa consulta no tiene resultado guardado.", "error");
       return;
     }
-    if (callbacks.onRestore) {
-      callbacks.onRestore(q);
-    }
+    eventBus.emit('HISTORY_RESTORED', { query: q });
     showToast("Consulta restaurada de la bitácora.", "success");
   } catch (err) {
     showToast(
@@ -77,3 +70,7 @@ export async function openHistoryQuery(id) {
     );
   }
 }
+
+// Auto-suscripción
+eventBus.on('HISTORY_UPDATE', () => loadHistory());
+eventBus.on('DATASET_SELECTED', () => loadHistory());
