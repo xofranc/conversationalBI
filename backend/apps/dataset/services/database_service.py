@@ -25,6 +25,31 @@ class DatabaseService:
     """
 
     @staticmethod
+    def _connect():
+        """Crea una conexión usando la config de Django (SSL, pooler, etc.)."""
+        db = settings.DATABASES["default"]
+        return psycopg2.connect(
+            dbname=db["NAME"],
+            user=db.get("USER", ""),
+            password=db.get("PASSWORD", ""),
+            host=db.get("HOST", ""),
+            port=db.get("PORT", ""),
+            options=db.get("OPTIONS", {}).get("options", ""),
+            sslmode="require",
+        )
+
+    @staticmethod
+    def _connect_readonly():
+        """Conexión de solo-lectura usando DATABASE_READER_URL si existe."""
+        reader_url = getattr(settings, "DATABASE_READER_URL", "")
+        if reader_url:
+            if "sslmode" not in reader_url:
+                sep = "&" if "?" in reader_url else "?"
+                reader_url = f"{reader_url}{sep}sslmode=require"
+            return psycopg2.connect(reader_url)
+        return DatabaseService._connect()
+
+    @staticmethod
     def materialize(dataset_id: int, abs_file_path: str) -> str:
         """
         Convierte el archivo del dataset a tablas Postgres en su schema.
@@ -34,7 +59,7 @@ class DatabaseService:
         tables = SchemaService.read_tables(abs_file_path, ext)
 
         schema = DatabaseService.schema_name(dataset_id)
-        conn = psycopg2.connect(settings.DATABASE_URL)
+        conn = DatabaseService._connect()
         conn.autocommit = True
         try:
             with conn.cursor() as cur:
@@ -77,7 +102,7 @@ class DatabaseService:
         """True si db_path es un schema materializado que sigue existiendo."""
         if not db_path or not _SCHEMA_RE.match(db_path):
             return False
-        conn = psycopg2.connect(settings.DATABASE_URL)
+        conn = DatabaseService._connect()
         try:
             with conn.cursor() as cur:
                 cur.execute(
@@ -97,8 +122,7 @@ class DatabaseService:
         """
         if not db_path or not _SCHEMA_RE.match(db_path):
             raise ValueError(f'Schema de dataset inválido: {db_path!r}')
-        dsn = settings.DATABASE_READER_URL or settings.DATABASE_URL
-        conn = psycopg2.connect(dsn)
+        conn = DatabaseService._connect_readonly()
         conn.set_session(autocommit=True, readonly=True)
         with conn.cursor() as cur:
             cur.execute(
@@ -138,7 +162,7 @@ class DatabaseService:
         if not db_path:
             return
         if _SCHEMA_RE.match(db_path):
-            conn = psycopg2.connect(settings.DATABASE_URL)
+            conn = DatabaseService._connect()
             conn.autocommit = True
             try:
                 with conn.cursor() as cur:
