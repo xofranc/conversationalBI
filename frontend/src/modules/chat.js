@@ -30,6 +30,34 @@ export function clearChat() {
   if (chatContainer) chatContainer.innerHTML = "";
 }
 
+function showTypingIndicator() {
+  const chatContainer = document.getElementById("chat-messages");
+  const existing = document.getElementById("typing-indicator");
+  if (existing) return;
+
+  const wrapper = document.createElement("div");
+  wrapper.id = "typing-indicator";
+  wrapper.className = "message-wrapper ai";
+
+  const indicator = document.createElement("div");
+  indicator.className = "typing-indicator";
+
+  for (let i = 0; i < 3; i++) {
+    const dot = document.createElement("span");
+    dot.className = "typing-dot";
+    indicator.appendChild(dot);
+  }
+
+  wrapper.appendChild(indicator);
+  chatContainer.appendChild(wrapper);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function removeTypingIndicator() {
+  const el = document.getElementById("typing-indicator");
+  if (el) el.remove();
+}
+
 export async function sendMessage() {
   const text = chatInput.value.trim();
   if (text.length < 5) {
@@ -46,9 +74,11 @@ export async function sendMessage() {
   sendBtn.disabled = true;
   addMessageToChat("User", text);
   chatInput.value = "";
+  showTypingIndicator();
 
   try {
     const res = await api.query.ask(text, state.currentDatasetId);
+    removeTypingIndicator();
 
     if (res.success) {
       addMessageToChat(
@@ -73,6 +103,7 @@ export async function sendMessage() {
       eventBus.emit('HISTORY_UPDATE');
     }
   } catch (err) {
+    removeTypingIndicator();
     if (err.status === 401) {
       showToast("Tu sesión expiró. Inicia sesión de nuevo.", "error");
       eventBus.emit('SESSION_EXPIRED');
@@ -92,7 +123,7 @@ export async function sendMessage() {
 export function addMessageToChat(sender, text, receipt = null, suggestions = []) {
   const chatContainer = document.getElementById("chat-messages");
   const wrapper = document.createElement("div");
-  wrapper.className = `message-wrapper w-full mb-4 ${sender === "User" ? "items-end" : "items-start"}`;
+  wrapper.className = `message-wrapper ${sender === "User" ? "user" : "ai"}`;
 
   const bubble = document.createElement("div");
   bubble.className = `chat-message ${sender === "User" ? "user" : "ai"}`;

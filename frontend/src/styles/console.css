@@ -1,6 +1,9 @@
 /* ── ConversationalBI · consola de datos ────────────────────────────── */
 
-/* ── Burbujas de conversación ───────────────────────────────────────── */
+/* ── Burbujas de conversación ─────────────────────────────────────────
+   Estilos base para index.html (landing demo).
+   Dashboard: app.html define sus propios estilos inline.
+   ──────────────────────────────────────────────────────────────────── */
 .chat-message {
   max-width: 85%;
   padding: 10px 14px;
@@ -27,7 +30,10 @@
   flex-direction: column;
 }
 
-/* ── Recibo verificable (la firma del producto) ─────────────────────── */
+/* ── Recibo verificable (la firma del producto) ───────────────────────
+   Estilos base para index.html (landing demo).
+   Dashboard: app.html define sus propios estilos inline.
+   ──────────────────────────────────────────────────────────────────── */
 .sql-receipt {
   margin-top: 6px;
   max-width: 85%;
@@ -101,7 +107,10 @@
   color: #0e5e6f;
 }
 
-/* ── Chips de ejemplo (empty state) ─────────────────────────────────── */
+/* ── Chips de ejemplo (empty state) ───────────────────────────────────
+   Estilos base para index.html (landing demo).
+   Dashboard: app.html define sus propios estilos inline.
+   ──────────────────────────────────────────────────────────────────── */
 .example-chip {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 0.72rem;
