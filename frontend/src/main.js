@@ -30,6 +30,16 @@ function forceLogout() {
 // Suscribirse a SESSION_EXPIRED
 eventBus.on('SESSION_EXPIRED', () => forceLogout());
 
+// Auto-seleccionar dataset después de subirlo
+eventBus.on('DATASET_UPLOADED', ({ dataset }) => {
+  state.datasets.push(dataset);
+  state.currentDatasetId = dataset.id;
+  import("./modules/datasetRenderer.js").then((mod) => {
+    mod.renderDatasetList();
+    mod.syncDatasetLabels();
+  });
+});
+
 document.addEventListener("DOMContentLoaded", async () => {
   initChat();
   setupUpload();
