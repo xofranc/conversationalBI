@@ -22,7 +22,7 @@ const mockButton = () => ({
   className: '',
   innerText: '',
   title: '',
-  append: vi.fn(),
+  appendChild: vi.fn(),
   addEventListener: vi.fn(),
 });
 

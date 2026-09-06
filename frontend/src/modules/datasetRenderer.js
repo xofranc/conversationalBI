@@ -19,44 +19,32 @@ export function renderDatasetList() {
   const countEl = document.getElementById("dataset-count");
   if (!list) return;
 
-  countEl.innerText = String(state.datasets.length);
+  if (countEl) countEl.innerText = state.datasets.length ? `${state.datasets.length} fuentes` : '';
   list.innerHTML = "";
 
   state.datasets.forEach((ds) => {
-    const li = document.createElement("li");
-    const item = document.createElement("button");
-    item.type = "button";
-    item.className = `dataset-item${ds.id === state.currentDatasetId ? " active" : ""}`;
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = `dock-chip${ds.id === state.currentDatasetId ? " active" : ""}`;
 
-    const meta =
-      ds.status === "ready"
-        ? `${Number(ds.row_count).toLocaleString("es-CO")} filas`
-        : ds.status;
-
-    const dot = document.createElement("span");
-    dot.className = "d-dot";
     const name = document.createElement("span");
-    name.className = "d-name";
     name.innerText = ds.name;
-    const metaEl = document.createElement("span");
-    metaEl.className = "d-meta";
-    metaEl.innerText = meta;
-    const del = document.createElement("span");
-    del.className = "d-delete";
-    del.innerText = "×";
-    del.title = `Eliminar ${ds.name}`;
+    chip.appendChild(name);
 
-    item.append(dot, name, metaEl, del);
-    item.addEventListener("click", () => {
-      // Will be connected by datasetActions
+    const remove = document.createElement("span");
+    remove.className = "chip-remove";
+    remove.innerText = "×";
+    remove.title = `Eliminar ${ds.name}`;
+    chip.appendChild(remove);
+
+    chip.addEventListener("click", () => {
       import("./datasetActions.js").then((mod) => mod.selectDataset(ds.id));
     });
-    del.addEventListener("click", (e) => {
+    remove.addEventListener("click", (e) => {
       e.stopPropagation();
       import("./datasetActions.js").then((mod) => mod.removeDataset(ds.id));
     });
 
-    li.appendChild(item);
-    list.appendChild(li);
+    list.appendChild(chip);
   });
 }

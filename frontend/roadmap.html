@@ -99,13 +99,13 @@
           <!-- Nav centrado (absolute) -->
           <ul class="absolute left-1/2 -translate-x-1/2 flex items-center gap-1" role="menubar">
             <li role="none"><a href="/" class="nav-item" role="menuitem">home</a></li>
-            <li role="none"><a href="/app.html" class="nav-item" role="menuitem">demo</a></li>
+            <li role="none"><a href="/app.html?demo=true" class="nav-item" role="menuitem">demo</a></li>
             <li role="none"><a href="https://github.com/xofranc/conversationalBI" target="_blank" rel="noopener" class="nav-item" role="menuitem">github</a></li>
           </ul>
           
           <!-- Acciones -->
           <div class="flex items-center gap-3 shrink-0">
-            <a href="/app.html" class="cta-nav-primary group">
+            <a href="/app.html?demo=true" class="cta-nav-primary group">
               <span class="cta-expand bg-petrol-dark"></span>
               <span class="cta-text">abrir consola</span>
             </a>
@@ -148,7 +148,7 @@
               </a>
             </li>
             <li>
-              <a href="/app.html" class="mobile-nav-item">
+              <a href="/app.html?demo=true" class="mobile-nav-item">
                 <span class="mobile-nav-number">02</span>
                 <span class="mobile-nav-label">Demo</span>
                 <svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -379,7 +379,7 @@
       
       document.addEventListener('DOMContentLoaded', () => {
         const overlay = document.getElementById('cta-transition-overlay');
-        const ctaButtons = document.querySelectorAll('a[href="/app.html"]');
+        const ctaButtons = document.querySelectorAll('a[href="/app.html?demo=true"]');
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
         ctaButtons.forEach(btn => {

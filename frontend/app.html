@@ -22,23 +22,44 @@
         --amber: #C77B21;
         --amber-light: #E89830;
         --teal: #3E8FA3;
-        --rail-bg: #1A1E24;
-        --rail-text: #A0A8B2;
-        --rail-line: #2A2E34;
-        --rail-raise: #22262C;
         --danger: #DC4A3F;
+        --glass-bg: rgba(255, 255, 255, 0.72);
+        --glass-border: rgba(255, 255, 255, 0.4);
+        --glass-shadow: 0 8px 32px rgba(18, 22, 28, 0.06);
       }
 
-      /* ═══════════════ Preload ═══════════════ */
+      /* ═══════════════ Reset & Base ═══════════════ */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
       .preload-hide { opacity: 0 !important; }
       body.loaded .preload-hide { opacity: 1 !important; transition: opacity 0.3s ease; }
 
-      /* ═══════════════ Nav pill styles ═══════════════ */
+      html, body {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      /* ═══════════════ Unified Container ═══════════════ */
+      #app {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        height: 100dvh;
+        background: var(--paper);
+        overflow: hidden;
+      }
+
+      /* ═══════════════ Nav — Translucent Material ═══════════════ */
+      .app-nav {
+        position: relative;
+        z-index: 50;
+        flex-shrink: 0;
+      }
       .nav-pill {
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(16px) saturate(180%);
-        -webkit-backdrop-filter: blur(16px) saturate(180%);
-        box-shadow: 0 4px 24px rgba(14, 94, 111, 0.08);
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        box-shadow: var(--glass-shadow);
+        border-bottom: 1px solid var(--glass-border);
       }
       .nav-pill::after {
         content: '';
@@ -46,7 +67,7 @@
         inset: 0;
         border-radius: inherit;
         opacity: 0;
-        background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(14, 94, 111, 0.1), transparent 40%);
+        background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(14, 94, 111, 0.08), transparent 40%);
         transition: opacity 0.3s;
         pointer-events: none;
       }
@@ -56,13 +77,13 @@
         padding: 6px 14px;
         font-size: 0.8rem;
         font-weight: 500;
-        color: #5C6672;
+        color: var(--ink-soft);
         border-radius: 10px;
-        transition: all 0.2s ease;
+        transition: all 0.15s ease;
       }
       .nav-item:hover {
-        color: #0E5E6F;
-        background: rgba(14, 94, 111, 0.08);
+        color: var(--petrol);
+        background: rgba(14, 94, 111, 0.06);
       }
 
       /* ═══════════════ Auth View ═══════════════ */
@@ -74,17 +95,13 @@
         padding: 48px 40px;
         width: 100%;
         max-width: 420px;
-        box-shadow:
-          0 1px 2px rgba(18, 22, 28, 0.04),
-          0 8px 32px rgba(18, 22, 28, 0.06);
+        box-shadow: 0 1px 2px rgba(18, 22, 28, 0.04), 0 8px 32px rgba(18, 22, 28, 0.06);
         overflow: hidden;
       }
       .auth-container::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
+        top: 0; left: 0; right: 0;
         height: 3px;
         background: linear-gradient(90deg, var(--petrol), var(--teal), var(--amber));
         border-radius: 24px 24px 0 0;
@@ -98,7 +115,7 @@
         border-radius: 12px;
         font-size: 0.95rem;
         color: var(--ink);
-        transition: all 0.2s ease;
+        transition: all 0.15s ease;
         outline: none;
       }
       .auth-input:focus {
@@ -106,10 +123,7 @@
         box-shadow: 0 0 0 3px rgba(14, 94, 111, 0.12);
         background: var(--card);
       }
-      .auth-input::placeholder {
-        color: var(--ink-soft);
-        opacity: 0.6;
-      }
+      .auth-input::placeholder { color: var(--ink-soft); opacity: 0.5; }
 
       .auth-btn {
         width: 100%;
@@ -121,177 +135,206 @@
         border-radius: 12px;
         border: none;
         cursor: pointer;
-        transition: all 0.2s ease;
-        position: relative;
-        overflow: hidden;
+        transition: all 0.15s ease;
       }
       .auth-btn:hover {
         background: var(--petrol-dark);
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(14, 94, 111, 0.25);
       }
-      .auth-btn:active {
-        transform: translateY(0);
-        box-shadow: none;
+      .auth-btn:active { transform: translateY(0); box-shadow: none; }
+
+      /* ═══════════════ Dashboard Layout ═══════════════ */
+      .dashboard {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        overflow: hidden;
       }
 
-      /* ═══════════════ Sidebar ═══════════════ */
-      .sidebar-section {
-        position: relative;
-      }
-      .sidebar-section::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 20px;
-        right: 20px;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--rail-line), transparent);
+      .workspace {
+        flex: 1;
+        display: flex;
+        min-height: 0;
+        overflow: hidden;
       }
 
-      .dataset-item {
-        position: relative;
-        padding: 10px 14px;
+      /* ═══════════════ Chat Panel ═══════════════ */
+      .chat-panel {
+        width: 100%;
+        max-width: 420px;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        background: var(--card);
+        border-right: 1px solid var(--line);
+        min-height: 0;
+      }
+
+      .chat-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+      }
+      .chat-header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .chat-header-icon {
+        width: 32px; height: 32px;
         border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        border: 1px solid transparent;
+        background: rgba(14, 94, 111, 0.08);
+        display: flex; align-items: center; justify-content: center;
       }
-      .dataset-item:hover {
-        background: var(--rail-raise);
-        border-color: var(--rail-line);
-      }
-      .dataset-item.active {
-        background: var(--petrol);
-        border-color: var(--petrol);
-        color: white;
-      }
-      .dataset-item.active .dataset-name {
-        color: white;
-      }
-      .dataset-item.active .dataset-meta {
-        color: rgba(255, 255, 255, 0.7);
-      }
-
-      .upload-zone {
-        position: relative;
-        border: 2px dashed var(--rail-line);
-        border-radius: 14px;
-        padding: 20px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        background: transparent;
-      }
-      .upload-zone:hover {
-        border-color: var(--petrol-light);
-        background: rgba(14, 94, 111, 0.05);
-      }
-      .upload-zone.drag-over {
-        border-color: var(--petrol);
-        background: rgba(14, 94, 111, 0.1);
-        transform: scale(1.02);
-      }
-
-      /* ═══════════════ Chat Area ═══════════════ */
-      .chat-message {
-        position: relative;
-        max-width: 85%;
-        animation: messageSlideIn 0.3s ease-out;
-      }
-      @keyframes messageSlideIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .message-user {
-        margin-left: auto;
-        background: var(--petrol);
-        color: white;
-        border-radius: 18px 18px 4px 18px;
-        padding: 12px 18px;
-      }
-
-      .message-assistant {
-        margin-right: auto;
-        background: var(--paper);
+      .chat-header-icon svg { width: 16px; height: 16px; color: var(--petrol); }
+      .chat-header h3 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
         color: var(--ink);
-        border-radius: 18px 18px 18px 4px;
-        padding: 14px 18px;
-        border: 1px solid var(--line);
+      }
+      .chat-header p {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.6rem;
+        color: var(--petrol);
+      }
+      .chat-online {
+        width: 8px; height: 8px;
+        background: #22C55E;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
       }
 
+      .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px 20px;
+        min-height: 0;
+      }
+
+      .chat-input-area {
+        padding: 12px 16px;
+        border-top: 1px solid var(--line);
+        background: rgba(244, 241, 234, 0.5);
+        flex-shrink: 0;
+      }
       .chat-input-wrapper {
         position: relative;
-        background: var(--paper);
+        background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 16px;
-        transition: all 0.2s ease;
-        overflow: hidden;
+        border-radius: 14px;
+        transition: all 0.15s ease;
       }
       .chat-input-wrapper:focus-within {
         border-color: var(--petrol);
-        box-shadow: 0 0 0 3px rgba(14, 94, 111, 0.1);
-        background: var(--card);
+        box-shadow: 0 0 0 3px rgba(14, 94, 111, 0.08);
       }
-
       .chat-input {
         width: 100%;
-        padding: 14px 52px 14px 18px;
+        padding: 12px 48px 12px 16px;
         background: transparent;
         border: none;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         color: var(--ink);
         outline: none;
       }
-
       .send-btn {
         position: absolute;
-        right: 8px;
-        top: 50%;
+        right: 6px; top: 50%;
         transform: translateY(-50%);
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
+        width: 32px; height: 32px;
+        border-radius: 8px;
         background: var(--petrol);
         color: white;
         border: none;
         cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
+        display: flex; align-items: center; justify-content: center;
+        transition: all 0.15s ease;
       }
-      .send-btn:hover {
-        background: var(--petrol-dark);
-        transform: translateY(-50%) scale(1.05);
-      }
-      .send-btn:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-        transform: translateY(-50%) scale(1);
+      .send-btn:hover { background: var(--petrol-dark); transform: translateY(-50%) scale(1.05); }
+      .send-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: translateY(-50%) scale(1); }
+      .chat-hint {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.55rem;
+        color: var(--ink-soft);
+        opacity: 0.5;
+        text-align: center;
+        margin-top: 6px;
       }
 
-      /* ═══════════════ Report Area ═══════════════ */
+      /* ═══════════════ Chat Messages ═══════════════ */
+      .message-wrapper {
+        display: flex;
+        margin-bottom: 12px;
+      }
+      .message-wrapper.user { justify-content: flex-end; }
+      .message-wrapper.ai { justify-content: flex-start; }
+
+      .chat-message {
+        max-width: 85%;
+        padding: 10px 14px;
+        font-size: 0.88rem;
+        line-height: 1.5;
+        animation: msgIn 0.25s ease-out;
+      }
+      @keyframes msgIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .chat-message.user {
+        background: var(--petrol);
+        color: white;
+        border-radius: 16px 16px 4px 16px;
+      }
+      .chat-message.ai {
+        background: var(--paper);
+        color: var(--ink);
+        border-radius: 16px 16px 16px 4px;
+        border: 1px solid var(--line);
+      }
+
+      /* ═══════════════ Report Panel ═══════════════ */
+      .report-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        min-height: 0;
+        overflow-y: auto;
+        background: var(--paper);
+      }
+
+      .report-inner {
+        max-width: 900px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 28px 32px;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
       .report-header {
         position: relative;
-        padding-bottom: 24px;
-        margin-bottom: 32px;
+        padding-bottom: 20px;
+        margin-bottom: 24px;
         border-bottom: 1px solid var(--line);
+        flex-shrink: 0;
       }
       .report-header::after {
         content: '';
         position: absolute;
-        bottom: -1px;
-        left: 0;
-        width: 80px;
-        height: 2px;
+        bottom: -1px; left: 0;
+        width: 60px; height: 2px;
         background: linear-gradient(90deg, var(--petrol), var(--teal));
       }
 
@@ -299,159 +342,245 @@
         position: relative;
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 16px;
-        padding: 24px;
-        transition: all 0.2s ease;
+        border-radius: 14px;
+        padding: 20px;
+        transition: all 0.15s ease;
         overflow: hidden;
       }
       .kpi-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(18, 22, 28, 0.08);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 16px rgba(18, 22, 28, 0.06);
       }
       .kpi-card::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
+        top: 0; left: 0; right: 0;
         height: 2px;
         background: var(--line);
-        transition: background 0.2s ease;
+        transition: background 0.15s ease;
       }
-      .kpi-card:hover::before {
-        background: var(--petrol);
-      }
-      .kpi-card.accent::before {
-        background: var(--amber);
-      }
-
+      .kpi-card:hover::before { background: var(--petrol); }
+      .kpi-card.accent::before { background: var(--amber); }
       .kpi-value {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 2rem;
+        font-size: 1.75rem;
         font-weight: 600;
         color: var(--ink);
         letter-spacing: -0.02em;
         line-height: 1;
       }
-
       .kpi-label {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 0.65rem;
-        letter-spacing: 0.15em;
+        font-size: 0.6rem;
+        letter-spacing: 0.12em;
         text-transform: uppercase;
         color: var(--ink-soft);
-        margin-bottom: 8px;
+        margin-bottom: 6px;
       }
 
       /* ═══════════════ Empty State ═══════════════ */
       .empty-state {
-        position: relative;
-        padding: 64px 32px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         text-align: center;
+        padding: 48px 24px;
       }
-
       .sql-illustration {
         position: relative;
         display: inline-block;
-        margin-bottom: 32px;
-        padding: 24px 32px;
-        background: var(--paper);
+        margin-bottom: 28px;
+        padding: 20px 28px;
+        background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 16px;
+        border-radius: 14px;
         font-family: 'JetBrains Mono', monospace;
         font-size: 0.75rem;
         color: var(--ink-soft);
         text-align: left;
         line-height: 1.8;
-        box-shadow: 0 4px 16px rgba(18, 22, 28, 0.04);
+        box-shadow: 0 2px 8px rgba(18, 22, 28, 0.04);
       }
       .sql-illustration::before {
         content: '';
         position: absolute;
-        top: -8px;
-        left: 24px;
-        width: 16px;
-        height: 16px;
+        top: -6px; left: 20px;
+        width: 12px; height: 12px;
         background: var(--petrol);
-        border-radius: 4px;
+        border-radius: 3px;
         transform: rotate(45deg);
       }
-      .sql-illustration .sql-keyword {
-        color: var(--petrol);
-        font-weight: 600;
-      }
-      .sql-illustration .sql-placeholder {
-        color: var(--amber);
-      }
+      .sql-keyword { color: var(--petrol); font-weight: 600; }
+      .sql-placeholder { color: var(--amber); }
 
-      /* ═══════════════ Example Chips ═══════════════ */
       .example-chip {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 10px 16px;
+        padding: 8px 14px;
         background: var(--card);
         border: 1px solid var(--line);
         border-radius: 100px;
-        font-size: 0.85rem;
+        font-size: 0.82rem;
         color: var(--ink-soft);
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: all 0.15s ease;
       }
       .example-chip:hover {
         border-color: var(--petrol);
         color: var(--petrol);
-        background: rgba(14, 94, 111, 0.04);
+        background: rgba(14, 94, 111, 0.03);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(14, 94, 111, 0.1);
+        box-shadow: 0 2px 8px rgba(14, 94, 111, 0.08);
       }
       .example-chip::before {
         content: '→';
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         opacity: 0;
         transform: translateX(-4px);
-        transition: all 0.2s ease;
+        transition: all 0.15s ease;
       }
-      .example-chip:hover::before {
-        opacity: 1;
-        transform: translateX(0);
-      }
+      .example-chip:hover::before { opacity: 1; transform: translateX(0); }
 
       /* ═══════════════ Table ═══════════════ */
-      .data-table {
-        border-collapse: separate;
-        border-spacing: 0;
-      }
+      .data-table { border-collapse: separate; border-spacing: 0; width: 100%; }
       .data-table th {
-        position: sticky;
-        top: 0;
+        position: sticky; top: 0;
         background: var(--paper);
         z-index: 10;
-      }
-      .data-table th,
-      .data-table td {
-        padding: 12px 16px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.6rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        text-align: left;
+        padding: 10px 14px;
         border-bottom: 1px solid var(--line);
       }
-      .data-table tbody tr {
-        transition: background 0.15s ease;
+      .data-table td {
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--line);
+        font-size: 0.85rem;
+        color: var(--ink);
       }
-      .data-table tbody tr:hover {
-        background: rgba(14, 94, 111, 0.03);
+      .data-table tbody tr { transition: background 0.1s ease; }
+      .data-table tbody tr:hover { background: rgba(14, 94, 111, 0.02); }
+      .data-table tbody tr:last-child td { border-bottom: none; }
+
+      /* ═══════════════ Dock — Bottom Dataset Bar ═══════════════ */
+      .dock {
+        flex-shrink: 0;
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-top: 1px solid var(--glass-border);
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        overflow-x: auto;
+        min-height: 52px;
       }
-      .data-table tbody tr:last-child td {
-        border-bottom: none;
+      .dock::-webkit-scrollbar { height: 0; }
+
+      .dock-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.55rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        white-space: nowrap;
+        flex-shrink: 0;
       }
 
-      /* ═══════════════ CTA Button ═══════════════ */
-      .cta-nav-primary {
-        transform: scale(1);
-        transition: transform 100ms ease-out;
+      .dock-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 100px;
+        font-size: 0.78rem;
+        color: var(--ink-soft);
+        cursor: pointer;
+        transition: all 0.15s ease;
+        white-space: nowrap;
+        flex-shrink: 0;
       }
-      .cta-nav-primary:active {
-        transform: scale(0.97);
-        transition: transform 60ms ease-out;
+      .dock-chip:hover {
+        border-color: var(--petrol);
+        color: var(--petrol);
+        background: rgba(14, 94, 111, 0.03);
       }
+      .dock-chip.active {
+        background: var(--petrol);
+        border-color: var(--petrol);
+        color: white;
+      }
+      .dock-chip .chip-remove {
+        width: 14px; height: 14px;
+        border-radius: 50%;
+        background: rgba(0,0,0,0.1);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.6rem;
+        opacity: 0;
+        transition: opacity 0.15s ease;
+      }
+      .dock-chip:hover .chip-remove { opacity: 1; }
+      .dock-chip.active .chip-remove { background: rgba(255,255,255,0.2); }
+
+      .dock-upload {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        background: transparent;
+        border: 1.5px dashed var(--line);
+        border-radius: 100px;
+        font-size: 0.78rem;
+        color: var(--ink-soft);
+        cursor: pointer;
+        transition: all 0.15s ease;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .dock-upload:hover {
+        border-color: var(--petrol);
+        color: var(--petrol);
+        background: rgba(14, 94, 111, 0.03);
+      }
+      .dock-upload.drag-over {
+        border-color: var(--petrol);
+        background: rgba(14, 94, 111, 0.08);
+      }
+
+      .dock-separator {
+        width: 1px;
+        height: 20px;
+        background: var(--line);
+        flex-shrink: 0;
+      }
+
+      .dock-logout {
+        margin-left: auto;
+        padding: 6px 12px;
+        background: transparent;
+        border: none;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.7rem;
+        color: var(--ink-soft);
+        cursor: pointer;
+        transition: color 0.15s ease;
+        white-space: nowrap;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .dock-logout:hover { color: var(--danger); }
 
       /* ═══════════════ CTA transition overlay ═══════════════ */
       .cta-transition-overlay {
@@ -466,8 +595,6 @@
         align-items: center;
         justify-content: center;
       }
-
-      /* ═══════════════ Modern preloader ═══════════════ */
       .cta-loading {
         display: flex;
         flex-direction: column;
@@ -475,7 +602,6 @@
         gap: 24px;
         opacity: 0;
       }
-
       .cta-preloader-logo {
         font-family: 'Instrument Serif', serif;
         font-size: clamp(24px, 5vw, 36px);
@@ -483,202 +609,205 @@
         letter-spacing: -0.02em;
         overflow: hidden;
       }
-
       .cta-preloader-logo span {
         display: inline-block;
         opacity: 0;
         transform: translateY(100%);
       }
-
       .cta-preloader-line {
-        width: 60px;
-        height: 2px;
+        width: 60px; height: 2px;
         background: rgba(255, 255, 255, 0.3);
         border-radius: 1px;
         overflow: hidden;
         position: relative;
       }
-
       .cta-preloader-line::after {
         content: '';
         position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 0;
+        left: 0; top: 0;
+        height: 100%; width: 0;
         background: white;
         border-radius: 1px;
       }
 
-      /* ═══════════════ Custom Scrollbar ═══════════════ */
-      .custom-scrollbar::-webkit-scrollbar {
-        width: 6px;
-      }
-      .custom-scrollbar::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: var(--line);
-        border-radius: 3px;
-      }
-      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: var(--ink-soft);
-      }
+      /* ═══════════════ Scrollbar ═══════════════ */
+      .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--ink-soft); }
 
       /* ═══════════════ Loading Spinner ═══════════════ */
       .loading-spinner {
-        width: 48px;
-        height: 48px;
+        width: 40px; height: 40px;
         border: 3px solid var(--line);
         border-top-color: var(--petrol);
         border-radius: 50%;
         animation: spin 0.8s linear infinite;
       }
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
+      @keyframes spin { to { transform: rotate(360deg); } }
 
       /* ═══════════════ Toast ═══════════════ */
       .toast {
         position: fixed;
-        bottom: 24px;
+        bottom: 72px;
         right: 24px;
         z-index: 110;
-        padding: 14px 20px;
+        padding: 12px 18px;
         background: var(--ink);
         color: white;
-        border-radius: 12px;
-        font-size: 0.9rem;
+        border-radius: 10px;
+        font-size: 0.85rem;
         font-weight: 500;
-        box-shadow: 0 8px 32px rgba(18, 22, 28, 0.2);
-        transform: translateY(100px);
+        box-shadow: 0 8px 24px rgba(18, 22, 28, 0.2);
+        transform: translateY(20px);
         opacity: 0;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
       }
-      .toast.visible {
-        transform: translateY(0);
-        opacity: 1;
+      .toast.visible { transform: translateY(0); opacity: 1; }
+      .toast.success { background: var(--petrol); }
+      .toast.error { background: var(--danger); }
+
+      /* ═══════════════ Chart & Table Cards ═══════════════ */
+      .report-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 1px 4px rgba(18, 22, 28, 0.03);
       }
-      .toast.success {
-        background: var(--petrol);
+
+      /* ═══════════════ SQL Receipt ═══════════════ */
+      .sql-receipt {
+        margin-top: 8px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
       }
-      .toast.error {
-        background: var(--danger);
+      .sql-receipt summary {
+        padding: 6px 12px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.65rem;
+        color: var(--ink-soft);
+        cursor: pointer;
+        background: var(--paper);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .sql-receipt pre {
+        padding: 10px 12px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.7rem;
+        color: var(--ink);
+        background: var(--card);
+        overflow-x: auto;
+        margin: 0;
+      }
+      .sql-badge {
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.55rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .sql-badge.cache { background: rgba(14, 94, 111, 0.1); color: var(--petrol); }
+      .sql-badge.model { background: rgba(199, 123, 33, 0.1); color: var(--amber); }
+
+      .suggestion-hint {
+        font-size: 0.7rem;
+        color: var(--ink-soft);
+        margin-top: 8px;
+      }
+      .suggestion-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 6px;
+      }
+
+      /* ═══════════════ Mobile ═══════════════ */
+      @media (max-width: 768px) {
+        .workspace { flex-direction: column; }
+        .chat-panel {
+          max-width: 100%;
+          border-right: none;
+          border-bottom: 1px solid var(--line);
+          height: 50vh;
+        }
+        .report-inner { padding: 20px 16px; }
+        .dock { padding: 8px 12px; }
       }
     </style>
   </head>
   <body class="bg-paper text-ink font-sans antialiased">
     <script>document.addEventListener('DOMContentLoaded', () => document.body.classList.add('loaded'));</script>
 
-    <!-- ═══════════════ Navbar Kiro-style ═══════════════ -->
-    <nav class="sticky top-0 z-50 transition-all duration-300">
-      <!-- Desktop (≥1024px) -->
-      <div class="hidden lg:flex w-full justify-between p-2 pb-0 mx-auto max-w-7xl">
-        <div class="nav-pill relative flex w-full items-center justify-between rounded-[18px] p-2 pl-6">
-          
-          <!-- Logo -->
-          <a href="/" class="flex items-center gap-2 shrink-0">
-            <span class="font-display font-semibold tracking-tight text-ink text-lg">ConversationalBI</span>
+    <div id="app">
+
+      <!-- ═══════════════ Nav ═══════════════ -->
+      <nav class="app-nav">
+        <!-- Desktop -->
+        <div class="hidden lg:flex w-full justify-center p-2 pb-0">
+          <div class="nav-pill relative flex w-full items-center justify-between rounded-[16px] p-2 pl-6 max-w-7xl">
+            <a href="/" class="flex items-center gap-2 shrink-0">
+              <span class="font-display font-semibold tracking-tight text-ink text-base">ConversationalBI</span>
+            </a>
+            <ul class="absolute left-1/2 -translate-x-1/2 flex items-center gap-1" role="menubar">
+              <li role="none"><a href="/" class="nav-item" role="menuitem">home</a></li>
+              <li role="none"><a href="/app.html?demo=true" class="nav-item" role="menuitem">demo</a></li>
+              <li role="none"><a href="/roadmap.html" class="nav-item" role="menuitem">roadmap</a></li>
+              <li role="none"><a href="https://github.com/xofranc/conversationalBI" target="_blank" rel="noopener" class="nav-item" role="menuitem">github</a></li>
+            </ul>
+            <div class="flex items-center gap-3 shrink-0">
+              <a href="/roadmap.html" class="cta-nav-primary group">
+                <span class="cta-expand bg-petrol-dark"></span>
+                <span class="cta-text">roadmap</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Mobile -->
+        <div class="lg:hidden sticky top-0 z-50 flex justify-between items-center bg-paper/95 backdrop-blur-lg p-4 border-b border-line">
+          <a href="/" class="flex items-center">
+            <span class="font-display font-semibold tracking-tight text-ink">ConversationalBI</span>
           </a>
-          
-          <!-- Nav centrado (absolute) -->
-          <ul class="absolute left-1/2 -translate-x-1/2 flex items-center gap-1" role="menubar">
-            <li role="none"><a href="/" class="nav-item" role="menuitem">home</a></li>
-            <li role="none"><a href="/app.html" class="nav-item" role="menuitem">demo</a></li>
-            <li role="none"><a href="/roadmap.html" class="nav-item" role="menuitem">roadmap</a></li>
-            <li role="none"><a href="https://github.com/xofranc/conversationalBI" target="_blank" rel="noopener" class="nav-item" role="menuitem">github</a></li>
-          </ul>
-          
-          <!-- Acciones -->
-          <div class="flex items-center gap-3 shrink-0">
-            <a href="/roadmap.html" class="cta-nav-primary group">
-              <span class="cta-expand bg-petrol-dark"></span>
-              <span class="cta-text">roadmap</span>
+          <button id="mobile-menu-btn" class="hamburger-btn preload-hide" aria-label="Abrir menú" aria-expanded="false">
+            <svg id="icon-menu" class="hamburger-icon visible" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+            <svg id="icon-close" class="hamburger-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6L6 18M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu-fullscreen" class="mobile-menu-fullscreen" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+          <button id="mobile-menu-close" class="mobile-menu-close" aria-label="Cerrar menú">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6L6 18M6 6l12 12"></path>
+            </svg>
+          </button>
+          <nav aria-label="Navegación móvil">
+            <ul class="mobile-nav-list">
+              <li><a href="/" class="mobile-nav-item"><span class="mobile-nav-number">01</span><span class="mobile-nav-label">Home</span><svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a></li>
+              <li><a href="/app.html?demo=true" class="mobile-nav-item"><span class="mobile-nav-number">02</span><span class="mobile-nav-label">Demo</span><svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a></li>
+              <li><a href="/roadmap.html" class="mobile-nav-item"><span class="mobile-nav-number">03</span><span class="mobile-nav-label">Roadmap</span><svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a></li>
+              <li><a href="https://github.com/xofranc/conversationalBI" target="_blank" rel="noopener" class="mobile-nav-item"><span class="mobile-nav-number">04</span><span class="mobile-nav-label">GitHub</span><svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a></li>
+            </ul>
+          </nav>
+          <div class="mobile-menu-social flex gap-4 mt-8">
+            <a href="https://github.com/xofranc/conversationalBI" target="_blank" rel="noopener" aria-label="GitHub">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <a href="mailto:santiagofrancco3@gmail.com" aria-label="Email">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
             </a>
           </div>
         </div>
-      </div>
+      </nav>
 
-      <!-- Mobile (<1024px) -->
-      <div class="lg:hidden sticky top-0 z-50 flex justify-between items-center bg-paper/95 backdrop-blur-lg p-4 border-b border-line">
-        <a href="/" class="flex items-center">
-          <span class="font-display font-semibold tracking-tight text-ink">ConversationalBI</span>
-        </a>
-        <button id="mobile-menu-btn" class="hamburger-btn preload-hide" aria-label="Abrir menú" aria-expanded="false">
-          <svg id="icon-menu" class="hamburger-icon visible" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-          <svg id="icon-close" class="hamburger-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 6L6 18M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
-
-      <!-- Mobile menu — circular clip-path reveal -->
-      <div id="mobile-menu-fullscreen" class="mobile-menu-fullscreen" role="dialog" aria-modal="true" aria-label="Menú de navegación">
-        <button id="mobile-menu-close" class="mobile-menu-close" aria-label="Cerrar menú">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 6L6 18M6 6l12 12"></path>
-          </svg>
-        </button>
-
-        <nav aria-label="Navegación móvil">
-          <ul class="mobile-nav-list">
-            <li>
-              <a href="/" class="mobile-nav-item">
-                <span class="mobile-nav-number">01</span>
-                <span class="mobile-nav-label">Home</span>
-                <svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M5 12h14M12 5l7 7-7 7"></path>
-                </svg>
-              </a>
-            </li>
-            <li>
-              <a href="/app.html" class="mobile-nav-item">
-                <span class="mobile-nav-number">02</span>
-                <span class="mobile-nav-label">Demo</span>
-                <svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M5 12h14M12 5l7 7-7 7"></path>
-                </svg>
-              </a>
-            </li>
-            <li>
-              <a href="/roadmap.html" class="mobile-nav-item">
-                <span class="mobile-nav-number">03</span>
-                <span class="mobile-nav-label">Roadmap</span>
-                <svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M5 12h14M12 5l7 7-7 7"></path>
-                </svg>
-              </a>
-            </li>
-            <li>
-              <a href="https://github.com/xofranc/conversationalBI" target="_blank" rel="noopener" class="mobile-nav-item">
-                <span class="mobile-nav-number">04</span>
-                <span class="mobile-nav-label">GitHub</span>
-                <svg class="mobile-nav-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M5 12h14M12 5l7 7-7 7"></path>
-                </svg>
-              </a>
-            </li>
-          </ul>
-        </nav>
-
-        <!-- Social links -->
-        <div class="mobile-menu-social flex gap-4 mt-8">
-          <a href="https://github.com/xofranc/conversationalBI" target="_blank" rel="noopener" aria-label="GitHub">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-          </a>
-          <a href="mailto:santiagofrancco3@gmail.com" aria-label="Email">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-          </a>
-        </div>
-      </div>
-    </nav>
-
-    <div id="app" class="relative w-full min-h-screen lg:min-h-0 lg:flex lg:flex-col lg:flex-1">
-
-      <!-- ═══════════════ Vista de autenticación ═══════════════ -->
-      <section id="auth-view" class="relative z-40 flex items-center justify-center bg-paper min-h-[calc(100vh-60px)]">
+      <!-- ═══════════════ Auth View ═══════════════ -->
+      <section id="auth-view" class="relative z-40 flex items-center justify-center bg-paper flex-1">
         <div class="auth-container mx-4">
           <div class="text-center mb-8">
             <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-paper rounded-full mb-4">
@@ -688,7 +817,6 @@
             <h1 class="font-display text-3xl font-semibold text-ink mb-3 tracking-tight">ConversationalBI</h1>
             <p id="auth-subtitle" class="text-ink-soft text-sm leading-relaxed">Consulta tus datos en lenguaje natural.<br>Resultados verificables al instante.</p>
           </div>
-
           <form id="login-form" class="space-y-5">
             <div>
               <label for="email" class="block text-sm font-medium text-ink mb-2">Email</label>
@@ -698,14 +826,9 @@
               <label for="password" class="block text-sm font-medium text-ink mb-2">Contraseña</label>
               <input type="password" id="password" class="auth-input" placeholder="••••••••" required>
             </div>
-            <button type="submit" class="auth-btn">
-              Entrar
-            </button>
-            <p class="text-center text-sm text-ink-soft mt-6">
-              ¿No tienes cuenta? <a href="#" id="show-register" class="text-petrol hover:text-petrol-dark font-medium transition-colors">Regístrate</a>
-            </p>
+            <button type="submit" class="auth-btn">Entrar</button>
+            <p class="text-center text-sm text-ink-soft mt-6">¿No tienes cuenta? <a href="#" id="show-register" class="text-petrol hover:text-petrol-dark font-medium transition-colors">Regístrate</a></p>
           </form>
-
           <form id="register-form" class="space-y-5 hidden">
             <div class="grid grid-cols-2 gap-4">
               <div>
@@ -725,16 +848,10 @@
               <label for="reg-password" class="block text-sm font-medium text-ink mb-2">Contraseña</label>
               <input type="password" id="reg-password" class="auth-input" placeholder="••••••••" required>
             </div>
-            <button type="submit" class="auth-btn">
-              Crear cuenta
-            </button>
-            <p class="text-center text-sm text-ink-soft mt-6">
-              ¿Ya tienes cuenta? <a href="#" id="show-login" class="text-petrol hover:text-petrol-dark font-medium transition-colors">Inicia sesión</a>
-            </p>
+            <button type="submit" class="auth-btn">Crear cuenta</button>
+            <p class="text-center text-sm text-ink-soft mt-6">¿Ya tienes cuenta? <a href="#" id="show-login" class="text-petrol hover:text-petrol-dark font-medium transition-colors">Inicia sesión</a></p>
           </form>
-
           <div id="auth-error" class="hidden text-danger text-sm text-center mt-4 p-3 bg-danger/10 rounded-lg"></div>
-
           <p class="text-center mt-8">
             <a href="/" class="font-mono text-[0.7rem] text-ink-soft hover:text-petrol transition-colors inline-flex items-center gap-2">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
@@ -744,204 +861,147 @@
         </div>
       </section>
 
-      <!-- ═══════════════ Consola ═══════════════ -->
-      <section id="dashboard-view" class="hidden opacity-0 flex flex-col lg:flex-row lg:flex-1">
+      <!-- ═══════════════ Dashboard ═══════════════ -->
+      <section id="dashboard-view" class="dashboard hidden opacity-0">
 
-        <!-- Rail de instrumentos: fuentes de datos + bitácora -->
-        <aside class="w-full lg:w-72 shrink-0 lg:h-full bg-rail text-rail-text flex flex-col lg:overflow-hidden">
-          <div class="px-5 py-5 border-b border-rail-line sidebar-section">
-            <a href="/" title="Volver a la home" class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-petrol-bright hover:text-white transition-colors inline-flex items-center gap-2 mb-2">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-              bi conversacional
-            </a>
-            <h2 class="font-display text-lg font-semibold text-white tracking-tight">ConversationalBI</h2>
-          </div>
+        <!-- Workspace: chat + report -->
+        <div class="workspace">
 
-          <div class="flex-1 overflow-y-auto custom-scrollbar min-h-0">
-            <!-- Fuentes de datos almacenadas -->
-            <div class="px-5 pt-5 sidebar-section">
-              <div class="flex items-center justify-between mb-4">
-                <div class="flex items-center gap-2">
-                  <div class="w-1.5 h-1.5 bg-teal rounded-full"></div>
-                  <h3 class="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-rail-text">Fuentes de datos</h3>
+          <!-- Chat Panel -->
+          <div class="chat-panel">
+            <div class="chat-header">
+              <div class="chat-header-left">
+                <div class="chat-header-icon">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
                 </div>
-                <span id="dataset-count" class="font-mono text-[0.6rem] text-rail-text/60 bg-rail-raise px-2 py-0.5 rounded-full">0</span>
-              </div>
-
-              <div id="drop-zone" class="upload-zone group mb-3" role="button" tabindex="0" aria-label="Subir dataset">
-                <div class="flex flex-col items-center gap-2">
-                  <div class="w-10 h-10 rounded-xl bg-rail-raise flex items-center justify-center group-hover:bg-petrol/20 transition-colors">
-                    <svg class="w-5 h-5 text-rail-text group-hover:text-petrol-bright transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                  </div>
-                  <div>
-                    <p class="font-mono text-[0.75rem] text-rail-text group-hover:text-white transition-colors font-medium">subir archivo</p>
-                    <p class="font-mono text-[0.6rem] text-rail-text/50 mt-0.5">csv · excel · json</p>
-                  </div>
+                <div>
+                  <h3>Conversación</h3>
+                  <p id="chat-dataset">sin fuente activa</p>
                 </div>
-                <input type="file" id="file-upload" class="hidden" accept=".csv,.xlsx,.json" aria-hidden="true">
               </div>
-
-              <ul id="dataset-list" class="space-y-1.5 pb-5">
-                <!-- datasets inyectados por JS -->
-              </ul>
+              <div class="chat-online" title="En línea"></div>
             </div>
 
-            <!-- Bitácora de consultas -->
-            <div class="px-5 pt-4 pb-5 border-t border-rail-line">
-              <div class="flex items-center gap-2 mb-4">
-                <div class="w-1.5 h-1.5 bg-amber rounded-full"></div>
-                <h3 class="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-rail-text">Bitácora</h3>
+            <div id="chat-messages" aria-live="polite" class="chat-messages custom-scrollbar">
+              <!-- Messages injected by JS -->
+            </div>
+
+            <div class="chat-input-area">
+              <div class="chat-input-wrapper">
+                <input type="text" id="chat-input" class="chat-input" placeholder="Escribe tu pregunta...">
+                <button id="send-btn" aria-label="Enviar" class="send-btn" disabled>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                </button>
               </div>
-              <p id="history-empty" class="font-mono text-[0.7rem] text-rail-text/50 leading-relaxed p-3 bg-rail-raise/50 rounded-lg">
-                Las consultas que hagas quedan registradas aquí.
-              </p>
-              <ul id="history-list" class="space-y-1">
-                <!-- historial inyectado por JS -->
-              </ul>
+              <p class="chat-hint">Enter para enviar</p>
             </div>
           </div>
 
-          <div class="p-4 border-t border-rail-line">
-            <button id="logout-btn" class="w-full py-2.5 font-mono text-[0.75rem] text-rail-text hover:text-white hover:bg-rail-raise transition-all rounded-lg flex items-center justify-center gap-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-              cerrar sesión
-            </button>
-          </div>
-        </aside>
+          <!-- Report Panel -->
+          <main class="report-panel custom-scrollbar">
+            <div class="report-inner">
 
-        <!-- Conversación -->
-        <section class="w-full lg:w-[26rem] shrink-0 lg:h-full bg-card border-r border-line flex flex-col h-[70vh] lg:overflow-hidden">
-          <div class="px-5 py-4 border-b border-line flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-lg bg-petrol/10 flex items-center justify-center">
-                <svg class="w-4 h-4 text-petrol" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
-              </div>
-              <div>
-                <h3 class="font-display text-sm font-semibold text-ink">Conversación</h3>
-                <p id="chat-dataset" class="font-mono text-[0.6rem] text-petrol">sin fuente activa</p>
-              </div>
-            </div>
-            <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse" title="En línea"></div>
-          </div>
-
-          <div id="chat-messages" aria-live="polite" class="flex-1 overflow-y-auto custom-scrollbar px-5 py-4 space-y-4 min-h-0">
-            <!-- Messages will be injected here -->
-          </div>
-
-          <div class="p-4 border-t border-line bg-paper/50">
-            <div class="chat-input-wrapper">
-              <input type="text" id="chat-input" class="chat-input" placeholder="Escribe tu pregunta sobre los datos...">
-              <button id="send-btn" aria-label="Enviar pregunta" class="send-btn" disabled>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-              </button>
-            </div>
-            <p class="font-mono text-[0.6rem] text-ink-soft/60 mt-2 text-center">Enter para enviar · Shift+Enter para nueva línea</p>
-          </div>
-        </section>
-
-        <!-- Informe -->
-        <main class="flex-1 lg:h-full overflow-y-auto custom-scrollbar relative bg-paper">
-          <div class="max-w-4xl mx-auto px-6 lg:px-10 py-8 min-h-full flex flex-col">
-
-            <header class="report-header">
-              <div class="flex justify-between items-center gap-2 flex-wrap mb-4">
-                <div class="flex items-center gap-2">
-                  <div class="w-1.5 h-1.5 bg-petrol rounded-full"></div>
-                  <p class="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-petrol">informe de datos</p>
-                </div>
-                <p id="masthead-dataset" class="font-mono text-[0.7rem] tracking-wider text-ink-soft bg-card px-3 py-1 rounded-full border border-line">sin fuente</p>
-              </div>
-              <div class="flex justify-between items-end flex-wrap gap-2">
-                <h1 class="font-display text-4xl font-semibold text-ink tracking-tight">Análisis conversacional</h1>
-                <p id="masthead-folio" class="font-mono text-xs text-ink-soft">—</p>
-              </div>
-            </header>
-
-            <div id="results-area" class="flex-1 flex flex-col gap-6 pb-8">
-              <!-- Empty State -->
-              <div id="empty-state" class="empty-state flex-1 flex flex-col items-center justify-center">
-                <div class="sql-illustration" aria-hidden="true">
-                  <span class="sql-keyword">SELECT</span> respuesta<br>
-                  <span class="sql-keyword">FROM</span> <span class="sql-placeholder">tus_datos</span><br>
-                  <span class="sql-keyword">WHERE</span> pregunta = <span class="sql-placeholder">'…'</span>
-                </div>
-                <h2 class="font-display text-3xl font-semibold text-ink mb-4 tracking-tight">Hazle una pregunta a tus datos</h2>
-                <p class="text-ink-soft max-w-lg mb-10 text-sm leading-relaxed">Sube un CSV, Excel o JSON en el panel de fuentes y pregunta en español. Cada respuesta llega con su recibo verificable: SQL o método estadístico, motor y tiempo.</p>
-                
-                <div class="w-full max-w-lg">
-                  <p class="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-ink-soft mb-4 text-center">prueba con</p>
-                  <div class="flex flex-wrap justify-center gap-2">
-                    <button type="button" class="example-chip" data-question="Ventas totales por ciudad">ventas totales por ciudad</button>
-                    <button type="button" class="example-chip" data-question="Top 5 productos por ingresos">top 5 productos por ingresos</button>
-                    <button type="button" class="example-chip" data-question="Dame un resumen de los datos">resumen de los datos</button>
-                    <button type="button" class="example-chip" data-question="¿Cuál es el pronóstico de ventas para los próximos meses?">pronóstico de ventas</button>
-                    <button type="button" class="example-chip" data-question="¿Hay anomalías en los montos?">anomalías en los montos</button>
-                    <button type="button" class="example-chip" data-question="¿Qué factores explican el monto?">factores del monto</button>
+              <header class="report-header">
+                <div class="flex justify-between items-center gap-2 flex-wrap mb-3">
+                  <div class="flex items-center gap-2">
+                    <div class="w-1.5 h-1.5 bg-petrol rounded-full"></div>
+                    <p class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-petrol">informe de datos</p>
                   </div>
+                  <p id="masthead-dataset" class="font-mono text-[0.65rem] tracking-wider text-ink-soft bg-card px-3 py-1 rounded-full border border-line">sin fuente</p>
                 </div>
-              </div>
-
-              <!-- Contenido del informe (oculto al inicio) -->
-              <div id="dashboard-content" class="hidden flex flex-col gap-6 w-full">
-
-                <!-- Cifras destacadas -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-                  <div class="kpi-card">
-                    <p class="kpi-label">filas</p>
-                    <p id="kpi-rows" class="kpi-value">—</p>
-                  </div>
-                  <div class="kpi-card">
-                    <p class="kpi-label">tiempo</p>
-                    <p id="kpi-time" class="kpi-value">—</p>
-                  </div>
-                  <div class="kpi-card accent">
-                    <p class="kpi-label">motor</p>
-                    <p id="kpi-source" class="kpi-value text-petrol truncate">—</p>
-                  </div>
+                <div class="flex justify-between items-end flex-wrap gap-2">
+                  <h1 class="font-display text-3xl font-semibold text-ink tracking-tight">Análisis conversacional</h1>
+                  <p id="masthead-folio" class="font-mono text-xs text-ink-soft">—</p>
                 </div>
+              </header>
 
-                <!-- Figura -->
-                <figure id="chart-container" class="bg-card border border-line rounded-2xl p-6 shadow-sm w-full hidden m-0">
-                  <figcaption class="mb-4 flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-petrol/10 flex items-center justify-center">
-                      <svg class="w-4 h-4 text-petrol" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+              <div id="results-area" class="flex-1 flex flex-col gap-5 pb-6">
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state">
+                  <div class="sql-illustration" aria-hidden="true">
+                    <span class="sql-keyword">SELECT</span> respuesta<br>
+                    <span class="sql-keyword">FROM</span> <span class="sql-placeholder">tus_datos</span><br>
+                    <span class="sql-keyword">WHERE</span> pregunta = <span class="sql-placeholder">'…'</span>
+                  </div>
+                  <h2 class="font-display text-2xl font-semibold text-ink mb-3 tracking-tight">Hazle una pregunta a tus datos</h2>
+                  <p class="text-ink-soft max-w-md mb-8 text-sm leading-relaxed">Sube un CSV, Excel o JSON y pregunta en español. Cada respuesta incluye su recibo verificable.</p>
+                  <div class="w-full max-w-md">
+                    <p class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-ink-soft mb-3 text-center">prueba con</p>
+                    <div class="flex flex-wrap justify-center gap-2">
+                      <button type="button" class="example-chip" data-question="Ventas totales por ciudad">ventas totales por ciudad</button>
+                      <button type="button" class="example-chip" data-question="Top 5 productos por ingresos">top 5 productos</button>
+                      <button type="button" class="example-chip" data-question="Dame un resumen de los datos">resumen</button>
+                      <button type="button" class="example-chip" data-question="¿Cuál es el pronóstico de ventas para los próximos meses?">pronóstico</button>
+                      <button type="button" class="example-chip" data-question="¿Hay anomalías en los montos?">anomalías</button>
+                      <button type="button" class="example-chip" data-question="¿Qué factores explican el monto?">factores</button>
                     </div>
-                    <div>
-                      <span id="figure-label" class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-petrol">fig. 1</span>
+                  </div>
+                </div>
+
+                <!-- Dashboard Content (hidden initially) -->
+                <div id="dashboard-content" class="hidden flex flex-col gap-5 w-full">
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-3 w-full">
+                    <div class="kpi-card">
+                      <p class="kpi-label">filas</p>
+                      <p id="kpi-rows" class="kpi-value">—</p>
+                    </div>
+                    <div class="kpi-card">
+                      <p class="kpi-label">tiempo</p>
+                      <p id="kpi-time" class="kpi-value">—</p>
+                    </div>
+                    <div class="kpi-card accent">
+                      <p class="kpi-label">motor</p>
+                      <p id="kpi-source" class="kpi-value text-petrol truncate">—</p>
+                    </div>
+                  </div>
+
+                  <figure id="chart-container" class="report-card w-full hidden m-0">
+                    <figcaption class="mb-3 flex items-center gap-2">
+                      <span id="figure-label" class="font-mono text-[0.55rem] tracking-[0.15em] uppercase text-petrol">fig. 1</span>
                       <p id="figure-title" class="text-sm font-medium text-ink"></p>
+                    </figcaption>
+                    <div class="h-[280px]">
+                      <canvas id="chart-1"></canvas>
                     </div>
-                  </figcaption>
-                  <div class="h-[320px]">
-                    <canvas id="chart-1"></canvas>
-                  </div>
-                </figure>
+                  </figure>
 
-                <!-- Anexo de datos -->
-                <div id="table-container" class="bg-card border border-line rounded-2xl overflow-hidden shadow-sm">
-                  <div class="px-6 py-4 border-b border-line flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-amber/10 flex items-center justify-center">
-                      <svg class="w-4 h-4 text-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                  <div id="table-container" class="report-card overflow-hidden">
+                    <div class="px-5 py-3 border-b border-line">
+                      <span class="font-mono text-[0.55rem] tracking-[0.15em] uppercase text-ink-soft">anexo</span>
+                      <p id="annex-caption" class="text-sm font-medium text-ink mt-0.5">Datos del resultado</p>
                     </div>
-                    <div>
-                      <span class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-ink-soft">anexo</span>
-                      <p id="annex-caption" class="text-sm font-medium text-ink">Datos del resultado</p>
+                    <div class="overflow-x-auto">
+                      <table class="data-table">
+                        <thead><tr id="table-head"></tr></thead>
+                        <tbody id="table-body" class="text-ink"></tbody>
+                      </table>
                     </div>
-                  </div>
-                  <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm data-table">
-                      <thead class="font-mono text-[0.65rem] tracking-wider uppercase text-ink-soft bg-paper">
-                        <tr id="table-head"></tr>
-                      </thead>
-                      <tbody id="table-body" class="text-ink">
-                      </tbody>
-                    </table>
                   </div>
                 </div>
-
               </div>
+
             </div>
+          </main>
+        </div>
+
+        <!-- Dock: datasets + upload + logout -->
+        <div class="dock" id="dock">
+          <span class="dock-label">fuentes</span>
+          <div class="dock-separator"></div>
+          <div id="drop-zone" class="dock-upload" role="button" tabindex="0" aria-label="Subir dataset">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            subir
+            <input type="file" id="file-upload" class="hidden" accept=".csv,.xlsx,.json" aria-hidden="true">
           </div>
-        </main>
+          <div id="dataset-list" class="flex items-center gap-2">
+            <!-- dataset chips injected by JS -->
+          </div>
+          <span id="dataset-count" class="font-mono text-[0.55rem] text-ink-soft/50"></span>
+          <button id="logout-btn" class="dock-logout" title="Cerrar sesión">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+            salir
+          </button>
+        </div>
       </section>
 
       <!-- Loading Overlay -->
@@ -950,7 +1010,7 @@
         <p id="loader-text" class="mt-4 text-petrol font-medium font-mono text-sm">Procesando...</p>
       </div>
 
-      <!-- Toast de notificaciones -->
+      <!-- Toast -->
       <div id="toast" role="status" class="toast hidden"></div>
     </div>
 

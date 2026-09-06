@@ -18,11 +18,11 @@ export function setupUpload() {
 
   dropZone.addEventListener("dragover", (e) => {
     e.preventDefault();
-    dropZone.classList.add("border-petrol-bright", "bg-rail-raise");
+    dropZone.classList.add("drag-over");
   });
 
   dropZone.addEventListener("dragleave", () => {
-    dropZone.classList.remove("border-petrol-bright", "bg-rail-raise");
+    dropZone.classList.remove("drag-over");
   });
 
   dropZone.addEventListener("drop", (e) => {

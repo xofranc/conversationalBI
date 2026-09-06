@@ -40,7 +40,7 @@
           
           <!-- Acciones -->
           <div class="flex items-center gap-3 shrink-0">
-            <a href="/app.html" class="cta-nav-primary group">
+            <a href="/app.html?demo=true" class="cta-nav-primary group">
               <span class="cta-expand bg-petrol-dark"></span>
               <span class="cta-text">abrir consola</span>
             </a>
@@ -151,7 +151,7 @@
               todo con trazabilidad completa.
             </p>
             <div data-landing class="flex flex-wrap items-center gap-4 mb-8">
-              <a href="/app.html" class="cta-primary px-6 py-3 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-xl transition-colors" aria-describedby="hero-heading">
+              <a href="/app.html?demo=true" class="cta-primary px-6 py-3 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-xl transition-colors" aria-describedby="hero-heading">
                 probar la demo →
               </a>
               <a href="/roadmap.html" class="font-mono text-[0.75rem] text-ink-soft hover:text-petrol transition-colors" aria-label="Ver roadmap del proyecto">
@@ -354,7 +354,7 @@
             ¿Le preguntarías a tus datos?
           </h2>
           <div>
-            <a href="/app.html" class="cta-primary inline-block px-8 py-4 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-xl transition-colors">
+            <a href="/app.html?demo=true" class="cta-primary inline-block px-8 py-4 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-xl transition-colors">
               abrir la consola →
             </a>
           </div>
@@ -572,7 +572,7 @@
       
       document.addEventListener('DOMContentLoaded', () => {
         const overlay = document.getElementById('cta-transition-overlay');
-        const ctaButtons = document.querySelectorAll('a[href="/app.html"]');
+        const ctaButtons = document.querySelectorAll('a[href="/app.html?demo=true"]');
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
         ctaButtons.forEach(btn => {
