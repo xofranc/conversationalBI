@@ -9,11 +9,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-      /* Preload */
+      /* ═══════════════ Design Tokens ═══════════════ */
+      :root {
+        --ink: #12161C;
+        --ink-soft: #5C6672;
+        --paper: #F4F1EA;
+        --card: #FFFFFF;
+        --line: #E5E2DC;
+        --petrol: #0E5E6F;
+        --petrol-dark: #0A4A57;
+        --petrol-light: #1A7A8A;
+        --amber: #C77B21;
+        --amber-light: #E89830;
+        --teal: #3E8FA3;
+        --rail-bg: #1A1E24;
+        --rail-text: #A0A8B2;
+        --rail-line: #2A2E34;
+        --rail-raise: #22262C;
+        --danger: #DC4A3F;
+      }
+
+      /* ═══════════════ Preload ═══════════════ */
       .preload-hide { opacity: 0 !important; }
       body.loaded .preload-hide { opacity: 1 !important; transition: opacity 0.3s ease; }
-      
-      /* Nav pill styles */
+
+      /* ═══════════════ Nav pill styles ═══════════════ */
       .nav-pill {
         background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(16px) saturate(180%);
@@ -31,7 +51,7 @@
         pointer-events: none;
       }
       .nav-pill:hover::after { opacity: 1; }
-      
+
       .nav-item {
         padding: 6px 14px;
         font-size: 0.8rem;
@@ -44,8 +64,386 @@
         color: #0E5E6F;
         background: rgba(14, 94, 111, 0.08);
       }
-      
-      /* CTA feedback */
+
+      /* ═══════════════ Auth View ═══════════════ */
+      .auth-container {
+        position: relative;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 48px 40px;
+        width: 100%;
+        max-width: 420px;
+        box-shadow:
+          0 1px 2px rgba(18, 22, 28, 0.04),
+          0 8px 32px rgba(18, 22, 28, 0.06);
+        overflow: hidden;
+      }
+      .auth-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--petrol), var(--teal), var(--amber));
+        border-radius: 24px 24px 0 0;
+      }
+
+      .auth-input {
+        width: 100%;
+        padding: 14px 16px;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        font-size: 0.95rem;
+        color: var(--ink);
+        transition: all 0.2s ease;
+        outline: none;
+      }
+      .auth-input:focus {
+        border-color: var(--petrol);
+        box-shadow: 0 0 0 3px rgba(14, 94, 111, 0.12);
+        background: var(--card);
+      }
+      .auth-input::placeholder {
+        color: var(--ink-soft);
+        opacity: 0.6;
+      }
+
+      .auth-btn {
+        width: 100%;
+        padding: 14px 24px;
+        background: var(--petrol);
+        color: white;
+        font-weight: 600;
+        font-size: 0.95rem;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .auth-btn:hover {
+        background: var(--petrol-dark);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(14, 94, 111, 0.25);
+      }
+      .auth-btn:active {
+        transform: translateY(0);
+        box-shadow: none;
+      }
+
+      /* ═══════════════ Sidebar ═══════════════ */
+      .sidebar-section {
+        position: relative;
+      }
+      .sidebar-section::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 20px;
+        right: 20px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--rail-line), transparent);
+      }
+
+      .dataset-item {
+        position: relative;
+        padding: 10px 14px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+      }
+      .dataset-item:hover {
+        background: var(--rail-raise);
+        border-color: var(--rail-line);
+      }
+      .dataset-item.active {
+        background: var(--petrol);
+        border-color: var(--petrol);
+        color: white;
+      }
+      .dataset-item.active .dataset-name {
+        color: white;
+      }
+      .dataset-item.active .dataset-meta {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .upload-zone {
+        position: relative;
+        border: 2px dashed var(--rail-line);
+        border-radius: 14px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: transparent;
+      }
+      .upload-zone:hover {
+        border-color: var(--petrol-light);
+        background: rgba(14, 94, 111, 0.05);
+      }
+      .upload-zone.drag-over {
+        border-color: var(--petrol);
+        background: rgba(14, 94, 111, 0.1);
+        transform: scale(1.02);
+      }
+
+      /* ═══════════════ Chat Area ═══════════════ */
+      .chat-message {
+        position: relative;
+        max-width: 85%;
+        animation: messageSlideIn 0.3s ease-out;
+      }
+      @keyframes messageSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .message-user {
+        margin-left: auto;
+        background: var(--petrol);
+        color: white;
+        border-radius: 18px 18px 4px 18px;
+        padding: 12px 18px;
+      }
+
+      .message-assistant {
+        margin-right: auto;
+        background: var(--paper);
+        color: var(--ink);
+        border-radius: 18px 18px 18px 4px;
+        padding: 14px 18px;
+        border: 1px solid var(--line);
+      }
+
+      .chat-input-wrapper {
+        position: relative;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        transition: all 0.2s ease;
+        overflow: hidden;
+      }
+      .chat-input-wrapper:focus-within {
+        border-color: var(--petrol);
+        box-shadow: 0 0 0 3px rgba(14, 94, 111, 0.1);
+        background: var(--card);
+      }
+
+      .chat-input {
+        width: 100%;
+        padding: 14px 52px 14px 18px;
+        background: transparent;
+        border: none;
+        font-size: 0.95rem;
+        color: var(--ink);
+        outline: none;
+      }
+
+      .send-btn {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: var(--petrol);
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+      }
+      .send-btn:hover {
+        background: var(--petrol-dark);
+        transform: translateY(-50%) scale(1.05);
+      }
+      .send-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        transform: translateY(-50%) scale(1);
+      }
+
+      /* ═══════════════ Report Area ═══════════════ */
+      .report-header {
+        position: relative;
+        padding-bottom: 24px;
+        margin-bottom: 32px;
+        border-bottom: 1px solid var(--line);
+      }
+      .report-header::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 80px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--petrol), var(--teal));
+      }
+
+      .kpi-card {
+        position: relative;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 24px;
+        transition: all 0.2s ease;
+        overflow: hidden;
+      }
+      .kpi-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(18, 22, 28, 0.08);
+      }
+      .kpi-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--line);
+        transition: background 0.2s ease;
+      }
+      .kpi-card:hover::before {
+        background: var(--petrol);
+      }
+      .kpi-card.accent::before {
+        background: var(--amber);
+      }
+
+      .kpi-value {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--ink);
+        letter-spacing: -0.02em;
+        line-height: 1;
+      }
+
+      .kpi-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        margin-bottom: 8px;
+      }
+
+      /* ═══════════════ Empty State ═══════════════ */
+      .empty-state {
+        position: relative;
+        padding: 64px 32px;
+        text-align: center;
+      }
+
+      .sql-illustration {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 32px;
+        padding: 24px 32px;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.75rem;
+        color: var(--ink-soft);
+        text-align: left;
+        line-height: 1.8;
+        box-shadow: 0 4px 16px rgba(18, 22, 28, 0.04);
+      }
+      .sql-illustration::before {
+        content: '';
+        position: absolute;
+        top: -8px;
+        left: 24px;
+        width: 16px;
+        height: 16px;
+        background: var(--petrol);
+        border-radius: 4px;
+        transform: rotate(45deg);
+      }
+      .sql-illustration .sql-keyword {
+        color: var(--petrol);
+        font-weight: 600;
+      }
+      .sql-illustration .sql-placeholder {
+        color: var(--amber);
+      }
+
+      /* ═══════════════ Example Chips ═══════════════ */
+      .example-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 16px;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 100px;
+        font-size: 0.85rem;
+        color: var(--ink-soft);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .example-chip:hover {
+        border-color: var(--petrol);
+        color: var(--petrol);
+        background: rgba(14, 94, 111, 0.04);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(14, 94, 111, 0.1);
+      }
+      .example-chip::before {
+        content: '→';
+        font-size: 0.75rem;
+        opacity: 0;
+        transform: translateX(-4px);
+        transition: all 0.2s ease;
+      }
+      .example-chip:hover::before {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      /* ═══════════════ Table ═══════════════ */
+      .data-table {
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+      .data-table th {
+        position: sticky;
+        top: 0;
+        background: var(--paper);
+        z-index: 10;
+      }
+      .data-table th,
+      .data-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--line);
+      }
+      .data-table tbody tr {
+        transition: background 0.15s ease;
+      }
+      .data-table tbody tr:hover {
+        background: rgba(14, 94, 111, 0.03);
+      }
+      .data-table tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      /* ═══════════════ CTA Button ═══════════════ */
       .cta-nav-primary {
         transform: scale(1);
         transition: transform 100ms ease-out;
@@ -54,13 +452,13 @@
         transform: scale(0.97);
         transition: transform 60ms ease-out;
       }
-      
-      /* CTA transition overlay */
+
+      /* ═══════════════ CTA transition overlay ═══════════════ */
       .cta-transition-overlay {
         position: fixed;
         inset: 0;
         z-index: 9999;
-        background: #0E5E6F;
+        background: var(--petrol);
         opacity: 0;
         pointer-events: none;
         will-change: clip-path, opacity;
@@ -68,8 +466,8 @@
         align-items: center;
         justify-content: center;
       }
-      
-      /* Modern preloader */
+
+      /* ═══════════════ Modern preloader ═══════════════ */
       .cta-loading {
         display: flex;
         flex-direction: column;
@@ -77,7 +475,7 @@
         gap: 24px;
         opacity: 0;
       }
-      
+
       .cta-preloader-logo {
         font-family: 'Instrument Serif', serif;
         font-size: clamp(24px, 5vw, 36px);
@@ -85,13 +483,13 @@
         letter-spacing: -0.02em;
         overflow: hidden;
       }
-      
+
       .cta-preloader-logo span {
         display: inline-block;
         opacity: 0;
         transform: translateY(100%);
       }
-      
+
       .cta-preloader-line {
         width: 60px;
         height: 2px;
@@ -100,7 +498,7 @@
         overflow: hidden;
         position: relative;
       }
-      
+
       .cta-preloader-line::after {
         content: '';
         position: absolute;
@@ -110,6 +508,62 @@
         width: 0;
         background: white;
         border-radius: 1px;
+      }
+
+      /* ═══════════════ Custom Scrollbar ═══════════════ */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: var(--line);
+        border-radius: 3px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: var(--ink-soft);
+      }
+
+      /* ═══════════════ Loading Spinner ═══════════════ */
+      .loading-spinner {
+        width: 48px;
+        height: 48px;
+        border: 3px solid var(--line);
+        border-top-color: var(--petrol);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      /* ═══════════════ Toast ═══════════════ */
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 110;
+        padding: 14px 20px;
+        background: var(--ink);
+        color: white;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        box-shadow: 0 8px 32px rgba(18, 22, 28, 0.2);
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+      .toast.visible {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      .toast.success {
+        background: var(--petrol);
+      }
+      .toast.error {
+        background: var(--danger);
       }
     </style>
   </head>
@@ -225,61 +679,67 @@
 
       <!-- ═══════════════ Vista de autenticación ═══════════════ -->
       <section id="auth-view" class="relative z-40 flex items-center justify-center bg-paper min-h-[calc(100vh-60px)]">
-        <div class="auth-container bg-card border border-line p-8 rounded-2xl w-full max-w-md mx-4 shadow-lift">
+        <div class="auth-container mx-4">
           <div class="text-center mb-8">
-            <p class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-3">// bi conversacional · local</p>
-            <h1 class="font-display text-3xl font-semibold text-ink mb-2 tracking-tight">ConversationalBI</h1>
-            <p id="auth-subtitle" class="text-ink-soft text-sm">Inicia sesión para continuar</p>
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-paper rounded-full mb-4">
+              <span class="w-2 h-2 bg-petrol rounded-full animate-pulse"></span>
+              <span class="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-petrol">sistema activo</span>
+            </div>
+            <h1 class="font-display text-3xl font-semibold text-ink mb-3 tracking-tight">ConversationalBI</h1>
+            <p id="auth-subtitle" class="text-ink-soft text-sm leading-relaxed">Consulta tus datos en lenguaje natural.<br>Resultados verificables al instante.</p>
           </div>
 
           <form id="login-form" class="space-y-5">
             <div>
-              <label for="email" class="block text-sm font-medium text-ink mb-1">Email</label>
-              <input type="email" id="email" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
+              <label for="email" class="block text-sm font-medium text-ink mb-2">Email</label>
+              <input type="email" id="email" class="auth-input" placeholder="tu@email.com" required>
             </div>
             <div>
-              <label for="password" class="block text-sm font-medium text-ink mb-1">Contraseña</label>
-              <input type="password" id="password" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
+              <label for="password" class="block text-sm font-medium text-ink mb-2">Contraseña</label>
+              <input type="password" id="password" class="auth-input" placeholder="••••••••" required>
             </div>
-            <button type="submit" class="w-full py-3 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-lg transition-colors">
+            <button type="submit" class="auth-btn">
               Entrar
             </button>
-            <p class="text-center text-sm text-ink-soft mt-4">
-              ¿No tienes cuenta? <a href="#" id="show-register" class="text-petrol hover:text-petrol-dark font-medium">Regístrate</a>
+            <p class="text-center text-sm text-ink-soft mt-6">
+              ¿No tienes cuenta? <a href="#" id="show-register" class="text-petrol hover:text-petrol-dark font-medium transition-colors">Regístrate</a>
             </p>
           </form>
 
           <form id="register-form" class="space-y-5 hidden">
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label for="reg-first-name" class="block text-sm font-medium text-ink mb-1">Nombre</label>
-                <input type="text" id="reg-first-name" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
+                <label for="reg-first-name" class="block text-sm font-medium text-ink mb-2">Nombre</label>
+                <input type="text" id="reg-first-name" class="auth-input" placeholder="Nombre" required>
               </div>
               <div>
-                <label for="reg-last-name" class="block text-sm font-medium text-ink mb-1">Apellido</label>
-                <input type="text" id="reg-last-name" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
+                <label for="reg-last-name" class="block text-sm font-medium text-ink mb-2">Apellido</label>
+                <input type="text" id="reg-last-name" class="auth-input" placeholder="Apellido" required>
               </div>
             </div>
             <div>
-              <label for="reg-email" class="block text-sm font-medium text-ink mb-1">Email</label>
-              <input type="email" id="reg-email" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
+              <label for="reg-email" class="block text-sm font-medium text-ink mb-2">Email</label>
+              <input type="email" id="reg-email" class="auth-input" placeholder="tu@email.com" required>
             </div>
             <div>
-              <label for="reg-password" class="block text-sm font-medium text-ink mb-1">Contraseña</label>
-              <input type="password" id="reg-password" class="w-full px-4 py-2.5 bg-paper border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink transition-shadow" required>
+              <label for="reg-password" class="block text-sm font-medium text-ink mb-2">Contraseña</label>
+              <input type="password" id="reg-password" class="auth-input" placeholder="••••••••" required>
             </div>
-            <button type="submit" class="w-full py-3 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-lg transition-colors">
+            <button type="submit" class="auth-btn">
               Crear cuenta
             </button>
-            <p class="text-center text-sm text-ink-soft mt-4">
-              ¿Ya tienes cuenta? <a href="#" id="show-login" class="text-petrol hover:text-petrol-dark font-medium">Inicia sesión</a>
+            <p class="text-center text-sm text-ink-soft mt-6">
+              ¿Ya tienes cuenta? <a href="#" id="show-login" class="text-petrol hover:text-petrol-dark font-medium transition-colors">Inicia sesión</a>
             </p>
           </form>
 
-          <div id="auth-error" class="hidden text-danger text-sm text-center mt-4"></div>
+          <div id="auth-error" class="hidden text-danger text-sm text-center mt-4 p-3 bg-danger/10 rounded-lg"></div>
 
-          <p class="text-center mt-6">
-            <a href="/" class="font-mono text-[0.65rem] text-ink-soft hover:text-petrol transition-colors">← volver a la home</a>
+          <p class="text-center mt-8">
+            <a href="/" class="font-mono text-[0.7rem] text-ink-soft hover:text-petrol transition-colors inline-flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+              volver a la home
+            </a>
           </p>
         </div>
       </section>
@@ -289,24 +749,35 @@
 
         <!-- Rail de instrumentos: fuentes de datos + bitácora -->
         <aside class="w-full lg:w-72 shrink-0 lg:h-full bg-rail text-rail-text flex flex-col lg:overflow-hidden">
-          <div class="px-5 py-5 border-b border-rail-line">
-            <a href="/" title="Volver a la home" class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-petrol-bright hover:text-white transition-colors">// bi conversacional</a>
+          <div class="px-5 py-5 border-b border-rail-line sidebar-section">
+            <a href="/" title="Volver a la home" class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-petrol-bright hover:text-white transition-colors inline-flex items-center gap-2 mb-2">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+              bi conversacional
+            </a>
             <h2 class="font-display text-lg font-semibold text-white tracking-tight">ConversationalBI</h2>
           </div>
 
           <div class="flex-1 overflow-y-auto custom-scrollbar min-h-0">
             <!-- Fuentes de datos almacenadas -->
-            <div class="px-5 pt-5">
-              <div class="flex items-baseline justify-between mb-3">
-                <h3 class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-rail-text">Fuentes de datos</h3>
-                <span id="dataset-count" class="font-mono text-[0.6rem] text-rail-text/60">0</span>
+            <div class="px-5 pt-5 sidebar-section">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <div class="w-1.5 h-1.5 bg-teal rounded-full"></div>
+                  <h3 class="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-rail-text">Fuentes de datos</h3>
+                </div>
+                <span id="dataset-count" class="font-mono text-[0.6rem] text-rail-text/60 bg-rail-raise px-2 py-0.5 rounded-full">0</span>
               </div>
 
-              <div id="drop-zone" role="button" tabindex="0" aria-label="Subir dataset" class="border border-dashed border-rail-line rounded-lg px-4 py-3.5 text-center hover:border-petrol-bright hover:bg-rail-raise transition-colors cursor-pointer group mb-3">
-                <p class="font-mono text-[0.7rem] text-rail-text group-hover:text-white transition-colors">
-                  <span class="text-petrol-bright">+</span> subir archivo
-                </p>
-                <p class="font-mono text-[0.6rem] text-rail-text/50 mt-0.5">csv · excel · json</p>
+              <div id="drop-zone" class="upload-zone group mb-3" role="button" tabindex="0" aria-label="Subir dataset">
+                <div class="flex flex-col items-center gap-2">
+                  <div class="w-10 h-10 rounded-xl bg-rail-raise flex items-center justify-center group-hover:bg-petrol/20 transition-colors">
+                    <svg class="w-5 h-5 text-rail-text group-hover:text-petrol-bright transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                  </div>
+                  <div>
+                    <p class="font-mono text-[0.75rem] text-rail-text group-hover:text-white transition-colors font-medium">subir archivo</p>
+                    <p class="font-mono text-[0.6rem] text-rail-text/50 mt-0.5">csv · excel · json</p>
+                  </div>
+                </div>
                 <input type="file" id="file-upload" class="hidden" accept=".csv,.xlsx,.json" aria-hidden="true">
               </div>
 
@@ -317,8 +788,11 @@
 
             <!-- Bitácora de consultas -->
             <div class="px-5 pt-4 pb-5 border-t border-rail-line">
-              <h3 class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-rail-text mb-3">Bitácora</h3>
-              <p id="history-empty" class="font-mono text-[0.65rem] text-rail-text/50 leading-relaxed">
+              <div class="flex items-center gap-2 mb-4">
+                <div class="w-1.5 h-1.5 bg-amber rounded-full"></div>
+                <h3 class="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-rail-text">Bitácora</h3>
+              </div>
+              <p id="history-empty" class="font-mono text-[0.7rem] text-rail-text/50 leading-relaxed p-3 bg-rail-raise/50 rounded-lg">
                 Las consultas que hagas quedan registradas aquí.
               </p>
               <ul id="history-list" class="space-y-1">
@@ -328,42 +802,54 @@
           </div>
 
           <div class="p-4 border-t border-rail-line">
-            <button id="logout-btn" class="w-full py-2 font-mono text-[0.7rem] text-rail-text hover:text-white transition-colors flex items-center justify-center gap-2">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-              salir
+            <button id="logout-btn" class="w-full py-2.5 font-mono text-[0.75rem] text-rail-text hover:text-white hover:bg-rail-raise transition-all rounded-lg flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+              cerrar sesión
             </button>
           </div>
         </aside>
 
         <!-- Conversación -->
         <section class="w-full lg:w-[26rem] shrink-0 lg:h-full bg-card border-r border-line flex flex-col h-[70vh] lg:overflow-hidden">
-          <div class="px-5 py-4 border-b border-line flex items-baseline justify-between">
-            <h3 class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-ink-soft">Conversación</h3>
-            <span id="chat-dataset" class="font-mono text-[0.6rem] text-petrol truncate max-w-[55%]">sin fuente activa</span>
+          <div class="px-5 py-4 border-b border-line flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-petrol/10 flex items-center justify-center">
+                <svg class="w-4 h-4 text-petrol" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+              </div>
+              <div>
+                <h3 class="font-display text-sm font-semibold text-ink">Conversación</h3>
+                <p id="chat-dataset" class="font-mono text-[0.6rem] text-petrol">sin fuente activa</p>
+              </div>
+            </div>
+            <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse" title="En línea"></div>
           </div>
 
           <div id="chat-messages" aria-live="polite" class="flex-1 overflow-y-auto custom-scrollbar px-5 py-4 space-y-4 min-h-0">
             <!-- Messages will be injected here -->
           </div>
 
-          <div class="p-4 border-t border-line">
-            <div class="relative">
-              <input type="text" id="chat-input" class="w-full px-4 py-3 bg-paper border border-line rounded-xl focus:outline-none focus:ring-2 focus:ring-petrol/40 focus:border-petrol text-ink pr-12 transition-shadow" placeholder="Pregunta sobre tus datos...">
-              <button id="send-btn" aria-label="Enviar pregunta" class="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-petrol hover:text-petrol-dark disabled:opacity-40 disabled:cursor-not-allowed">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+          <div class="p-4 border-t border-line bg-paper/50">
+            <div class="chat-input-wrapper">
+              <input type="text" id="chat-input" class="chat-input" placeholder="Escribe tu pregunta sobre los datos...">
+              <button id="send-btn" aria-label="Enviar pregunta" class="send-btn" disabled>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
               </button>
             </div>
+            <p class="font-mono text-[0.6rem] text-ink-soft/60 mt-2 text-center">Enter para enviar · Shift+Enter para nueva línea</p>
           </div>
         </section>
 
         <!-- Informe -->
-        <main class="flex-1 lg:h-full overflow-y-auto custom-scrollbar relative">
+        <main class="flex-1 lg:h-full overflow-y-auto custom-scrollbar relative bg-paper">
           <div class="max-w-4xl mx-auto px-6 lg:px-10 py-8 min-h-full flex flex-col">
 
-            <header class="mb-8 pb-6 border-b border-line">
-              <div class="flex justify-between items-baseline gap-2 flex-wrap mb-3">
-                <p class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-petrol">// informe de datos</p>
-                <p id="masthead-dataset" class="font-mono text-[0.65rem] tracking-wider text-ink-soft">sin fuente</p>
+            <header class="report-header">
+              <div class="flex justify-between items-center gap-2 flex-wrap mb-4">
+                <div class="flex items-center gap-2">
+                  <div class="w-1.5 h-1.5 bg-petrol rounded-full"></div>
+                  <p class="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-petrol">informe de datos</p>
+                </div>
+                <p id="masthead-dataset" class="font-mono text-[0.7rem] tracking-wider text-ink-soft bg-card px-3 py-1 rounded-full border border-line">sin fuente</p>
               </div>
               <div class="flex justify-between items-end flex-wrap gap-2">
                 <h1 class="font-display text-4xl font-semibold text-ink tracking-tight">Análisis conversacional</h1>
@@ -373,24 +859,25 @@
 
             <div id="results-area" class="flex-1 flex flex-col gap-6 pb-8">
               <!-- Empty State -->
-              <div id="empty-state" class="flex-1 flex flex-col items-center justify-center text-center py-10">
-                <div class="font-mono text-[0.65rem] text-ink-soft/60 mb-6 select-none" aria-hidden="true">
-                  <pre class="inline-block text-left leading-snug">┌──────────────────────────┐
-│  SELECT respuesta        │
-│  FROM   tus_datos        │
-│  WHERE  pregunta = '…'   │
-└──────────────────────────┘</pre>
+              <div id="empty-state" class="empty-state flex-1 flex flex-col items-center justify-center">
+                <div class="sql-illustration" aria-hidden="true">
+                  <span class="sql-keyword">SELECT</span> respuesta<br>
+                  <span class="sql-keyword">FROM</span> <span class="sql-placeholder">tus_datos</span><br>
+                  <span class="sql-keyword">WHERE</span> pregunta = <span class="sql-placeholder">'…'</span>
                 </div>
-                <h2 class="font-display text-3xl font-semibold text-ink mb-3 tracking-tight">Hazle una pregunta a tus datos</h2>
-                <p class="text-ink-soft max-w-md mb-8 text-sm leading-relaxed">Sube un CSV, Excel o JSON en el panel de fuentes y pregunta en español. Cada respuesta llega con su recibo verificable: SQL o método estadístico, motor y tiempo.</p>
-                <p class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-ink-soft mb-3">prueba con</p>
-                <div class="flex flex-wrap justify-center gap-2 max-w-md">
-                  <button type="button" class="example-chip" data-question="Ventas totales por ciudad">ventas totales por ciudad</button>
-                  <button type="button" class="example-chip" data-question="Top 5 productos por ingresos">top 5 productos por ingresos</button>
-                  <button type="button" class="example-chip" data-question="Dame un resumen de los datos">resumen de los datos</button>
-                  <button type="button" class="example-chip" data-question="¿Cuál es el pronóstico de ventas para los próximos meses?">pronóstico de ventas</button>
-                  <button type="button" class="example-chip" data-question="¿Hay anomalías en los montos?">anomalías en los montos</button>
-                  <button type="button" class="example-chip" data-question="¿Qué factores explican el monto?">factores del monto</button>
+                <h2 class="font-display text-3xl font-semibold text-ink mb-4 tracking-tight">Hazle una pregunta a tus datos</h2>
+                <p class="text-ink-soft max-w-lg mb-10 text-sm leading-relaxed">Sube un CSV, Excel o JSON en el panel de fuentes y pregunta en español. Cada respuesta llega con su recibo verificable: SQL o método estadístico, motor y tiempo.</p>
+                
+                <div class="w-full max-w-lg">
+                  <p class="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-ink-soft mb-4 text-center">prueba con</p>
+                  <div class="flex flex-wrap justify-center gap-2">
+                    <button type="button" class="example-chip" data-question="Ventas totales por ciudad">ventas totales por ciudad</button>
+                    <button type="button" class="example-chip" data-question="Top 5 productos por ingresos">top 5 productos por ingresos</button>
+                    <button type="button" class="example-chip" data-question="Dame un resumen de los datos">resumen de los datos</button>
+                    <button type="button" class="example-chip" data-question="¿Cuál es el pronóstico de ventas para los próximos meses?">pronóstico de ventas</button>
+                    <button type="button" class="example-chip" data-question="¿Hay anomalías en los montos?">anomalías en los montos</button>
+                    <button type="button" class="example-chip" data-question="¿Qué factores explican el monto?">factores del monto</button>
+                  </div>
                 </div>
               </div>
 
@@ -399,25 +886,30 @@
 
                 <!-- Cifras destacadas -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-                  <div class="bg-card border border-line rounded-xl p-5 shadow-card">
-                    <span class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-ink-soft">filas</span>
-                    <p id="kpi-rows" class="text-3xl font-semibold text-ink mt-1 font-mono tabular-nums">—</p>
+                  <div class="kpi-card">
+                    <p class="kpi-label">filas</p>
+                    <p id="kpi-rows" class="kpi-value">—</p>
                   </div>
-                  <div class="bg-card border border-line rounded-xl p-5 shadow-card">
-                    <span class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-ink-soft">tiempo</span>
-                    <p id="kpi-time" class="text-3xl font-semibold text-ink mt-1 font-mono tabular-nums">—</p>
+                  <div class="kpi-card">
+                    <p class="kpi-label">tiempo</p>
+                    <p id="kpi-time" class="kpi-value">—</p>
                   </div>
-                  <div class="bg-card border border-line rounded-xl p-5 shadow-card border-l-2 border-l-petrol">
-                    <span class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-ink-soft">motor</span>
-                    <p id="kpi-source" class="text-2xl font-semibold text-petrol mt-1 font-mono truncate">—</p>
+                  <div class="kpi-card accent">
+                    <p class="kpi-label">motor</p>
+                    <p id="kpi-source" class="kpi-value text-petrol truncate">—</p>
                   </div>
                 </div>
 
                 <!-- Figura -->
-                <figure id="chart-container" class="bg-card border border-line rounded-xl p-6 shadow-card w-full hidden m-0">
-                  <figcaption class="mb-4">
-                    <span id="figure-label" class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-petrol">fig. 1</span>
-                    <p id="figure-title" class="text-sm font-medium text-ink mt-1"></p>
+                <figure id="chart-container" class="bg-card border border-line rounded-2xl p-6 shadow-sm w-full hidden m-0">
+                  <figcaption class="mb-4 flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-petrol/10 flex items-center justify-center">
+                      <svg class="w-4 h-4 text-petrol" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    </div>
+                    <div>
+                      <span id="figure-label" class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-petrol">fig. 1</span>
+                      <p id="figure-title" class="text-sm font-medium text-ink"></p>
+                    </div>
                   </figcaption>
                   <div class="h-[320px]">
                     <canvas id="chart-1"></canvas>
@@ -425,17 +917,22 @@
                 </figure>
 
                 <!-- Anexo de datos -->
-                <div id="table-container" class="bg-card border border-line rounded-xl overflow-hidden shadow-card">
-                  <div class="px-6 py-4 border-b border-line">
-                    <span class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-ink-soft">anexo</span>
-                    <p id="annex-caption" class="text-sm font-medium text-ink mt-0.5">Datos del resultado</p>
+                <div id="table-container" class="bg-card border border-line rounded-2xl overflow-hidden shadow-sm">
+                  <div class="px-6 py-4 border-b border-line flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-amber/10 flex items-center justify-center">
+                      <svg class="w-4 h-4 text-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <div>
+                      <span class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-ink-soft">anexo</span>
+                      <p id="annex-caption" class="text-sm font-medium text-ink">Datos del resultado</p>
+                    </div>
                   </div>
                   <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                      <thead class="font-mono text-[0.6rem] tracking-wider uppercase text-ink-soft bg-paper">
+                    <table class="w-full text-left text-sm data-table">
+                      <thead class="font-mono text-[0.65rem] tracking-wider uppercase text-ink-soft bg-paper">
                         <tr id="table-head"></tr>
                       </thead>
-                      <tbody id="table-body" class="divide-y divide-line text-ink">
+                      <tbody id="table-body" class="text-ink">
                       </tbody>
                     </table>
                   </div>
@@ -449,12 +946,12 @@
 
       <!-- Loading Overlay -->
       <div id="global-loader" class="fixed inset-0 z-[100] bg-paper/90 backdrop-blur-sm flex flex-col items-center justify-center hidden opacity-0">
-        <div class="w-14 h-14 border-4 border-line border-t-petrol rounded-full animate-spin"></div>
+        <div class="loading-spinner"></div>
         <p id="loader-text" class="mt-4 text-petrol font-medium font-mono text-sm">Procesando...</p>
       </div>
 
       <!-- Toast de notificaciones -->
-      <div id="toast" role="status" class="fixed bottom-6 right-6 z-[110] hidden max-w-sm px-4 py-3 rounded-xl text-sm font-medium shadow-lift"></div>
+      <div id="toast" role="status" class="toast hidden"></div>
     </div>
 
     <!-- CTA transition overlay -->
