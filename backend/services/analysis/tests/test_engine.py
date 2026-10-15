@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from apps.queries.domain.policies import AnalysisLimits
+from apps.queries.infrastructure.analysis import engine as pandas_engine
 from services.analysis import engine
 
 
@@ -252,3 +254,20 @@ class TestDispatcher:
     def test_tipo_desconocido_lanza_error(self):
         with pytest.raises(engine.AnalysisError, match='no soportado'):
             engine.run('magia', {}, 'pregunta')
+
+
+def test_pandas_engine_consumes_injected_dtype_inference_and_domain_anomaly_limit():
+    frame = pd.DataFrame({"amount": [10.0] * 19 + [900.0]})
+
+    def infer_dtype(series):
+        return "float" if pd.api.types.is_numeric_dtype(series) else "str"
+
+    result = pandas_engine.anomaly(
+        {"sales": frame},
+        "find anomalies",
+        infer_dtype=infer_dtype,
+        limits=AnalysisLimits(max_anomalies=1),
+    )
+
+    assert len(result["rows"]) == 1
+    assert result["rows"][0]["amount"] == 900.0

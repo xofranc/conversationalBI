@@ -1,7 +1,5 @@
-from django.urls import path
+"""Compatibility URLconf; the external composition root injects dependencies."""
 
-from .views.profile import ProfileView
+from config.composition import build_user_urlpatterns
 
-urlpatterns = [
-    path("profile/", ProfileView.as_view(), name="profile"),
-]
+urlpatterns = build_user_urlpatterns()

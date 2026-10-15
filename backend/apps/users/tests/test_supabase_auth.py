@@ -7,7 +7,8 @@ from django.conf import settings
 from jwcrypto import jwk, jwt
 from rest_framework import status
 
-from apps.users.authentication import SupabaseAuth
+from apps.users.infrastructure.adapters import SupabaseAuthenticator
+from apps.users.infrastructure.authentication import SupabaseAuth
 
 
 @pytest.fixture
@@ -37,13 +38,14 @@ def valid_supabase_token(monkeypatch):
             return json.dumps(jwks)
 
     monkeypatch.setattr(
-        "apps.users.authentication.requests.get",
+        "apps.users.infrastructure.adapters.requests.get",
         lambda url, timeout=None: FakeResponse(),
     )
 
     # 4. Forzar una URL de Supabase de prueba y limpiar caché de JWKS
     monkeypatch.setattr(settings, "SUPABASE_URL", "https://test-project.supabase.co")
     SupabaseAuth._jwks_cache = None
+    SupabaseAuthenticator._jwks_cache = None
 
     # 5. Generar un JWT firmado con la clave privada de prueba
     now = datetime.now(timezone.utc)
@@ -63,11 +65,18 @@ def valid_supabase_token(monkeypatch):
         claims=claims,
     )
     token.make_signed_token(key)
-    return token.serialize()
+    yield token.serialize()
+    SupabaseAuth._jwks_cache = None
+    SupabaseAuthenticator._jwks_cache = None
 
 
 @pytest.mark.django_db
 class TestSupabaseAuth:
+    def test_settings_use_infrastructure_authentication_adapter(self):
+        assert "apps.users.infrastructure.authentication.SupabaseAuth" in (
+            settings.REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"]
+        )
+
     def test_token_valido_crea_usuario(self, api_client, valid_supabase_token):
         response = api_client.get(
             "/api/v1/users/profile/",

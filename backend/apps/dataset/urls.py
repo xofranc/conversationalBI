@@ -1,10 +1,5 @@
-from rest_framework.routers import DefaultRouter
-from django.urls import include, path
-from .views import DatasetViewSet
+"""Compatibility URLconf; the external composition root injects dependencies."""
 
-router = DefaultRouter()
-router.register(r'', DatasetViewSet, basename='dataset')  # r'' evita el prefijo doble
+from config.composition import build_dataset_urlpatterns
 
-urlpatterns = [
-    path('', include(router.urls)),
-]
+urlpatterns = build_dataset_urlpatterns()

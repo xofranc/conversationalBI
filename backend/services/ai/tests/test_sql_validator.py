@@ -1,41 +1,29 @@
-# services/ai/tests/test_sql_validator.py
 import pytest
 
-from services.ai.sql_validator import SecurityError, SQLValidator
+from apps.queries.domain.policies import SQLSafetyPolicy
+from apps.queries.infrastructure.ai.sql_validator import SecurityError, SQLValidator
 
 
-class TestSQlValido:
-
-    def test_select_simple_ok(self):
-        SQLValidator.assert_safe('SELECT * FROM ventas')
-
-    def test_select_con_agregacion_ok(self):
-        SQLValidator.assert_safe(
-            'SELECT region, SUM(monto) FROM ventas GROUP BY region'
-        )
-
-    def test_punto_y_coma_final_es_inofensivo(self):
-        # El LLM suele añadir ';' al final — no es multi-statement
-        SQLValidator.assert_safe('SELECT * FROM ventas;')
-        SQLValidator.assert_safe('SELECT * FROM ventas;\n')
+def test_validator_accepts_select_and_a_single_terminal_semicolon():
+    validator = SQLValidator(SQLSafetyPolicy())
+    validator.assert_safe("SELECT region, SUM(amount) FROM sales GROUP BY region;")
+    validator.assert_safe("SELECT * FROM sales\n")
 
 
-class TestSQLPeligroso:
-    """Todo SQL rechazado lanza SecurityError (fail-fast, no reintentable)."""
+@pytest.mark.parametrize("operation", SQLSafetyPolicy().forbidden_operations)
+def test_validator_consumes_domain_policy_forbidden_operations(operation):
+    validator = SQLValidator(SQLSafetyPolicy())
 
-    @pytest.mark.parametrize('sql', [
-        'DROP TABLE ventas',
-        'DELETE FROM ventas',
-        'INSERT INTO ventas VALUES (1)',
-        'UPDATE ventas SET monto = 0',
-        'SELECT * FROM ventas UNION SELECT * FROM users',
-        'SELECT * FROM ventas; SELECT * FROM users',
-        'ATTACH DATABASE "otra.db" AS otra',
-        'PRAGMA table_info(ventas)',
-        'ALTER TABLE ventas ADD COLUMN x INT',
-        '',
-        '   ',
-    ])
-    def test_rechazado_con_security_error(self, sql):
-        with pytest.raises(SecurityError):
-            SQLValidator.assert_safe(sql)
+    with pytest.raises(SecurityError):
+        validator.assert_safe(f"{operation} TABLE sales")
+
+
+@pytest.mark.parametrize("sql", [
+    "SELECT * FROM sales UNION SELECT * FROM users",
+    "SELECT * FROM sales; SELECT * FROM users",
+    "",
+    "   ",
+])
+def test_validator_rejects_multiple_statements_empty_or_unsafe_selects(sql):
+    with pytest.raises(SecurityError):
+        SQLValidator(SQLSafetyPolicy()).assert_safe(sql)

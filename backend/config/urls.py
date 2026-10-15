@@ -18,18 +18,22 @@ from django.contrib import admin
 from django.http import JsonResponse
 from django.urls import include, path
 
+from .composition import build_interface_urlpatterns
+
 
 def health(_request):
     """Health check para Render (healthCheckPath) y el ping anti cold-start."""
     return JsonResponse({'status': 'ok'})
 
 
+interface_urlpatterns = build_interface_urlpatterns()
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/health/', health),
-    path('api/v1/project-status/', include('apps.project_status.urls')),
-    path('api/v1/users/', include('apps.users.urls')),
-    path('api/v1/dataset/', include('apps.dataset.urls')),
-    path('api/v1/queries/', include('apps.queries.urls')),
-    path('api/v1/core/', include('apps.core.urls')),
+    path('api/v1/project-status/', include(interface_urlpatterns['project_status'])),
+    path('api/v1/users/', include(interface_urlpatterns['users'])),
+    path('api/v1/dataset/', include(interface_urlpatterns['dataset'])),
+    path('api/v1/queries/', include(interface_urlpatterns['queries'])),
+    path('api/v1/core/', include(interface_urlpatterns['core'])),
 ]

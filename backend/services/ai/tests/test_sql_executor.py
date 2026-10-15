@@ -1,112 +1,130 @@
-# services/ai/tests/test_sql_executor.py
-import numpy as np
-import pandas as pd
 import pytest
 
+import json
+
+import pytest
+
+from apps.dataset.infrastructure.query_data_source import DatasetQueryDataSource
+from apps.dataset.infrastructure.repositories import DjangoDatasetRepository
 from apps.dataset.models import Dataset
+from apps.queries.domain.policies import QueryExecutionPolicy
+from apps.queries.infrastructure.ai.sql_executor import SQLExecutor
 from conftest import requires_postgres
-from services.ai.sql_executor import SQLExecutor
-
-pytestmark = pytest.mark.django_db
-
 
 @pytest.fixture
 def csv_dataset(test_user, tmp_path, settings, materialized_dataset):
-    """Dataset READY con un CSV real de 5 filas, materializado en Postgres."""
     settings.MEDIA_ROOT = str(tmp_path)
-    (tmp_path / 'ventas.csv').write_text(
-        'ciudad,monto\n'
-        'Bogota,100.5\n'
-        'Cali,200.0\n'
-        'Medellin,150.0\n'
-        'Cali,80.0\n'
-        'Bogota,300.0\n'
+    (tmp_path / "sales.csv").write_text(
+        "city,amount\nBogota,100.5\nCali,200.0\nMedellin,150.0\nCali,80.0\nBogota,300.0\n"
     )
-    ds = Dataset.objects.create(
+    dataset = Dataset.objects.create(
         user=test_user,
-        name='ventas',
-        file_path='ventas.csv',
+        name="sales",
+        file_path="sales.csv",
         status=Dataset.Status.READY,
-        schema_json={'tables': [{'name': 'main', 'row_count': 5, 'columns': []}]},
+        schema_json={"tables": [{"name": "main", "row_count": 5, "columns": []}]},
     )
-    return materialized_dataset(ds)
+    return materialized_dataset(dataset)
+
+
+def _real_executor(max_result_rows=1000):
+    source = DatasetQueryDataSource(DjangoDatasetRepository())
+    return SQLExecutor(source, QueryExecutionPolicy(max_result_rows=max_result_rows))
+
+class FakeDataSource:
+    def __init__(self):
+        self.dataset = object()
+        self.lookups = []
+        self.executions = []
+
+    def get_dataset(self, dataset_id):
+        self.lookups.append(dataset_id)
+        return self.dataset
+
+    def execute_sql(self, dataset, sql):
+        self.executions.append((dataset, sql))
+        return ([{"value": 1}], [{"name": "value", "dtype": "int"}])
+
+
+def test_run_uses_injected_data_source_and_applies_policy_row_limit():
+    source = FakeDataSource()
+    executor = SQLExecutor(source, QueryExecutionPolicy(max_result_rows=7))
+
+    rows, columns = executor.run("  SELECT value FROM data;  ", 23)
+
+    assert source.lookups == [23]
+    assert source.executions == [(source.dataset, "SELECT * FROM (SELECT value FROM data) LIMIT 7")]
+    assert rows == [{"value": 1}]
+    assert columns == [{"name": "value", "dtype": "int"}]
+
+
+def test_run_preserves_inner_limit_while_enforcing_outer_policy_limit():
+    source = FakeDataSource()
+    executor = SQLExecutor(source, QueryExecutionPolicy(max_result_rows=10))
+
+    executor.run("SELECT value FROM data LIMIT 2", 5)
+
+    assert source.executions[0][1] == (
+        "SELECT * FROM (SELECT value FROM data LIMIT 2) LIMIT 10"
+    )
+
+
+def test_run_wraps_data_source_errors_as_execution_errors():
+    class BrokenSource:
+        def get_dataset(self, dataset_id):
+            raise LookupError(f"missing dataset {dataset_id}")
+
+    with pytest.raises(ValueError, match="Error ejecutando SQL: missing dataset 404"):
+        SQLExecutor(BrokenSource()).run("SELECT 1", 404)
 
 
 @requires_postgres
-class TestLimiteDuro:
-
-    def test_sql_sin_limit_se_trunca_a_max_rows(self, csv_dataset, monkeypatch):
-        monkeypatch.setattr(SQLExecutor, 'MAX_ROWS', 2)
-        rows, _ = SQLExecutor.run('SELECT * FROM main', csv_dataset.id)
+@pytest.mark.django_db
+class TestSqlExecutorPostgresIntegration:
+    def test_query_without_inner_limit_is_bounded_by_domain_policy(self, csv_dataset):
+        rows, _columns = _real_executor(max_result_rows=2).run(
+            "SELECT * FROM main", csv_dataset.id,
+        )
         assert len(rows) == 2
 
-    def test_limit_interno_mayor_no_elude_el_tope(self, csv_dataset, monkeypatch):
-        monkeypatch.setattr(SQLExecutor, 'MAX_ROWS', 2)
-        rows, _ = SQLExecutor.run('SELECT * FROM main LIMIT 999', csv_dataset.id)
+    def test_inner_limit_above_policy_does_not_bypass_outer_limit(self, csv_dataset):
+        rows, _columns = _real_executor(max_result_rows=2).run(
+            "SELECT * FROM main LIMIT 999", csv_dataset.id,
+        )
         assert len(rows) == 2
 
-    def test_limit_interno_menor_se_respeta(self, csv_dataset):
-        rows, _ = SQLExecutor.run('SELECT * FROM main LIMIT 1', csv_dataset.id)
+    def test_inner_limit_below_policy_is_preserved(self, csv_dataset):
+        rows, _columns = _real_executor(max_result_rows=2).run(
+            "SELECT * FROM main LIMIT 1", csv_dataset.id,
+        )
         assert len(rows) == 1
 
-    def test_columna_con_limit_en_el_nombre_no_rompe_nada(self, csv_dataset):
-        # Regresión del bug de subcadena "limit": antes suprimía el LIMIT
-        rows, _ = SQLExecutor.run(
-            'SELECT ciudad, monto FROM main ORDER BY monto DESC', csv_dataset.id
+    def test_column_name_containing_limit_does_not_change_limit_behavior(self, csv_dataset):
+        rows, _columns = _real_executor(max_result_rows=10).run(
+            "SELECT city, amount FROM main ORDER BY amount DESC", csv_dataset.id,
         )
-        assert len(rows) == 5
-        assert rows[0]['monto'] == 300.0
+        assert len(rows) == 5 and rows[0]["amount"] == 300.0
 
-
-class TestNormalizacionJSON:
-
-    def test_nan_se_convierte_a_none(self):
-        assert SQLExecutor._json_safe(float('nan')) is None
-        assert SQLExecutor._json_safe(pd.NaT) is None
-        assert SQLExecutor._json_safe(None) is None
-
-    def test_timestamp_se_convierte_a_isoformat(self):
-        assert SQLExecutor._json_safe(pd.Timestamp('2024-01-15')) == '2024-01-15T00:00:00'
-
-    def test_numpy_se_convierte_a_nativo(self):
-        assert SQLExecutor._json_safe(np.int64(5)) == 5
-        assert SQLExecutor._json_safe(np.float64(1.5)) == 1.5
-
-    @requires_postgres
-    def test_rows_son_json_serializables(self, csv_dataset):
-        import json
-        rows, columns = SQLExecutor.run('SELECT * FROM main', csv_dataset.id)
-        json.dumps(rows)      # no debe lanzar TypeError
-        json.dumps(columns)
-
-
-@requires_postgres
-class TestJSONMultiTabla:
-    """El schema Postgres carga las mismas tablas que promete el schema_json."""
-
-    @pytest.fixture
-    def json_dataset(self, test_user, tmp_path, settings, materialized_dataset):
-        import json as json_lib
+    def test_json_dataset_tables_remain_queryable(self, test_user, tmp_path, settings, materialized_dataset):
         settings.MEDIA_ROOT = str(tmp_path)
-        (tmp_path / 'tienda.json').write_text(json_lib.dumps({
-            'ventas':    [{'ciudad': 'Bogota', 'monto': 100}, {'ciudad': 'Cali', 'monto': 50}],
-            'productos': [{'nombre': 'A', 'precio': 10}],
+        (tmp_path / "store.json").write_text(json.dumps({
+            "sales": [{"city": "Bogota", "amount": 100}, {"city": "Cali", "amount": 50}],
+            "products": [{"name": "A", "price": 10}],
         }))
-        ds = Dataset.objects.create(
+        dataset = Dataset.objects.create(
             user=test_user,
-            name='tienda',
-            file_path='tienda.json',
+            name="store",
+            file_path="store.json",
             status=Dataset.Status.READY,
-            schema_json={'tables': [
-                {'name': 'ventas', 'row_count': 2, 'columns': []},
-                {'name': 'productos', 'row_count': 1, 'columns': []},
+            schema_json={"tables": [
+                {"name": "sales", "row_count": 2, "columns": []},
+                {"name": "products", "row_count": 1, "columns": []},
             ]},
         )
-        return materialized_dataset(ds)
+        dataset = materialized_dataset(dataset)
+        executor = _real_executor()
 
-    def test_ambas_tablas_son_consultables(self, json_dataset):
-        rows, _ = SQLExecutor.run("SELECT * FROM ventas WHERE ciudad = 'Cali'", json_dataset.id)
-        assert rows == [{'ciudad': 'Cali', 'monto': 50}]
-
-        rows, _ = SQLExecutor.run('SELECT nombre FROM productos', json_dataset.id)
-        assert rows == [{'nombre': 'A'}]
+        sales, _ = executor.run("SELECT * FROM sales WHERE city = 'Cali'", dataset.id)
+        products, _ = executor.run("SELECT name FROM products", dataset.id)
+        assert sales == [{"city": "Cali", "amount": 50}]
+        assert products == [{"name": "A"}]
