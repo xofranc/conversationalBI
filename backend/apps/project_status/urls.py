@@ -1,7 +1,5 @@
-from django.urls import path
+"""Compatibility URLconf; the external composition root injects dependencies."""
 
-from .views import project_status
+from config.composition import build_project_status_urlpatterns
 
-urlpatterns = [
-    path('', project_status, name='project-status'),
-]
+urlpatterns = build_project_status_urlpatterns()

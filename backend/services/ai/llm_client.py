@@ -1,40 +1,5 @@
-from openai import BadRequestError, OpenAI
-from django.conf import settings
+"""Legacy import shim for the queries AI LLM client."""
 
+from apps.queries.infrastructure.ai.llm_client import LLMClient
 
-class LLMClient:
-    """
-    Cliente agnóstico de proveedor: cualquier endpoint OpenAI-compatible
-    (OpenCode Go, Groq, OpenRouter, Ollama). Cambiar de proveedor son
-    env vars (LLM_BASE_URL / LLM_API_KEY / LLM_*_MODEL), no código.
-    """
-
-    def __init__(self, model: str, temperature: float, max_tokens: int, stop: list):
-        self.client = OpenAI(
-            api_key  = settings.LLM_API_KEY,
-            base_url = settings.LLM_BASE_URL,
-            timeout  = settings.LLM_TIMEOUT,
-        )
-        self.model       = model
-        self.temperature = temperature
-        self.max_tokens  = max_tokens
-        self.stop        = stop
-
-    def complete(self, prompt: str) -> str:
-        kwargs = dict(
-            model       = self.model,
-            temperature = self.temperature,
-            max_tokens  = self.max_tokens,
-            stop        = self.stop,
-            messages    = [{'role': 'user', 'content': prompt}],
-        )
-        try:
-            resp = self.client.chat.completions.create(**kwargs)
-        except BadRequestError as e:
-            # Algunos modelos solo aceptan temperature=1 (p.ej. kimi-k2.7-code
-            # vía OpenCode Go): reintentar sin el parámetro (default del modelo).
-            if 'temperature' not in str(e):
-                raise
-            kwargs.pop('temperature')
-            resp = self.client.chat.completions.create(**kwargs)
-        return resp.choices[0].message.content or ''
+__all__ = ["LLMClient"]

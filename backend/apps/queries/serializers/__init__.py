@@ -1,4 +1,17 @@
-from .query_request  import QueryRequestSerializer
-from .query_response import QueryHistorySerializer, QueryHistoryListSerializer, FeedbackSerializer
+"""Compatibility exports for historical query serializer imports."""
 
-__all__ = ['QueryRequestSerializer', 'QueryHistorySerializer', 'QueryHistoryListSerializer', 'FeedbackSerializer']
+from apps.queries.interfaces.serializers import (
+    FeedbackSerializer,
+    QueryHistoryListSerializer,
+    QueryHistorySerializer,
+    QueryRequestSerializer,
+    QueryResultSerializer,
+)
+
+__all__ = [
+    "FeedbackSerializer",
+    "QueryHistoryListSerializer",
+    "QueryHistorySerializer",
+    "QueryRequestSerializer",
+    "QueryResultSerializer",
+]

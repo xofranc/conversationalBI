@@ -1,73 +1,41 @@
-# services/ai/tests/test_ai_query_service.py
-from unittest.mock import patch
-
-import pytest
-
+from apps.queries.application.dtos import EngineResultDTO
 from services.ai.ai_query_service import AIQueryService
 
-SCHEMA = {'tables': [{'name': 'main', 'columns': []}]}
 
+def test_legacy_ai_service_bridges_application_dtos_to_legacy_response(monkeypatch):
+    captured = {}
 
-@pytest.fixture
-def mocks():
-    with patch('services.ai.ai_query_service.SQLAgent') as mock_agent_cls, \
-         patch('services.ai.ai_query_service.AnswerWriter') as mock_writer_cls, \
-         patch('services.ai.ai_query_service.SQLExecutor') as mock_executor:
-        mock_writer_cls.return_value.write.return_value = 'respuesta de prueba'
-        yield mock_agent_cls.return_value, mock_executor
+    class EngineFake:
+        def execute(self, request):
+            captured["request"] = request
+            return EngineResultDTO(
+                sql="SELECT 1",
+                success=True,
+                retry_count=2,
+                rows=({"value": 1},),
+                columns=({"name": "value", "dtype": "int"},),
+                chart_type="bar",
+                chart_config={"xKey": "value"},
+                answer="one",
+            )
 
+    import config.composition as composition
+    monkeypatch.setattr(composition, "build_ai_query_engine", lambda *, data_source: EngineFake())
 
-class TestFailFastSeguridad:
+    result = AIQueryService.execute(
+        "show value", 4, {"tables": []},
+        history=[{"question": "previous", "sql": "SELECT 0"}],
+        data_source=object(),
+    )
 
-    def test_sql_peligroso_no_reintenta(self, mocks):
-        agent, executor = mocks
-        agent.run.return_value = 'DROP TABLE main'
-
-        result = AIQueryService.execute('borra todo', 1, SCHEMA)
-
-        assert result['success'] is False
-        assert agent.run.call_count == 1          # fail-fast: sin reintentos
-        executor.run.assert_not_called()          # jamás llega al sandbox
-
-    def test_no_sql_possible_no_reintenta(self, mocks):
-        agent, executor = mocks
-        agent.run.return_value = 'NO_SQL_POSSIBLE'
-
-        result = AIQueryService.execute('pregunta imposible', 1, SCHEMA)
-
-        assert result['success'] is False
-        assert agent.run.call_count == 1
-
-
-class TestFlujoExitoso:
-
-    def test_consulta_valida_retorna_filas(self, mocks):
-        agent, executor = mocks
-        agent.run.return_value = 'SELECT ciudad FROM main'
-        executor.run.return_value = (
-            [{'ciudad': 'Bogota'}],
-            [{'name': 'ciudad', 'dtype': 'str'}],
-        )
-
-        result = AIQueryService.execute('lista las ciudades', 1, SCHEMA)
-
-        assert result['success'] is True
-        assert result['rows'] == [{'ciudad': 'Bogota'}]
-        assert result['retry_count'] == 0
-
-    def test_error_de_ejecucion_reintenta_con_correccion(self, mocks):
-        agent, executor = mocks
-        agent.run.side_effect = ['SELECT mal', 'SELECT ciudad FROM main']
-        executor.run.side_effect = [
-            Exception('no such column: mal'),
-            ([{'ciudad': 'Cali'}], [{'name': 'ciudad', 'dtype': 'str'}]),
-        ]
-
-        result = AIQueryService.execute('lista las ciudades', 1, SCHEMA)
-
-        assert result['success'] is True
-        assert agent.run.call_count == 2
-        assert result['retry_count'] == 1
-        # El segundo prompt fue de corrección e incluye la pregunta original
-        prompt_correccion = agent.run.call_args_list[1][0][0]
-        assert 'lista las ciudades' in prompt_correccion
+    request = captured["request"]
+    assert (request.question, request.dataset_id, request.schema) == (
+        "show value", 4, {"tables": []},
+    )
+    assert [(turn.question, turn.sql) for turn in request.history] == [
+        ("previous", "SELECT 0"),
+    ]
+    assert result["success"] is True
+    assert result["retry_count"] == 2 and result["rows"] == [{"value": 1}]
+    assert result["chart_config"] == {"xKey": "value"}
+    assert result["suggestions"] == []

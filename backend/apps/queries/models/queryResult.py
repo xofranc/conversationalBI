@@ -1,27 +1,5 @@
-from django.db import models
-from .queryHistory import QueryHistory
+"""Compatibility import for the historical QueryResult module path."""
 
-class QueryResult(models.Model):
+from apps.queries.infrastructure.models import QueryResult
 
-    query = models.OneToOneField(
-        QueryHistory,
-        on_delete=models.CASCADE,
-        related_name='result'
-    )
-
-
-    result_json = models.JSONField(default=list)
-    columns = models.JSONField(default=list)
-    row_count = models.PositiveIntegerField(default=0)
-
-    #! Respuesta en lenguaje natural (la conversación, no solo las filas)
-    answer = models.TextField(blank=True)
-    chart_type = models.CharField(max_length=10,
-                                 choices=QueryHistory.CharType.choices,
-                                 default=QueryHistory.CharType.TABLE
-                                 )
-
-    chart_config = models.JSONField(default=dict)
-
-    def __str__(self):
-        return f"Resultado de la consulta {self.query_id}"
+__all__ = ["QueryResult"]

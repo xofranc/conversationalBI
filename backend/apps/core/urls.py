@@ -1,7 +1,5 @@
-# apps/core/urls.py
-from django.urls import path
-from .views import cleanup_session
+"""Compatibility URLconf; the external composition root injects dependencies."""
 
-urlpatterns = [
-    path('session/', cleanup_session, name='cleanup-session'),
-]
+from config.composition import build_core_urlpatterns
+
+urlpatterns = build_core_urlpatterns()
