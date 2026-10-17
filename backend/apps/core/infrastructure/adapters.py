@@ -6,10 +6,10 @@ from datetime import datetime
 
 from django.utils import timezone
 
-from apps.core.application.dtos import DemoDatasetDTO
-from apps.dataset.application.dtos import DeleteDatasetInput
-from apps.dataset.application.use_cases import DeleteDataset
-from apps.dataset.infrastructure.models import Dataset
+from apps.core.domain.ports import DemoDatasetLifecycle
+from apps.core.domain.value_objects import DemoDatasetDTO
+from apps.dataset.domain.ports import DatasetResourceCleanup
+from apps.dataset.domain.repositories import DatasetRepository
 
 
 class DjangoClock:
@@ -17,18 +17,28 @@ class DjangoClock:
         return timezone.now()
 
 
-class DjangoDemoDatasetLifecycle:
-    def __init__(self, delete_dataset: DeleteDataset) -> None:
-        self._delete_dataset = delete_dataset
+class DjangoDemoDatasetLifecycle(DemoDatasetLifecycle):
+    def __init__(
+        self,
+        datasets: DatasetRepository,
+        resource_cleanup: DatasetResourceCleanup,
+    ) -> None:
+        self._datasets = datasets
+        self._resource_cleanup = resource_cleanup
 
     def list_for_user(self, user_id: int) -> tuple[DemoDatasetDTO, ...]:
         return tuple(
-            DemoDatasetDTO(dataset_id=model.pk, name=model.name, status=model.status)
-            for model in Dataset.objects.filter(user_id=user_id)
+            DemoDatasetDTO(dataset_id=dataset.id, name=dataset.name, status=dataset.status.value)
+            for dataset in self._datasets.list_by_user(user_id)
+            if dataset.id is not None
         )
 
     def list_ids_for_user(self, user_id: int) -> tuple[int, ...]:
-        return tuple(Dataset.objects.filter(user_id=user_id).values_list("pk", flat=True))
+        return tuple(
+            dataset.id
+            for dataset in self._datasets.list_by_user(user_id)
+            if dataset.id is not None
+        )
 
     def delete(self, dataset_id: int, user_id: int) -> None:
-        self._delete_dataset.execute(DeleteDatasetInput(user_id=user_id, dataset_id=dataset_id))
+        self._resource_cleanup.delete(dataset_id, user_id)

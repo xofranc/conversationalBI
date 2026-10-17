@@ -6,6 +6,12 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
+from apps.queries.domain.value_objects import (
+    ChartSelection as ChartSelectionDTO,
+    SQLExecutionResult as SQLExecutionResultDTO,
+    StatisticalCalculationResult as StatisticalCalculationResultDTO,
+)
+
 
 @dataclass(frozen=True)
 class ExecuteQueryInput:
@@ -29,22 +35,6 @@ class AIQueryRequestDTO:
 
 
 @dataclass(frozen=True)
-class SQLExecutionResultDTO:
-    """Filas y metadatos devueltos por un ejecutor SQL."""
-
-    rows: tuple[dict[str, Any], ...]
-    columns: tuple[dict[str, Any], ...]
-
-
-@dataclass(frozen=True)
-class ChartSelectionDTO:
-    """Tipo y configuración de gráfico elegidos para un resultado."""
-
-    chart_type: str
-    chart_config: dict[str, Any]
-
-
-@dataclass(frozen=True)
 class AnalysisQueryRequestDTO:
     intent: str
     dataset_id: int
@@ -59,17 +49,6 @@ class StatisticalCalculationRequestDTO:
     intent: str
     dataset_id: int
     question: str
-
-
-@dataclass(frozen=True)
-class StatisticalCalculationResultDTO:
-    """Resultado de cálculo independiente de pandas y del formato HTTP."""
-
-    rows: tuple[dict[str, Any], ...]
-    columns: tuple[dict[str, Any], ...]
-    chart_type: str
-    chart_config: dict[str, Any]
-    method: str
 
 
 @dataclass(frozen=True)

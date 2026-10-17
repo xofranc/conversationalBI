@@ -4,13 +4,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from apps.queries.application.dtos import (
-    AIQueryRequestDTO,
-    ChartSelectionDTO,
-    SQLExecutionResultDTO,
-)
-from apps.queries.application.ports import SQLSafetyViolation
+from apps.queries.domain.exceptions import SQLSafetyViolation
 from apps.queries.domain.policies import QueryExecutionPolicy, SQLSafetyPolicy
+from apps.queries.domain.value_objects import ChartSelection, SQLExecutionResult
 
 from .answer_writer import AnswerWriter
 from .chart_selector import ChartSelector
@@ -22,7 +18,7 @@ from .suggester import suggest
 
 
 class AIPromptComposerAdapter:
-    def compose(self, request: AIQueryRequestDTO) -> str:
+    def compose(self, request: Any) -> str:
         history = [{"question": turn.question, "sql": turn.sql} for turn in request.history]
         return PromptBuilder.build(request.question, request.schema, history)
 
@@ -56,9 +52,9 @@ class DatasetSQLQueryExecutor:
     def __init__(self, data_source, policy: QueryExecutionPolicy | None = None):
         self._executor = SQLExecutor(data_source, policy or QueryExecutionPolicy())
 
-    def execute(self, dataset_id: int, sql: str) -> SQLExecutionResultDTO:
+    def execute(self, dataset_id: int, sql: str) -> SQLExecutionResult:
         rows, columns = self._executor.run(sql, dataset_id)
-        return SQLExecutionResultDTO(rows=tuple(rows), columns=tuple(columns))
+        return SQLExecutionResult(rows=tuple(rows), columns=tuple(columns))
 
 
 class AIChartSelectorAdapter:
@@ -66,9 +62,9 @@ class AIChartSelectorAdapter:
         self,
         columns: tuple[dict[str, Any], ...],
         rows: tuple[dict[str, Any], ...],
-    ) -> ChartSelectionDTO:
+    ) -> ChartSelection:
         selection = ChartSelector.select(list(columns), list(rows))
-        return ChartSelectionDTO(
+        return ChartSelection(
             chart_type=selection["chart_type"],
             chart_config=selection["chart_config"],
         )

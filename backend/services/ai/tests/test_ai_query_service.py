@@ -19,7 +19,7 @@ def test_legacy_ai_service_bridges_application_dtos_to_legacy_response(monkeypat
                 answer="one",
             )
 
-    import apps.queries.infrastructure.composition as composition
+    import config.composition as composition
     monkeypatch.setattr(composition, "build_ai_query_engine", lambda *, data_source: EngineFake())
 
     result = AIQueryService.execute(

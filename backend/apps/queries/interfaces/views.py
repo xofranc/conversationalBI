@@ -2,6 +2,7 @@
 
 import logging
 
+from django.core.exceptions import ImproperlyConfigured
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import APIException, ValidationError
@@ -9,8 +10,6 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.serializers import IntegerField
 
-from apps.core.interfaces.identity import request_identity
-from apps.core.interfaces.permissions import IsAuthenticatedOrDemo
 from apps.queries.application.dtos import (
     ExecuteQueryInput,
     GetQueryDetailInput,
@@ -42,8 +41,17 @@ class QueryHistoryPagination(PageNumberPagination):
 
 
 class QueryViewSet(viewsets.GenericViewSet):
-    permission_classes = [IsAuthenticatedOrDemo]
+    identity_provider = None
+    permission_classes = None
     pagination_class = QueryHistoryPagination
+
+    def initial(self, request, *args, **kwargs):
+        if not callable(self.identity_provider):
+            raise ImproperlyConfigured(
+                "QueryViewSet.identity_provider must be configured by "
+                "create_urlpatterns()."
+            )
+        return super().initial(request, *args, **kwargs)
 
     def get_use_cases(self):
         return self.use_cases
@@ -60,7 +68,7 @@ class QueryViewSet(viewsets.GenericViewSet):
     def create(self, request):
         serializer = QueryRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user_id, _owner = request_identity(request, self.core_use_cases)
+        user_id, _owner = self.identity_provider(request)
         dataset_id = serializer.validated_data["dataset_id"]
         try:
             result = self.get_use_cases()["execute"].execute(ExecuteQueryInput(
@@ -90,7 +98,7 @@ class QueryViewSet(viewsets.GenericViewSet):
         return Response(QueryResponseSerializer(result).data, status=status.HTTP_200_OK)
 
     def list(self, request):
-        user_id, _owner = request_identity(request, self.core_use_cases)
+        user_id, _owner = self.identity_provider(request)
         raw_dataset_id = request.query_params.get("dataset_id")
         dataset_id = None
         if raw_dataset_id:
@@ -110,7 +118,7 @@ class QueryViewSet(viewsets.GenericViewSet):
         return Response(QueryHistoryListSerializer(entries, many=True).data)
 
     def retrieve(self, request, pk=None):
-        user_id, _owner = request_identity(request, self.core_use_cases)
+        user_id, _owner = self.identity_provider(request)
         try:
             query_id = int(pk)
         except (TypeError, ValueError):
@@ -127,7 +135,7 @@ class QueryViewSet(viewsets.GenericViewSet):
     def feedback(self, request, pk=None):
         serializer = FeedbackSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user_id, _owner = request_identity(request, self.core_use_cases)
+        user_id, _owner = self.identity_provider(request)
         try:
             query_id = int(pk)
         except (TypeError, ValueError):

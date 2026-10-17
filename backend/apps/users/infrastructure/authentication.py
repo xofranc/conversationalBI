@@ -1,15 +1,14 @@
-"""Adaptador DRF para autenticar mediante el caso de uso de usuarios."""
+"""Adaptador DRF para autenticar mediante Supabase en infrastructure."""
 
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 
+from .adapters import SupabaseAuthenticationError, SupabaseAuthenticator
 from .models import User as DjangoUser
 
 
 class SupabaseAuth(BaseAuthentication):
-    """Valida Supabase mediante application y retorna el modelo Django a DRF."""
-
-    _jwks_cache = None
+    """Valida Supabase y retorna el modelo Django que requiere DRF."""
 
     def authenticate(self, request):
         authorization = request.headers.get("Authorization", "")
@@ -18,25 +17,10 @@ class SupabaseAuth(BaseAuthentication):
 
         token = authorization[7:]
 
-        # Imports locales: el composition root construye este adaptador y así
-        # se evita un ciclo entre composition, el adaptador DRF y el port.
-        from apps.users.application.dtos import AuthenticateInput
-        from apps.users.infrastructure.adapters import (
-            SupabaseAuthenticationError,
-            SupabaseAuthenticator,
-        )
-        from apps.users.infrastructure.composition import build_user_use_cases
-
-        if self.__class__._jwks_cache is None:
-            SupabaseAuthenticator._jwks_cache = None
-
         try:
-            authenticate_identity = build_user_use_cases()["authenticate"]
-            identity = authenticate_identity.execute(AuthenticateInput(credential=token))
+            identity = SupabaseAuthenticator().authenticate(token)
         except SupabaseAuthenticationError as error:
             raise AuthenticationFailed(str(error)) from error
-        finally:
-            self.__class__._jwks_cache = SupabaseAuthenticator._jwks_cache
 
         if identity is None:
             return None

@@ -8,7 +8,7 @@ from apps.core.domain.exceptions import InvalidSessionIdentifier
 from apps.core.domain.value_objects import SessionIdentifier
 from apps.dataset.domain.entities import Dataset, DatasetStatus
 from apps.dataset.domain.exceptions import DatasetFileTooLarge, DatasetNotQueryable
-from apps.dataset.domain.policies import DatasetUploadPolicy
+from apps.dataset.domain.policies import DatasetOwnershipPolicy, DatasetUploadPolicy
 from apps.project_status.domain.entities import (
     ProjectModule,
     ProjectModuleStatus,
@@ -65,6 +65,13 @@ def test_dataset_ready_and_error_transitions_preserve_unrelated_metadata():
     assert (failed.schema_json, failed.row_count, failed.column_count) == (ready.schema_json, 4, 2)
     with pytest.raises(FrozenInstanceError):
         ready.status = DatasetStatus.ERROR
+
+
+def test_dataset_ownership_policy_matches_dataset_owner():
+    dataset = Dataset(id=3, user_id=2, name="orders", file_path="orders.csv")
+
+    assert DatasetOwnershipPolicy.owns(dataset, 2)
+    assert not DatasetOwnershipPolicy.owns(dataset, 8)
 
 
 @pytest.mark.parametrize("status", [

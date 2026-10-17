@@ -41,3 +41,11 @@ class PhoneNumber:
 
     def __str__(self) -> str:
         return self.value
+
+
+@dataclass(frozen=True)
+class AuthenticatedIdentity:
+    """Identidad escalar devuelta cuando una credencial externa es válida."""
+
+    user_id: int
+    email: str

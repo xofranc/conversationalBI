@@ -2,13 +2,12 @@
 
 import logging
 
+from django.core.exceptions import ImproperlyConfigured
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 
-from apps.core.interfaces.identity import request_identity
-from apps.core.interfaces.permissions import IsAuthenticatedOrDemo
 from apps.dataset.application.dtos import (
     CreateDatasetInput,
     DeleteDatasetInput,
@@ -31,10 +30,19 @@ logger = logging.getLogger(__name__)
 
 
 class DatasetViewSet(viewsets.GenericViewSet):
-    permission_classes = [IsAuthenticatedOrDemo]
+    identity_provider = None
+    permission_classes = None
     parser_classes = [MultiPartParser, FormParser]
     # The historical list endpoint returned a bare array, without pagination.
     pagination_class = None
+
+    def initial(self, request, *args, **kwargs):
+        if not callable(self.identity_provider):
+            raise ImproperlyConfigured(
+                "DatasetViewSet.identity_provider must be configured by "
+                "create_urlpatterns()."
+            )
+        return super().initial(request, *args, **kwargs)
 
     def get_use_cases(self):
         return self.use_cases
@@ -50,7 +58,7 @@ class DatasetViewSet(viewsets.GenericViewSet):
         serializer = DatasetUploadSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         uploaded_file = serializer.validated_data["file"]
-        user_id, owner = request_identity(request, self.core_use_cases)
+        user_id, owner = self.identity_provider(request)
         try:
             dto = self.get_use_cases()["create"].execute(CreateDatasetInput(
                 user_id=user_id,
@@ -75,7 +83,7 @@ class DatasetViewSet(viewsets.GenericViewSet):
         )
 
     def list(self, request):
-        user_id, _owner = request_identity(request, self.core_use_cases)
+        user_id, _owner = self.identity_provider(request)
         dtos = self.get_use_cases()["list"].execute(ListDatasetsInput(user_id=user_id))
         return Response(DatasetListSerializer(dtos, many=True).data)
 
@@ -83,7 +91,7 @@ class DatasetViewSet(viewsets.GenericViewSet):
         return self._get_dataset_response(request, pk, detail=True)
 
     def destroy(self, request, pk=None):
-        user_id, _owner = request_identity(request, self.core_use_cases)
+        user_id, _owner = self.identity_provider(request)
         try:
             self.get_use_cases()["delete"].execute(
                 DeleteDatasetInput(user_id=user_id, dataset_id=self._dataset_id(pk))
@@ -109,7 +117,7 @@ class DatasetViewSet(viewsets.GenericViewSet):
         return int(pk)
 
     def _get_dataset_response(self, request, pk, *, detail):
-        user_id, owner = request_identity(request, self.core_use_cases)
+        user_id, owner = self.identity_provider(request)
         try:
             dto = self.get_use_cases()["get"].execute(
                 GetDatasetInput(user_id=user_id, dataset_id=self._dataset_id(pk))

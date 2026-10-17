@@ -1,7 +1,13 @@
 """Dominio de historial, resultados, feedback y políticas deterministas."""
 
 from .entities import QueryFeedback, QueryHistory, QueryResult
-from .exceptions import DomainError, InvalidFeedbackScore, InvalidPolicyConfiguration
+from .exceptions import (
+    DomainError,
+    InvalidFeedbackScore,
+    InvalidPolicyConfiguration,
+    SQLSafetyViolation,
+    UnsupportedStatisticalAnalysis,
+)
 from .policies import (
     AnalysisIntent,
     AnalysisIntentPolicy,
@@ -9,12 +15,19 @@ from .policies import (
     QueryExecutionPolicy,
     SQLSafetyPolicy,
 )
-from .value_objects import ChartType, FeedbackScore
+from .value_objects import (
+    ChartSelection,
+    ChartType,
+    FeedbackScore,
+    SQLExecutionResult,
+    StatisticalCalculationResult,
+)
 
 __all__ = [
     "AnalysisIntent",
     "AnalysisIntentPolicy",
     "AnalysisLimits",
+    "ChartSelection",
     "ChartType",
     "DomainError",
     "FeedbackScore",
@@ -24,5 +37,9 @@ __all__ = [
     "QueryFeedback",
     "QueryHistory",
     "QueryResult",
+    "SQLExecutionResult",
+    "SQLSafetyViolation",
     "SQLSafetyPolicy",
+    "StatisticalCalculationResult",
+    "UnsupportedStatisticalAnalysis",
 ]

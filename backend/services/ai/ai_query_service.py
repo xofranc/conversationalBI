@@ -13,9 +13,8 @@ class AIQueryService:
         *,
         data_source,
     ) -> dict:
-        # Import here so the legacy facade does not participate in composition imports.
         from apps.queries.application.dtos import AIQueryRequestDTO, ConversationTurnDTO
-        from apps.queries.infrastructure.composition import build_ai_query_engine
+        from config.composition import build_ai_query_engine
 
         request = AIQueryRequestDTO(
             question=question,

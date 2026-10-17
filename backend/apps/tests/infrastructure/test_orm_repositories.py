@@ -1,4 +1,6 @@
 from datetime import date, datetime, timedelta, timezone
+from types import SimpleNamespace
+from unittest.mock import Mock
 
 import pytest
 from django.apps import apps
@@ -10,6 +12,8 @@ from apps.core.domain.value_objects import SessionIdentifier
 from apps.core.infrastructure.models import DemoSession as SessionModel
 from apps.core.infrastructure.repositories import DjangoDemoSessionRepository
 from apps.dataset.domain.entities import Dataset, DatasetStatus, DatasetTable
+from apps.dataset.domain.exceptions import DatasetOwnershipViolation
+from apps.dataset.infrastructure.adapters import DjangoDatasetResourceCleanup
 from apps.dataset.infrastructure.models import Dataset as DatasetModel
 from apps.dataset.infrastructure.repositories import DjangoDatasetRepository, DjangoDatasetTableRepository
 from apps.project_status.domain.entities import (
@@ -70,6 +74,172 @@ def test_dataset_repositories_round_trip_entities_and_stable_identity(user):
     tables.delete_for_dataset(saved.id)
     datasets.delete(saved.id)
     assert tables.get_by_id(table.id) is None and datasets.get_by_id(saved.id) is None
+
+
+@pytest.mark.django_db(transaction=True)
+def test_dataset_repository_delete_for_owner_deletes_dataset_for_matching_owner(user):
+    dataset = DatasetModel.objects.create(
+        user=user, name="Sales", file_path="sales.csv", status="ready"
+    )
+    repository = DjangoDatasetRepository()
+
+    assert repository.delete_for_owner(dataset.pk, user.pk) is True
+    assert not DatasetModel.objects.filter(pk=dataset.pk).exists()
+
+@pytest.mark.django_db(transaction=True)
+def test_dataset_repository_delete_for_owner_preserves_dataset_for_other_owner(user):
+    other_user = get_user_model().objects.create_user(
+        email="other-repository@example.com", password="secret"
+    )
+    dataset = DatasetModel.objects.create(
+        user=user, name="Inventory", file_path="inventory.csv", status="ready"
+    )
+    repository = DjangoDatasetRepository()
+
+    assert repository.delete_for_owner(dataset.pk, other_user.pk) is False
+    assert DatasetModel.objects.filter(pk=dataset.pk, user_id=user.pk).exists()
+
+
+@pytest.mark.django_db(transaction=True)
+def test_dataset_repository_delete_for_owner_returns_false_for_missing_dataset(user):
+    repository = DjangoDatasetRepository()
+
+    assert repository.delete_for_owner(-1, user.pk) is False
+
+
+def test_dataset_repository_delete_for_owner_uses_row_lock_inside_atomic(monkeypatch):
+    from apps.dataset.infrastructure import repositories as dataset_repositories
+
+    events = []
+    transaction_state = {"in_atomic": False}
+
+    class AtomicContext:
+        def __enter__(self):
+            transaction_state["in_atomic"] = True
+            events.append("atomic_enter")
+
+        def __exit__(self, exc_type, exc_value, traceback):
+            events.append("atomic_exit")
+            transaction_state["in_atomic"] = False
+
+    model = SimpleNamespace(
+        pk=41,
+        user_id=7,
+        name="Sales",
+        description="",
+        file_path="sales.csv",
+        file_size=0,
+        db_path="",
+        schema_json={},
+        row_count=0,
+        column_count=0,
+        status="ready",
+        error_msg="",
+        created_at=None,
+        updated_at=None,
+    )
+
+    def delete_model():
+        if not transaction_state["in_atomic"]:
+            raise AssertionError("Dataset.delete() must run inside transaction.atomic()")
+        events.append("delete")
+
+    model.delete = delete_model
+    queryset = Mock()
+    queryset.first.side_effect = lambda: events.append("first") or model
+    queryset.filter.side_effect = lambda **kwargs: events.append(("filter", kwargs)) or queryset
+    manager = Mock()
+    manager.select_for_update.side_effect = (
+        lambda: events.append("select_for_update") or queryset
+    )
+
+    monkeypatch.setattr(
+        dataset_repositories, "DatasetModel", SimpleNamespace(objects=manager)
+    )
+    monkeypatch.setattr(
+        dataset_repositories,
+        "transaction",
+        SimpleNamespace(atomic=AtomicContext),
+    )
+
+    assert DjangoDatasetRepository().delete_for_owner(dataset_id=41, user_id=7) is True
+
+    manager.select_for_update.assert_called_once_with()
+    queryset.filter.assert_called_once_with(pk=41)
+    assert events == [
+        "atomic_enter",
+        "select_for_update",
+        ("filter", {"pk": 41}),
+        "first",
+        "delete",
+        "atomic_exit",
+    ]
+
+
+@pytest.mark.django_db(transaction=True)
+def test_resource_cleanup_rejects_owner_changed_before_conditional_delete(user):
+    other_user = get_user_model().objects.create_user(
+        email="changed-owner@example.com", password="secret"
+    )
+    dataset = DatasetModel.objects.create(
+        user=user,
+        name="Sales",
+        file_path="sales.csv",
+        db_path="db/sales",
+        status="ready",
+    )
+    repository = DjangoDatasetRepository()
+    file_storage, materializer = _RecordingDeleter(), _RecordingDeleter()
+
+    class OwnerChangesBeforeDelete:
+        def get_by_id(self, dataset_id):
+            return repository.get_by_id(dataset_id)
+
+        def delete_for_owner(self, dataset_id, user_id):
+            DatasetModel.objects.filter(pk=dataset_id).update(user_id=other_user.pk)
+            return repository.delete_for_owner(dataset_id, user_id)
+
+    cleanup = DjangoDatasetResourceCleanup(
+        OwnerChangesBeforeDelete(), file_storage, materializer
+    )
+
+    with pytest.raises(DatasetOwnershipViolation):
+        cleanup.delete(dataset.pk, user.pk)
+
+    assert DatasetModel.objects.filter(pk=dataset.pk, user_id=other_user.pk).exists()
+    assert file_storage.deleted == []
+    assert materializer.deleted == []
+
+
+@pytest.mark.django_db(transaction=True)
+def test_resource_cleanup_treats_concurrently_missing_dataset_as_noop(user):
+    dataset = DatasetModel.objects.create(
+        user=user,
+        name="Sales",
+        file_path="sales.csv",
+        db_path="db/sales",
+        status="ready",
+    )
+    repository = DjangoDatasetRepository()
+    file_storage, materializer = _RecordingDeleter(), _RecordingDeleter()
+
+    class DatasetDisappearsBeforeDelete:
+        def get_by_id(self, dataset_id):
+            return repository.get_by_id(dataset_id)
+
+        def delete_for_owner(self, dataset_id, user_id):
+            DatasetModel.objects.filter(pk=dataset_id).delete()
+            return False
+
+    cleanup = DjangoDatasetResourceCleanup(
+        DatasetDisappearsBeforeDelete(), file_storage, materializer
+    )
+
+    cleanup.delete(dataset.pk, user.pk)
+
+    assert not DatasetModel.objects.filter(pk=dataset.pk).exists()
+    assert file_storage.deleted == []
+    assert materializer.deleted == []
 
 
 @pytest.mark.django_db(transaction=True)
@@ -199,3 +369,11 @@ def test_auth_setting_and_retired_dataset_permission_legacy_shim_import():
     ]
     assert legacy_dataset_permissions.__all__ == ()
     assert not hasattr(legacy_dataset_permissions, "IsDatasetOwner")
+
+
+class _RecordingDeleter:
+    def __init__(self):
+        self.deleted = []
+
+    def delete(self, path):
+        self.deleted.append(path)

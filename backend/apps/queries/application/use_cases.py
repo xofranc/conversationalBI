@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import replace
 from apps.dataset.domain.exceptions import DatasetNotQueryable
 from apps.queries.domain.exceptions import InvalidFeedbackScore
+from apps.dataset.domain.policies import DatasetOwnershipPolicy
 from apps.dataset.domain.repositories import DatasetRepository
 from apps.queries.domain.entities import QueryFeedback, QueryHistory, QueryResult
 from apps.queries.domain.policies import AnalysisIntentPolicy
@@ -134,7 +135,7 @@ class ExecuteQuery:
         dataset = self._datasets.get_by_id(request.dataset_id)
         if dataset is None:
             raise DatasetNotFound(f"Dataset {request.dataset_id} no encontrado")
-        if dataset.user_id != request.user_id:
+        if not DatasetOwnershipPolicy.owns(dataset, request.user_id):
             raise QueryAccessDenied("No tienes acceso a este dataset")
         try:
             dataset.ensure_queryable()

@@ -16,6 +16,8 @@ class DatasetRepository(Protocol):
 
     def delete(self, dataset_id: int) -> None: ...
 
+    def delete_for_owner(self, dataset_id: int, user_id: int) -> bool: ...
+
 
 class DatasetTableRepository(Protocol):
     """La persistencia garantiza unicidad de table_name por dataset."""

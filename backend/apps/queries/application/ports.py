@@ -5,6 +5,12 @@ from __future__ import annotations
 from contextlib import AbstractContextManager
 from typing import Any, Protocol
 
+from apps.queries.domain.exceptions import (
+    SQLSafetyViolation,
+    UnsupportedStatisticalAnalysis,
+)
+from apps.dataset.domain.ports import DatasetMaterializer as QueryDatasetMaterializer
+
 from .dtos import (
     AIQueryRequestDTO,
     AnalysisQueryRequestDTO,
@@ -16,10 +22,6 @@ from .dtos import (
     StatisticalCalculationRequestDTO,
     StatisticalCalculationResultDTO,
 )
-
-
-class SQLSafetyViolation(Exception):
-    """Rechazo de seguridad SQL; el caso de uso no debe reintentar."""
 
 
 class QueryCache(Protocol):
@@ -100,10 +102,6 @@ class StatisticalAnalysisEngine(Protocol):
     def execute(self, request: AnalysisQueryRequestDTO) -> EngineResultDTO: ...
 
 
-class UnsupportedStatisticalAnalysis(Exception):
-    """El cálculo no es válido para los datos y su mensaje es apto para usuario."""
-
-
 class StatisticalAnalysisCalculator(Protocol):
     """Calcula el resultado estadístico usando los datos del dataset indicado."""
 
@@ -122,12 +120,6 @@ class StatisticalAnalysisAnswerWriter(Protocol):
         rows: tuple[dict[str, Any], ...],
         row_count: int,
     ) -> str: ...
-
-
-class QueryDatasetMaterializer(Protocol):
-    """Verifica/materializa el schema de consulta y devuelve su referencia."""
-
-    def ensure_available(self, dataset_id: int, file_path: str, materialized_path: str) -> str: ...
 
 
 class QueryTransaction(Protocol):

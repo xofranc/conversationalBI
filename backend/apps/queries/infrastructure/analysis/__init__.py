@@ -1,11 +1,5 @@
 """Implementaciones técnicas del cálculo estadístico."""
 
-from .adapters import (
-    PandasStatisticalAnalysisCalculator,
-    StatisticalAnalysisAnswerWriterAdapter,
-)
+from .adapters import PandasStatisticalAnalysisCalculator
 
-__all__ = [
-    "PandasStatisticalAnalysisCalculator",
-    "StatisticalAnalysisAnswerWriterAdapter",
-]
+__all__ = ["PandasStatisticalAnalysisCalculator"]

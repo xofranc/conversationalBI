@@ -2,10 +2,13 @@
 
 from .entities import DemoSession, DEMO_SESSION_TTL
 from .exceptions import DomainError, InvalidSessionIdentifier
-from .value_objects import SessionIdentifier
+from .ports import DemoDatasetLifecycle
+from .value_objects import DemoDatasetDTO, SessionIdentifier
 
 __all__ = [
     "DEMO_SESSION_TTL",
+    "DemoDatasetDTO",
+    "DemoDatasetLifecycle",
     "DemoSession",
     "DomainError",
     "InvalidSessionIdentifier",

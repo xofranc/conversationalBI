@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 
+from apps.core.domain.value_objects import DemoDatasetDTO
+
 
 @dataclass(frozen=True)
 class DemoSessionInput:
@@ -24,13 +26,6 @@ class DemoSessionDTO:
 class DemoUserDTO:
     user_id: int
     email: str
-
-
-@dataclass(frozen=True)
-class DemoDatasetDTO:
-    dataset_id: int
-    name: str
-    status: str
 
 
 @dataclass(frozen=True)

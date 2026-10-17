@@ -2,11 +2,14 @@
 
 from .entities import Profile, User
 from .exceptions import DomainError, InvalidEmailAddress, InvalidPhoneNumber
-from .value_objects import EmailAddress, PhoneNumber, UserType
+from .ports import ExternalAuthenticator
+from .value_objects import AuthenticatedIdentity, EmailAddress, PhoneNumber, UserType
 
 __all__ = [
     "DomainError",
     "EmailAddress",
+    "AuthenticatedIdentity",
+    "ExternalAuthenticator",
     "InvalidEmailAddress",
     "InvalidPhoneNumber",
     "PhoneNumber",

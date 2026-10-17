@@ -11,3 +11,13 @@ class InvalidFeedbackScore(DomainError, ValueError):
 
 class InvalidPolicyConfiguration(DomainError, ValueError):
     """Una policy de dominio recibió límites incoherentes o inválidos."""
+
+
+class SQLSafetyViolation(DomainError):
+    """Rechazo de seguridad SQL que no debe reintentarse."""
+
+    retryable = False
+
+
+class UnsupportedStatisticalAnalysis(DomainError):
+    """El conjunto de datos no soporta el análisis estadístico solicitado."""

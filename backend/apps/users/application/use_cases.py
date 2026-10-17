@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import replace
 
+from apps.dataset.domain.policies import DatasetOwnershipPolicy
 from apps.dataset.domain.repositories import DatasetRepository
 from apps.users.domain.entities import Profile
 from apps.users.domain.repositories import ProfileRepository
@@ -99,7 +100,9 @@ class CanAccessDataset:
 
     def execute(self, request: CanAccessDatasetInput) -> AccessDecisionDTO:
         dataset = self._datasets.get_by_id(request.dataset_id)
-        return AccessDecisionDTO(allowed=dataset is not None and dataset.user_id == request.user_id)
+        return AccessDecisionDTO(
+            allowed=dataset is not None and DatasetOwnershipPolicy.owns(dataset, request.user_id)
+        )
 
 
 class AuthenticateExternalIdentity:
@@ -112,8 +115,15 @@ class AuthenticateExternalIdentity:
         identity = self._authenticator.authenticate(request.credential)
         if identity is None:
             return None
-        user_id, email = identity
-        return AuthenticatedIdentityDTO(user_id=user_id, email=email)
+        # Compatibilidad temporal con implementaciones del contrato anterior.
+        if isinstance(identity, tuple):
+            user_id, email = identity
+        else:
+            user_id, email = identity.user_id, identity.email
+        return AuthenticatedIdentityDTO(
+            user_id=user_id,
+            email=email,
+        )
 
 
 class IncrementQueryUsage:

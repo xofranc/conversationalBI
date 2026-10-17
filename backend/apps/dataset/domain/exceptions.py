@@ -9,6 +9,10 @@ class DatasetNotQueryable(DomainError):
     """El dataset no está en el estado READY requerido por las consultas."""
 
 
+class DatasetOwnershipViolation(DomainError):
+    """El usuario no es propietario del dataset."""
+
+
 class UnsupportedDatasetFileExtension(DomainError):
     """La extensión del archivo no está soportada para una carga de dataset."""
 

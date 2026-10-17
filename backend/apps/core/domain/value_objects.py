@@ -21,3 +21,12 @@ class SessionIdentifier:
 
     def __str__(self) -> str:
         return self.value
+
+
+@dataclass(frozen=True)
+class DemoDatasetDTO:
+    """Resumen de dataset usado por el ciclo de vida de sesiones demo."""
+
+    dataset_id: int
+    name: str
+    status: str

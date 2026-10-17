@@ -9,6 +9,7 @@ from apps.core.application.dtos import (
     CleanupSessionResultDTO,
     DemoUserDTO,
 )
+from apps.core.interfaces.identity import request_identity
 from apps.core.interfaces.permissions import IsAuthenticatedOrDemo
 from apps.core.interfaces.urls import create_urlpatterns as core_urls
 from apps.dataset.application.dtos import DatasetDTO
@@ -66,10 +67,30 @@ QUERIES = use_cases(
 USERS = use_cases(get_profile="get_profile", update_profile="update_profile")
 PROJECT = use_cases(get_status="get_status")
 
+identity_provider = lambda request: request_identity(request, CORE)
+
 urlpatterns = [
     path("api/v1/core/", include(core_urls(CORE))),
-    path("api/v1/dataset/", include(dataset_urls(DATASET, CORE))),
-    path("api/v1/queries/", include(query_urls(QUERIES, CORE))),
+    path(
+        "api/v1/dataset/",
+        include(
+            dataset_urls(
+                DATASET,
+                identity_provider=identity_provider,
+                permission_class=IsAuthenticatedOrDemo,
+            )
+        ),
+    ),
+    path(
+        "api/v1/queries/",
+        include(
+            query_urls(
+                QUERIES,
+                identity_provider=identity_provider,
+                permission_class=IsAuthenticatedOrDemo,
+            )
+        ),
+    ),
     path("api/v1/users/", include(user_urls(USERS))),
     path("api/v1/project-status/", include(project_urls(PROJECT))),
 ]

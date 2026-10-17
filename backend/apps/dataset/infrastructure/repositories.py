@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+from django.db import transaction
+
 from apps.dataset.domain.entities import Dataset as DatasetEntity
 from apps.dataset.domain.entities import DatasetStatus, DatasetTable as DatasetTableEntity
+from apps.dataset.domain.policies import DatasetOwnershipPolicy
 from apps.dataset.domain.repositories import DatasetRepository, DatasetTableRepository
 
 from .models import Dataset as DatasetModel
@@ -70,6 +73,19 @@ class DjangoDatasetRepository(DatasetRepository):
 
     def delete(self, dataset_id: int) -> None:
         DatasetModel.objects.filter(pk=dataset_id).delete()
+
+    def delete_for_owner(self, dataset_id: int, user_id: int) -> bool:
+        with transaction.atomic():
+            model = DatasetModel.objects.select_for_update().filter(pk=dataset_id).first()
+            if model is None:
+                return False
+
+            dataset = _dataset_entity(model)
+            if not DatasetOwnershipPolicy.owns(dataset, user_id):
+                return False
+
+            model.delete()
+            return True
 
 
 class DjangoDatasetTableRepository(DatasetTableRepository):

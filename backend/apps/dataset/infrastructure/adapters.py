@@ -10,6 +10,15 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
+from apps.dataset.domain.exceptions import DatasetOwnershipViolation
+from apps.dataset.domain.policies import DatasetOwnershipPolicy
+from apps.dataset.domain.ports import (
+    DatasetFileStorage,
+    DatasetMaterializer,
+    DatasetResourceCleanup,
+)
+from apps.dataset.domain.repositories import DatasetRepository
+
 from .database_service import DatabaseService
 from .schema_service import SchemaService
 
@@ -54,3 +63,39 @@ class PostgresDatasetMaterializer:
         if materialized_path and DatabaseService.exists(materialized_path):
             return materialized_path
         return self.materialize(dataset_id, file_path)
+
+
+class DjangoDatasetResourceCleanup(DatasetResourceCleanup):
+    """Elimina el registro y sus recursos externos en orden determinista."""
+
+    def __init__(
+        self,
+        datasets: DatasetRepository,
+        file_storage: DatasetFileStorage,
+        materializer: DatasetMaterializer,
+    ) -> None:
+        self._datasets = datasets
+        self._file_storage = file_storage
+        self._materializer = materializer
+
+    def delete(self, dataset_id: int, user_id: int) -> None:
+        dataset = self._datasets.get_by_id(dataset_id)
+        if dataset is None:
+            return
+        if not DatasetOwnershipPolicy.owns(dataset, user_id):
+            raise DatasetOwnershipViolation(
+                "No tienes permiso para eliminar este dataset"
+            )
+
+        if not self._datasets.delete_for_owner(dataset_id, user_id):
+            current_dataset = self._datasets.get_by_id(dataset_id)
+            if current_dataset is None:
+                return
+            if not DatasetOwnershipPolicy.owns(current_dataset, user_id):
+                raise DatasetOwnershipViolation(
+                    "No tienes permiso para eliminar este dataset"
+                )
+            return
+
+        self._file_storage.delete(dataset.file_path)
+        self._materializer.delete(dataset.db_path)

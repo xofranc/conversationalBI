@@ -3,8 +3,12 @@
 from __future__ import annotations
 
 from apps.dataset.domain.entities import Dataset, DatasetStatus, DatasetTable
-from apps.dataset.domain.exceptions import DatasetFileTooLarge, UnsupportedDatasetFileExtension
-from apps.dataset.domain.policies import DatasetUploadPolicy
+from apps.dataset.domain.exceptions import (
+    DatasetFileTooLarge,
+    DatasetOwnershipViolation,
+    UnsupportedDatasetFileExtension,
+)
+from apps.dataset.domain.policies import DatasetOwnershipPolicy, DatasetUploadPolicy
 from apps.dataset.domain.repositories import DatasetRepository, DatasetTableRepository
 
 from .dtos import (
@@ -16,7 +20,12 @@ from .dtos import (
     ListDatasetsInput,
     ProcessDatasetInput,
 )
-from .ports import DatasetFileStorage, DatasetMaterializer, DatasetSchemaExtractor
+from .ports import (
+    DatasetFileStorage,
+    DatasetMaterializer,
+    DatasetResourceCleanup,
+    DatasetSchemaExtractor,
+)
 
 
 class DatasetNotFound(LookupError):
@@ -77,7 +86,7 @@ class ProcessDataset:
         dataset = self._datasets.get_by_id(request.dataset_id)
         if dataset is None:
             raise DatasetNotFound(f"Dataset {request.dataset_id} no encontrado")
-        if dataset.user_id != request.user_id:
+        if not DatasetOwnershipPolicy.owns(dataset, request.user_id):
             raise DatasetAccessDenied("No tienes acceso a este dataset")
 
         try:
@@ -200,31 +209,30 @@ class GetDataset:
         dataset = self._datasets.get_by_id(request.dataset_id)
         if dataset is None:
             raise DatasetNotFound(f"Dataset {request.dataset_id} no encontrado")
-        if dataset.user_id != request.user_id:
+        if not DatasetOwnershipPolicy.owns(dataset, request.user_id):
             raise DatasetAccessDenied("No tienes acceso a este dataset")
         return _dataset_dto(dataset, self._tables.list_by_dataset(request.dataset_id))
 
 
 class DeleteDataset:
-    """Elimina primero el registro y después recursos externos asociados."""
+    """Valida la propiedad del dataset y delega su eliminación completa."""
 
     def __init__(
         self,
         datasets: DatasetRepository,
-        file_storage: DatasetFileStorage,
-        materializer: DatasetMaterializer,
+        resource_cleanup: DatasetResourceCleanup,
     ) -> None:
         self._datasets = datasets
-        self._file_storage = file_storage
-        self._materializer = materializer
+        self._resource_cleanup = resource_cleanup
 
     def execute(self, request: DeleteDatasetInput) -> None:
         dataset = self._datasets.get_by_id(request.dataset_id)
         if dataset is None:
             raise DatasetNotFound(f"Dataset {request.dataset_id} no encontrado")
-        if dataset.user_id != request.user_id:
+        if not DatasetOwnershipPolicy.owns(dataset, request.user_id):
             raise DatasetAccessDenied("No tienes permiso para eliminar este dataset")
 
-        self._datasets.delete(request.dataset_id)
-        self._file_storage.delete(dataset.file_path)
-        self._materializer.delete(dataset.db_path)
+        try:
+            self._resource_cleanup.delete(request.dataset_id, request.user_id)
+        except DatasetOwnershipViolation as exc:
+            raise DatasetAccessDenied(str(exc)) from exc

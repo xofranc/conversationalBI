@@ -1,6 +1,26 @@
 """Policies puras de negocio para cargas de archivos de datasets."""
 
-from .exceptions import DatasetFileTooLarge, UnsupportedDatasetFileExtension
+from .entities import Dataset
+from .exceptions import (
+    DatasetFileTooLarge,
+    DatasetOwnershipViolation,
+    UnsupportedDatasetFileExtension,
+)
+
+
+class DatasetOwnershipPolicy:
+    """Regla canónica para comprobar la propiedad de un dataset."""
+
+    @staticmethod
+    def owns(dataset: Dataset, user_id: int) -> bool:
+        """Indica si el usuario es propietario del dataset."""
+        return dataset.user_id == user_id
+
+    @staticmethod
+    def assert_owner(dataset: Dataset, user_id: int) -> None:
+        """Wrapper compatible que lanza un error si el usuario no es propietario."""
+        if not DatasetOwnershipPolicy.owns(dataset, user_id):
+            raise DatasetOwnershipViolation()
 
 
 class DatasetUploadPolicy:

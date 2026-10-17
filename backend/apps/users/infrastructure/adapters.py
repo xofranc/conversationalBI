@@ -9,6 +9,8 @@ import requests
 from django.conf import settings
 from jwcrypto import jwk, jwt
 
+from apps.users.domain.value_objects import AuthenticatedIdentity
+
 from .models import Profile as ProfileModel
 from .models import User as UserModel
 
@@ -51,7 +53,7 @@ class SupabaseAuthenticator:
             SupabaseAuthenticator._jwks_cache = jwk.JWKSet.from_json(response.text)
         return SupabaseAuthenticator._jwks_cache
 
-    def authenticate(self, credential: str) -> tuple[int, str] | None:
+    def authenticate(self, credential: str) -> AuthenticatedIdentity | None:
         if not credential:
             return None
 
@@ -80,4 +82,4 @@ class SupabaseAuthenticator:
             user.save(update_fields=["first_name", "last_name"])
 
         ProfileModel.objects.get_or_create(user=user)
-        return int(user.pk), str(user.email)
+        return AuthenticatedIdentity(user_id=int(user.pk), email=str(user.email))

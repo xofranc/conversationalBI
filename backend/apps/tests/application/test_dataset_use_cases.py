@@ -20,6 +20,7 @@ from apps.dataset.application.use_cases import (
     ProcessDataset,
 )
 from apps.dataset.domain.entities import Dataset, DatasetStatus, DatasetTable
+from apps.dataset.domain.exceptions import DatasetOwnershipViolation
 
 
 class DatasetMemory:
@@ -96,6 +97,16 @@ class Materializer:
 
     def delete(self, path):
         self.deleted.append(path)
+
+
+class ResourceCleanupMemory:
+    def __init__(self, datasets):
+        self.datasets = datasets
+        self.calls = []
+
+    def delete(self, dataset_id, user_id):
+        self.calls.append((dataset_id, user_id))
+        self.datasets.delete(dataset_id)
 
 
 class SchemaExtractor:
@@ -202,10 +213,11 @@ def test_create_dataset_requires_repository_assigned_identity():
         )
 
 
-def test_list_get_and_delete_apply_user_scope_and_remove_external_resources():
+def test_list_get_and_delete_apply_user_scope_and_delegate_resource_cleanup():
     dataset = Dataset(id=3, user_id=2, name="orders", file_path="orders.csv", db_path="db/3")
     datasets = DatasetMemory([dataset])
     tables = TableMemory()
+    resource_cleanup = ResourceCleanupMemory(datasets)
     tables.save(DatasetTable(dataset_id=3, table_name="orders"))
     assert ListDatasets(datasets).execute(ListDatasetsInput(2))[0].id == 3
     assert GetDataset(datasets, tables).execute(GetDatasetInput(2, 3)).tables[0].table_name == "orders"
@@ -214,11 +226,26 @@ def test_list_get_and_delete_apply_user_scope_and_remove_external_resources():
     with pytest.raises(DatasetNotFound):
         GetDataset(datasets, tables).execute(GetDatasetInput(2, 999))
     with pytest.raises(DatasetAccessDenied):
-        DeleteDataset(datasets, FileStorage(), Materializer()).execute(DeleteDatasetInput(8, 3))
+        DeleteDataset(datasets, resource_cleanup).execute(DeleteDatasetInput(8, 3))
+    assert resource_cleanup.calls == []
 
-    storage, materializer = FileStorage(), Materializer()
-    DeleteDataset(datasets, storage, materializer).execute(DeleteDatasetInput(2, 3))
+    DeleteDataset(datasets, resource_cleanup).execute(DeleteDatasetInput(2, 3))
+    assert resource_cleanup.calls == [(3, 2)]
     assert datasets.get_by_id(3) is None
-    assert storage.deleted == ["orders.csv"] and materializer.deleted == ["db/3"]
     with pytest.raises(DatasetNotFound):
-        DeleteDataset(datasets, storage, materializer).execute(DeleteDatasetInput(2, 3))
+        DeleteDataset(datasets, resource_cleanup).execute(DeleteDatasetInput(2, 3))
+    assert resource_cleanup.calls == [(3, 2)]
+
+
+def test_delete_dataset_translates_cleanup_ownership_race_and_preserves_message():
+    datasets = DatasetMemory([Dataset(id=3, user_id=2, name="orders", file_path="orders.csv")])
+    message = "ownership changed during cleanup"
+
+    class OwnershipRaceCleanup:
+        def delete(self, dataset_id, user_id):
+            raise DatasetOwnershipViolation(message)
+
+    with pytest.raises(DatasetAccessDenied) as error:
+        DeleteDataset(datasets, OwnershipRaceCleanup()).execute(DeleteDatasetInput(2, 3))
+
+    assert str(error.value) == message
