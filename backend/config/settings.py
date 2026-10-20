@@ -31,6 +31,8 @@ SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG", default=False)
+# Solo para diagnóstico: incluye el mensaje interno en los 500 de upload.
+EXPOSE_INTERNAL_ERRORS = env.bool("EXPOSE_INTERNAL_ERRORS", default=False)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["127.0.0.1", "localhost"])
 
@@ -142,6 +144,8 @@ else:
     DATABASE_URL = env("DATABASE_URL", default="").strip()
     DATABASE_READER_URL = env("DATABASE_READER_URL", default="").strip()
 DATABASE_READER_ROLE = env("DATABASE_READER_ROLE", default="bi_reader")
+# Supabase exige TLS; en Postgres local suele estar desactivado.
+DATABASE_SSLMODE = env("DATABASE_SSLMODE", default="require")
 
 if DATABASE_URL:
     DATABASES = {
