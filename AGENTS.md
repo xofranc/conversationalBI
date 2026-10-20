@@ -26,7 +26,7 @@ npm install
 npm run dev    # http://localhost:5173, proxy /api → localhost:8000
 npm test       # vitest (environment: node, sin DOM)
 npm run lint
-npx vitest run src/lib/eventBus.test.js   # un archivo
+npx vitest run src/shared/eventBus.test.js   # un archivo
 ```
 
 Stack completo: `docker compose up --build` → frontend en `:3000` (nginx), backend en `:8000`. Requiere `backend/.env` antes de arrancar.
@@ -61,10 +61,11 @@ interfaces → application → domain ← infrastructure
 
 ## Frontend: trampas
 
-- **Multi-página, no SPA.** Tres entrypoints en `vite.config.js`: `index.html` (landing), `app.html` (consola), `roadmap.html`. No hay router.
-- Estado global mutable en `src/modules/state.js` + `src/lib/eventBus.js`. Varios módulos **se auto-suscriben al importarse** (`history.js`, `report.js`): importar un módulo tiene efectos secundarios.
-- `src/lib/api.js` es el único cliente HTTP. Añade `Authorization: Bearer <JWT de Supabase>` o `X-Session-ID` en demo. `API_BASE_URL` cae a `/api/v1` (proxy same-origin). Ojo: `api.js` importa `modules/session.js`, violación de capas conocida.
-- Vitest corre con `environment: 'node'`: **no hay DOM en tests**. Protege el acceso a `window`/`document` (ver `modules/session.js`). La cobertura solo mide `src/modules/charts/**`.
+- **Multi-página, no SPA.** Tres entrypoints en `vite.config.js`: `index.html` (landing), `pages/app.html` (consola), `pages/roadmap.html`. No hay router. `vite.html.js` aplana `pages/*.html` a la raíz de `dist/` y resuelve los `<!-- @include: ... -->` de `src/interfaces/views/`.
+- **Capas hexagonales:** `src/domain/` (estado y puerto de charts), `src/application/` (casos de uso), `src/infrastructure/` (API, Supabase, chart.js), `src/interfaces/` (páginas, componentes, renderers, animaciones, vistas HTML) y `src/shared/` (eventBus, config, utilidades).
+- Estado global mutable en `src/domain/state.js` + `src/shared/eventBus.js`. Varios módulos **se auto-suscriben al importarse** (`history.js`, `report.js`): importar un módulo tiene efectos secundarios.
+- `src/infrastructure/api.js` es el único cliente HTTP. Añade `Authorization: Bearer <JWT de Supabase>` o `X-Session-ID` en demo. `API_BASE_URL` cae a `/api/v1` (proxy same-origin). Ojo: `api.js` importa `application/session.js`, violación de capas conocida.
+- Vitest corre con `environment: 'node'`: **no hay DOM en tests**. Protege el acceso a `window`/`document` (ver `application/session.js`). La cobertura mide `src/infrastructure/charts/**` y `src/domain/charts/**`.
 - Charts: `ChartRegistry` + 8 subclases de `ChartBuilder` son la capa puertos/adaptadores, con test cada una. Añade un tipo de gráfico registrando un builder, no ramificando en el render.
 - `dist/` y `node_modules/` están gitignored. No commitees artefactos de build.
 

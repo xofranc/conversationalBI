@@ -7,7 +7,7 @@ export default defineConfig({
     include: ['src/**/*.test.js'],
     coverage: {
       provider: 'v8',
-      include: ['src/modules/charts/**/*.js'],
+      include: ['src/infrastructure/charts/**/*.js', 'src/domain/charts/**/*.js'],
     },
   },
 });

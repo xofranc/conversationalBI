@@ -39,7 +39,7 @@ services:
       - key: LLM_API_KEY
         sync: false
       - key: LLM_BASE_URL
-        value: https://opencode.ai/zen/go/v1
+        value: https://opencode.ai/inference/go/openai/v1
       - key: LLM_SQL_MODEL
         value: kimi-k2.7-code
       - key: LLM_ANSWER_MODEL

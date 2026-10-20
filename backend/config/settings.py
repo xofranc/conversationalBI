@@ -232,7 +232,7 @@ CACHES = {
 #! LLM — cliente agnóstico: cualquier endpoint OpenAI-compatible
 # (OpenCode Go, Groq, OpenRouter, Ollama). Se cambia por env vars.
 LLM_API_KEY = env("LLM_API_KEY", default="")
-LLM_BASE_URL = env("LLM_BASE_URL", default="https://opencode.ai/zen/go/v1")
+LLM_BASE_URL = env("LLM_BASE_URL", default="https://opencode.ai/inference/go/openai/v1")
 LLM_SQL_MODEL = env("LLM_SQL_MODEL", default="kimi-k2.7-code")
 LLM_ANSWER_MODEL = env("LLM_ANSWER_MODEL", default="mimo-v2.5")
 LLM_TIMEOUT = env.int("LLM_TIMEOUT", default=60)

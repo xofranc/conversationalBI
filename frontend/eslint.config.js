@@ -13,6 +13,13 @@ export default [
         FormData: 'readonly',
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
+        requestAnimationFrame: 'readonly',
+        cancelAnimationFrame: 'readonly',
+        performance: 'readonly',
+        URLSearchParams: 'readonly',
+        AbortController: 'readonly',
+        crypto: 'readonly',
+        global: 'readonly',
       },
     },
     rules: {
