@@ -17,7 +17,9 @@ def create_urlpatterns(use_cases, *, identity_provider, permission_class):
         (QueryViewSet,),
         {
             "use_cases": use_cases,
-            "identity_provider": identity_provider,
+            # staticmethod evita que Python lo convierta en método bound y le
+            # pase self además de request.
+            "identity_provider": staticmethod(identity_provider),
             "permission_classes": [permission_class],
         },
     )

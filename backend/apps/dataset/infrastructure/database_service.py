@@ -38,7 +38,7 @@ class DatabaseService:
             host=db.get("HOST", ""),
             port=db.get("PORT", ""),
             options=db.get("OPTIONS", {}).get("options", ""),
-            sslmode="require",
+            sslmode=getattr(settings, "DATABASE_SSLMODE", "require"),
         )
 
     @staticmethod
@@ -48,7 +48,8 @@ class DatabaseService:
         if reader_url:
             if "sslmode" not in reader_url:
                 sep = "&" if "?" in reader_url else "?"
-                reader_url = f"{reader_url}{sep}sslmode=require"
+                sslmode = getattr(settings, "DATABASE_SSLMODE", "require")
+                reader_url = f"{reader_url}{sep}sslmode={sslmode}"
             return psycopg2.connect(reader_url)
         return DatabaseService._connect()
 

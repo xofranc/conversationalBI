@@ -2,9 +2,11 @@
 
 import logging
 
+from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.exceptions import APIException
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 
@@ -55,11 +57,12 @@ class DatasetViewSet(viewsets.GenericViewSet):
         return DatasetDetailSerializer
 
     def create(self, request):
-        serializer = DatasetUploadSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        uploaded_file = serializer.validated_data["file"]
-        user_id, owner = self.identity_provider(request)
+        user_id = None
         try:
+            serializer = DatasetUploadSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            uploaded_file = serializer.validated_data["file"]
+            user_id, owner = self.identity_provider(request)
             dto = self.get_use_cases()["create"].execute(CreateDatasetInput(
                 user_id=user_id,
                 name=serializer.validated_data["name"],
@@ -71,12 +74,15 @@ class DatasetViewSet(viewsets.GenericViewSet):
             return Response({"file": [str(error)]}, status=status.HTTP_400_BAD_REQUEST)
         except ValueError as error:
             return Response({"error": str(error)}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception:
+        except APIException:
+            # Conserva los 400/403 de DRF (validación, parsing, permisos).
+            raise
+        except Exception as error:
             logger.exception("Error procesando upload de dataset (user_id=%s)", user_id)
-            return Response(
-                {"error": "Error al procesar el archivo."},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
+            payload = {"error": "Error al procesar el archivo."}
+            if getattr(settings, "EXPOSE_INTERNAL_ERRORS", False):
+                payload["detail"] = f"{type(error).__name__}: {error}"
+            return Response(payload, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(
             DatasetDetailSerializer(dto, context={"owner": owner}).data,
             status=status.HTTP_201_CREATED,
