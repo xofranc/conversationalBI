@@ -173,7 +173,7 @@ SUPABASE_URL=https://xxxx.supabase.co
 
 # LLM
 LLM_API_KEY=sk-xxx
-LLM_BASE_URL=https://opencode.ai/zen/go/v1
+LLM_BASE_URL=https://opencode.ai/inference/go/openai/v1
 LLM_SQL_MODEL=kimi-k2.7-code
 LLM_ANSWER_MODEL=mimo-v2.5
 LLM_TIMEOUT=60

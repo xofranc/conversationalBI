@@ -1,123 +1,41 @@
-import logging
-import time
-from .prompt_builder import PromptBuilder
-from .sql_agent import SQLAgent
-from .sql_validator import SQLValidator, SecurityError
-from .sql_executor import SQLExecutor
-from .chart_selector import ChartSelector
-from .answer_writer import AnswerWriter
-from .suggester import suggest
-
-MAX_RETRIES = 3
-
-logger = logging.getLogger(__name__)
-
-
-class _EmptyResult(Exception):
-    """SQL válido pero con 0 filas: se reintenta con pistas de valores."""
+"""Compatibility bridge to the application AI query use case."""
 
 
 class AIQueryService:
-    """
-    Orquestador del AI engine. No sabe nada de Django ORM,
-    no importa modelos, no toca la BD de la app.
-    Recibe el schema como dict y retorna un dict con el resultado.
-
-    history: últimas consultas exitosas de la conversación
-    [{'question': ..., 'sql': ...}, ...] para preguntas de seguimiento.
-    """
+    """Keep the legacy dict API while delegating orchestration to application."""
 
     @staticmethod
-    def execute(question: str, dataset_id: int, schema: dict,
-                history: list | None = None) -> dict:
-        agent       = SQLAgent()
-        writer      = AnswerWriter()
-        prompt      = PromptBuilder.build(question, schema, history)
-        sql         = ''
-        error_msg   = ''
-        retry_count = 0
-        success     = False
-        rows        = []
-        columns     = []
+    def execute(
+        question: str,
+        dataset_id: int,
+        schema: dict,
+        history: list | None = None,
+        *,
+        data_source,
+    ) -> dict:
+        from apps.queries.application.dtos import AIQueryRequestDTO, ConversationTurnDTO
+        from config.composition import build_ai_query_engine
 
-        logger.info('[AIQueryService] question="%s", dataset_id=%s', question, dataset_id)
-        start = time.time()
-
-        for attempt in range(MAX_RETRIES):
-            try:
-                logger.info('[AIQueryService] Intento %d/%d - llamando LLM...', attempt + 1, MAX_RETRIES)
-                sql = agent.run(prompt)
-                logger.info('[AIQueryService] SQL generado: %s', sql[:200] if sql else '(vacío)')
-
-                if sql.strip().startswith('NO_SQL_POSSIBLE'):
-                    error_msg = 'Esa pregunta no se puede responder con las columnas de esta fuente.'
-                    break
-
-                SQLValidator.assert_safe(sql)
-                logger.info('[AIQueryService] SQL validado OK, ejecutando...')
-                rows, columns = SQLExecutor.run(sql, dataset_id)
-                logger.info('[AIQueryService] SQL ejecutado: %s filas, %s columnas', len(rows), len(columns))
-
-                # Resultado vacío: tan fallo para el usuario como un error.
-                # Se reintenta con los valores de ejemplo del esquema.
-                if not rows and attempt < MAX_RETRIES - 1:
-                    raise _EmptyResult('La consulta devolvió 0 filas.')
-
-                success     = True
-                retry_count = attempt
-                break
-
-            except SecurityError as e:
-                logger.warning('[AIQueryService] SQL rechazado por seguridad: %s', e)
-                error_msg   = str(e)
-                retry_count = attempt
-                break
-
-            except _EmptyResult as e:
-                logger.info('[AIQueryService] Intento %d/%d sin filas, reintentando con pistas', attempt + 1, MAX_RETRIES)
-                error_msg   = str(e)
-                retry_count = attempt + 1
-                prompt      = PromptBuilder.build_empty_result(
-                    question     = question,
-                    schema       = schema,
-                    previous_sql = sql,
-                )
-
-            except Exception as e:
-                logger.warning('[AIQueryService] Intento %d/%d falló: %s', attempt + 1, MAX_RETRIES, e)
-                error_msg   = str(e)
-                retry_count = attempt + 1
-                prompt      = PromptBuilder.build_correction(
-                    question     = question,
-                    schema       = schema,
-                    previous_sql = sql,
-                    error        = error_msg,
-                )
-
-        logger.info('[AIQueryService] Finalizado: success=%s, retries=%s, time=%.3fs', success, retry_count, time.time() - start)
-
-        selection = ChartSelector.select(columns, rows) if success else {
-            'chart_type': 'table', 'chart_config': {},
-        }
-
-        # La conversación no muere en el error: siempre hay caminos
-        answer = ''
-        suggestions = []
-        if success:
-            answer = writer.write(question, sql, rows, len(rows))
-        else:
-            suggestions = suggest(schema)
-
+        request = AIQueryRequestDTO(
+            question=question,
+            dataset_id=dataset_id,
+            schema=schema,
+            history=tuple(
+                ConversationTurnDTO(question=turn["question"], sql=turn["sql"])
+                for turn in (history or ())
+            ),
+        )
+        result = build_ai_query_engine(data_source=data_source).execute(request)
         return {
-            'sql':            sql,
-            'success':        success,
-            'error_msg':      error_msg,
-            'retry_count':    retry_count,
-            'execution_time': round(time.time() - start, 3),
-            'rows':           rows,
-            'columns':        columns,
-            'chart_type':     selection['chart_type'],
-            'chart_config':   selection['chart_config'],
-            'answer':         answer,
-            'suggestions':    suggestions,
+            "sql": result.sql,
+            "success": result.success,
+            "error_msg": result.error_message,
+            "retry_count": result.retry_count,
+            "execution_time": result.execution_time,
+            "rows": list(result.rows),
+            "columns": list(result.columns),
+            "chart_type": result.chart_type,
+            "chart_config": result.chart_config or {},
+            "answer": result.answer,
+            "suggestions": list(result.suggestions),
         }

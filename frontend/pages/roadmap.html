@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Roadmap · ConversationalBI</title>
+    <meta name="description" content="Estado del proyecto ConversationalBI: fases completadas, módulos en producción y próximos pasos del copilot de datos.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2312161C'/%3E%3Crect x='10' y='9' width='3' height='14' rx='1' transform='rotate(18 11.5 16)' fill='%233E8FA3'/%3E%3Crect x='15' y='9' width='3' height='14' rx='1' transform='rotate(18 16.5 16)' fill='%233E8FA3'/%3E%3Ccircle cx='23' cy='21' r='2.6' fill='%23C77B21'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+      <!-- @include: ../src/styles/pages/roadmap-page.css -->
+    </style>
+  </head>
+  <body class="bg-paper text-ink font-sans antialiased">
+    <style>
+      <!-- @include: ../src/styles/preload.css -->
+    </style>
+    <script type="module" src="/src/interfaces/components/pageLoaded.js"></script>
+
+    <!-- @include: ../src/interfaces/views/roadmap/navbar.html -->
+
+    <main class="pt-24">
+      <!-- @include: ../src/interfaces/views/roadmap/hero.html -->
+
+      <!-- @include: ../src/interfaces/views/roadmap/timeline.html -->
+
+      <!-- @include: ../src/interfaces/views/roadmap/modules.html -->
+    </main>
+
+    <!-- @include: ../src/interfaces/views/roadmap/footer.html -->
+
+    <!-- @include: ../src/interfaces/views/shared/ctaTransition.html -->
+
+    <script type="module" src="/src/interfaces/pages/roadmap.js"></script>
+    <script type="module" src="/src/interfaces/components/navSpotlight.js"></script>
+    <script type="module" src="/src/interfaces/components/mobileMenu.js"></script>
+    <script type="module" src="/src/interfaces/components/ctaToConsole.js"></script>
+    <script type="module" src="/src/interfaces/components/transitionReveal.js"></script>
+  </body>
+</html>

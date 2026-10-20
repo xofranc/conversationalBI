@@ -1,5 +1,5 @@
-from .queryHistory import QueryHistory
-from .queryResult import QueryResult
-from .queryFeedback import QueryFeedback
+"""Legacy package facade; ORM declarations live in infrastructure.models."""
 
-__all__ = ['QueryHistory', 'QueryResult', 'QueryFeedback']
+from apps.queries.infrastructure.models import QueryFeedback, QueryHistory, QueryResult
+
+__all__ = ["QueryFeedback", "QueryHistory", "QueryResult"]

@@ -1,0 +1,43 @@
+      <!-- Hero -->
+      <section class="landing-hero pt-28 lg:pt-36 pb-14 px-6" aria-labelledby="hero-heading">
+        <div class="max-w-6xl mx-auto grid lg:grid-cols-[1.02fr_0.98fr] gap-12 lg:gap-16 items-center">
+          <div>
+            <p data-landing class="font-mono text-[0.65rem] tracking-[0.25em] uppercase text-petrol mb-5" aria-hidden="true">// copilot de datos para empresas</p>
+            <h1 id="hero-heading" class="font-display text-[2.6rem] leading-[1.05] sm:text-5xl lg:text-[3.6rem] font-semibold tracking-tight text-ink mb-6">
+              <span data-landing-line class="block">Pregúntale a tus datos.</span>
+              <span data-landing-line class="block">Obtén respuestas con <span class="ticket-word">recibo</span>.</span>
+            </h1>
+            <p data-landing class="text-ink-soft text-base lg:text-lg leading-relaxed max-w-lg mb-8">
+              ConversationalBI transforma datos empresariales en decisiones. Sube un CSV o Excel
+              y conversa con tu información en español: SQL, pronósticos, anomalías y segmentación,
+              todo con trazabilidad completa.
+            </p>
+            <div data-landing class="flex flex-wrap items-center gap-4 mb-8">
+              <a href="/app.html?demo=true" class="cta-primary px-6 py-3 bg-petrol hover:bg-petrol-dark text-white font-semibold rounded-xl transition-colors" aria-describedby="hero-heading">
+                probar la demo →
+              </a>
+              <a href="/roadmap.html" class="font-mono text-[0.75rem] text-ink-soft hover:text-petrol transition-colors" aria-label="Ver roadmap del proyecto">
+                ver roadmap ↓
+              </a>
+            </div>
+            <p data-landing class="font-mono text-[0.65rem] leading-relaxed text-ink-soft/80" aria-label="Tecnologías utilizadas">
+              Supabase Auth · Postgres · Django · Render · Vercel
+            </p>
+          </div>
+
+          <div data-landing id="demo-card" class="demo-card" role="img" aria-label="Demostración animada de conversación con datos">
+            <div class="demo-head">
+              <span class="demo-dot" aria-hidden="true"></span>
+              <span class="font-mono text-[0.65rem] text-rail-text truncate">consola · ventas_2024.csv</span>
+              <span id="demo-scene" class="ml-auto font-mono text-[0.6rem] text-rail-text/50 shrink-0 pl-3" aria-live="polite">// en vivo</span>
+            </div>
+            <div id="demo-chat" class="demo-chat" aria-live="polite" aria-label="Mensajes de demostración"></div>
+            <div class="demo-viz-wrap">
+              <svg id="demo-svg" viewBox="0 0 340 180" class="w-full h-auto block" aria-hidden="true"></svg>
+            </div>
+            <div class="demo-foot">
+              <span id="demo-caption" class="font-mono text-[0.6rem] text-rail-text/55">// demostración con datos de ejemplo</span>
+            </div>
+          </div>
+        </div>
+      </section>

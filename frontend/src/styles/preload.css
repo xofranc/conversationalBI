@@ -1,0 +1,3 @@
+/* Preload: ocultar elementos hasta que carguen los estilos */
+      .preload-hide { opacity: 0 !important; }
+      body.loaded .preload-hide { opacity: 1 !important; transition: opacity 0.3s ease; }

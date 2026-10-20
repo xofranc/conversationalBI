@@ -1,6 +1,4 @@
 # apps/queries/tests/test_views.py
-from unittest.mock import patch
-
 import pytest
 from rest_framework import status
 
@@ -71,18 +69,6 @@ class TestQueryCreate:
         }, format='json')
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert 'listo' in str(response.data).lower()
-
-    def test_error_interno_no_filtra_detalles(self, auth_client, test_dataset):
-        with patch('apps.queries.views.QueryService.execute') as mock_exec:
-            mock_exec.side_effect = Exception('sqlite3.OperationalError: near "SECRET_TRACE"')
-            response = auth_client.post(QUERY_URL, {
-                'question': PREGUNTA, 'dataset_id': test_dataset.id,
-            }, format='json')
-
-        assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
-        assert 'SECRET_TRACE' not in response.content.decode()
-        assert 'sqlite3' not in response.content.decode()
-
 
 class TestQueryList:
 

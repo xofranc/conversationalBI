@@ -1,17 +1,5 @@
-from rest_framework import serializers
-from ..models import DatasetTable
+"""Compatibility import for the interface table serializer."""
 
+from apps.dataset.interfaces.serializers import DatasetTableSerializer
 
-class DatasetTableSerializer(serializers.ModelSerializer):
-    
-    class Meta: 
-        model = DatasetTable
-        fields = [
-            'id',
-            'table_name',
-            'row_count',
-            'column_count',
-            'columns_json',
-        ]
-        
-        read_only_fields = fields
+__all__ = ["DatasetTableSerializer"]

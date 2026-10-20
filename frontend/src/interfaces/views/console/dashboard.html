@@ -1,0 +1,142 @@
+      <!-- ═══════════════ Dashboard ═══════════════ -->
+      <section id="dashboard-view" class="dashboard hidden">
+
+        <!-- Workspace: chat + report -->
+        <div class="workspace">
+
+          <!-- Chat Panel -->
+          <div class="chat-panel">
+            <div class="chat-header">
+              <div class="chat-header-left">
+                <div class="chat-header-icon">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                </div>
+                <div>
+                  <h3>Conversación</h3>
+                  <p id="chat-dataset">sin fuente activa</p>
+                </div>
+              </div>
+              <div class="chat-online" title="En línea"></div>
+            </div>
+
+            <div id="chat-messages" aria-live="polite" class="chat-messages custom-scrollbar">
+              <!-- Messages injected by JS -->
+            </div>
+
+            <div class="chat-input-area">
+              <div class="chat-input-wrapper">
+                <input type="text" id="chat-input" class="chat-input" placeholder="Escribe tu pregunta...">
+                <button id="send-btn" aria-label="Enviar" class="send-btn" disabled>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                </button>
+              </div>
+              <p class="chat-hint">Enter para enviar</p>
+            </div>
+          </div>
+
+          <!-- Report Panel -->
+          <main class="report-panel custom-scrollbar">
+            <div class="report-inner">
+
+              <header class="report-header">
+                <div class="flex justify-between items-center gap-2 flex-wrap mb-3">
+                  <div class="flex items-center gap-2">
+                    <div class="w-1.5 h-1.5 bg-petrol rounded-full"></div>
+                    <p class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-petrol">informe de datos</p>
+                  </div>
+                  <p id="masthead-dataset" class="font-mono text-[0.65rem] tracking-wider text-ink-soft bg-card px-3 py-1 rounded-full border border-line">sin fuente</p>
+                </div>
+                <div class="flex justify-between items-end flex-wrap gap-2">
+                  <h1 class="font-display text-3xl font-semibold text-ink tracking-tight">Análisis conversacional</h1>
+                  <p id="masthead-folio" class="font-mono text-xs text-ink-soft">—</p>
+                </div>
+              </header>
+
+              <div id="results-area" class="flex-1 flex flex-col gap-5 pb-6">
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state">
+                  <div class="sql-illustration" aria-hidden="true">
+                    <span class="sql-keyword">SELECT</span> respuesta<br>
+                    <span class="sql-keyword">FROM</span> <span class="sql-placeholder">tus_datos</span><br>
+                    <span class="sql-keyword">WHERE</span> pregunta = <span class="sql-placeholder">'…'</span>
+                  </div>
+                  <h2 class="font-display text-2xl font-semibold text-ink mb-3 tracking-tight">Hazle una pregunta a tus datos</h2>
+                  <p class="text-ink-soft max-w-md mb-8 text-sm leading-relaxed">Sube un CSV, Excel o JSON y pregunta en español. Cada respuesta incluye su recibo verificable.</p>
+                  <div class="w-full max-w-md">
+                    <p class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-ink-soft mb-3 text-center">prueba con</p>
+                    <div class="flex flex-wrap justify-center gap-2">
+                      <button type="button" class="example-chip" data-question="Ventas totales por ciudad">ventas totales por ciudad</button>
+                      <button type="button" class="example-chip" data-question="Top 5 productos por ingresos">top 5 productos</button>
+                      <button type="button" class="example-chip" data-question="Dame un resumen de los datos">resumen</button>
+                      <button type="button" class="example-chip" data-question="¿Cuál es el pronóstico de ventas para los próximos meses?">pronóstico</button>
+                      <button type="button" class="example-chip" data-question="¿Hay anomalías en los montos?">anomalías</button>
+                      <button type="button" class="example-chip" data-question="¿Qué factores explican el monto?">factores</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Dashboard Content (hidden initially) -->
+                <div id="dashboard-content" class="hidden flex flex-col gap-5 w-full">
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-3 w-full">
+                    <div class="kpi-card">
+                      <p class="kpi-label">filas</p>
+                      <p id="kpi-rows" class="kpi-value">—</p>
+                    </div>
+                    <div class="kpi-card">
+                      <p class="kpi-label">tiempo</p>
+                      <p id="kpi-time" class="kpi-value">—</p>
+                    </div>
+                    <div class="kpi-card accent">
+                      <p class="kpi-label">motor</p>
+                      <p id="kpi-source" class="kpi-value text-petrol truncate">—</p>
+                    </div>
+                  </div>
+
+                  <figure id="chart-container" class="report-card w-full hidden m-0">
+                    <figcaption class="mb-3 flex items-center gap-2">
+                      <span id="figure-label" class="font-mono text-[0.55rem] tracking-[0.15em] uppercase text-petrol">fig. 1</span>
+                      <p id="figure-title" class="text-sm font-medium text-ink"></p>
+                    </figcaption>
+                    <div class="h-[280px]">
+                      <canvas id="chart-1"></canvas>
+                    </div>
+                  </figure>
+
+                  <div id="table-container" class="report-card overflow-hidden">
+                    <div class="px-5 py-3 border-b border-line">
+                      <span class="font-mono text-[0.55rem] tracking-[0.15em] uppercase text-ink-soft">anexo</span>
+                      <p id="annex-caption" class="text-sm font-medium text-ink mt-0.5">Datos del resultado</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                      <table class="data-table">
+                        <thead><tr id="table-head"></tr></thead>
+                        <tbody id="table-body" class="text-ink"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </main>
+        </div>
+
+        <!-- Dock: datasets + upload + logout -->
+        <div class="dock" id="dock">
+          <span class="dock-label">fuentes</span>
+          <div class="dock-separator"></div>
+          <div id="drop-zone" class="dock-upload" role="button" tabindex="0" aria-label="Subir dataset">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            subir
+            <input type="file" id="file-upload" class="hidden" accept=".csv,.xlsx,.json" aria-hidden="true">
+          </div>
+          <div id="dataset-list" class="flex items-center gap-2">
+            <!-- dataset chips injected by JS -->
+          </div>
+          <span id="dataset-count" class="font-mono text-[0.55rem] text-ink-soft/50"></span>
+          <button id="logout-btn" class="dock-logout" title="Cerrar sesión">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+            salir
+          </button>
+        </div>
+      </section>

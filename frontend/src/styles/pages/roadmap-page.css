@@ -1,0 +1,66 @@
+/* Estilos propios del roadmap (antes inline en pages/roadmap.html) */
+      /* CTA feedback - instant on press */
+      .cta-nav-primary, .cta-primary {
+        transform: scale(1);
+        transition: transform 100ms ease-out;
+      }
+      .cta-nav-primary:active, .cta-primary:active {
+        transform: scale(0.97);
+        transition: transform 60ms ease-out;
+      }
+      /* Full-screen transition overlay */
+      .cta-transition-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: #0E5E6F;
+        opacity: 0;
+        pointer-events: none;
+        will-change: clip-path, opacity;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      /* Modern preloader */
+      .cta-loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        opacity: 0;
+      }
+      
+      .cta-preloader-logo {
+        font-family: 'Instrument Serif', serif;
+        font-size: clamp(24px, 5vw, 36px);
+        color: white;
+        letter-spacing: -0.02em;
+        overflow: hidden;
+      }
+      
+      .cta-preloader-logo span {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(100%);
+      }
+      
+      .cta-preloader-line {
+        width: 60px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 1px;
+        overflow: hidden;
+        position: relative;
+      }
+      
+      .cta-preloader-line::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 0;
+        background: white;
+        border-radius: 1px;
+      }

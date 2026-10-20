@@ -1,43 +1,20 @@
-from apps.dataset.models import Dataset, DatasetTable
+"""Internal compatibility facade for dataset persistence imports.
 
+The legacy create/get helpers are not part of the entity-based repository API;
+callers should use the concrete repositories' get_by_id/list_by_user/save methods.
+"""
 
-class DatasetRepository:
-    
-    @staticmethod
-    def create_dataset(user,
-                       name: str,
-                       description: str,
-                       file_size: int) -> Dataset:
-        
-        return Dataset.objects.create(
-            user=user,
-            name=name,
-            description=description,
-            file_size=file_size,
-            status=Dataset.Status.UPLOADED
-        )
-    
-    @staticmethod
-    def get_by_id(dataset_id: int) -> Dataset:
-        return Dataset.objects.select_related('user').get(id=dataset_id)
-    
-    @staticmethod
-    def get_by_user(user) -> list:
-        return Dataset.objects.filter(user=user).order_by('-created_at')
-    
-    @staticmethod
-    def get_schema(dataset_id: int) -> dict:
-         """Usado por ai_engine para obtener el schema sin cargar todo el objeto."""
-         return Dataset.objects.values('schema_json').get(pk=dataset_id)['schema_json']
-     
-     
-    @staticmethod
-    def create_table(dataset: Dataset, table_data: dict) -> DatasetTable:
-        return DatasetTable.objects.create(
-            dataset      = dataset,
-            table_name   = table_data["name"],
-            row_count    = table_data["row_count"],
-            column_count = len(table_data["columns"]),
-            columns_json = table_data["columns"],
-        )
-        
+from apps.dataset.infrastructure.repositories import (
+    DjangoDatasetRepository,
+    DjangoDatasetTableRepository,
+)
+
+DatasetRepository = DjangoDatasetRepository
+DatasetTableRepository = DjangoDatasetTableRepository
+
+__all__ = [
+    "DatasetRepository",
+    "DatasetTableRepository",
+    "DjangoDatasetRepository",
+    "DjangoDatasetTableRepository",
+]

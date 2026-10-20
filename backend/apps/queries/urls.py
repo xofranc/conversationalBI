@@ -1,7 +1,5 @@
-from rest_framework.routers import DefaultRouter
-from .views import QueryViewSet
+"""Compatibility URLconf; the external composition root injects dependencies."""
 
-router = DefaultRouter()
-router.register(r'', QueryViewSet, basename='query')
+from config.composition import build_query_urlpatterns
 
-urlpatterns = router.urls
+urlpatterns = build_query_urlpatterns()

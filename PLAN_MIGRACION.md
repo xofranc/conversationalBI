@@ -61,7 +61,7 @@ Nada del plan anterior está ejecutado. Superficie de cambio real:
 
 ## OpenCode Go — datos verificados (docs oficiales)
 
-- **Endpoint:** `https://opencode.ai/zen/go/v1/chat/completions` (OpenAI-compatible) con `Authorization: Bearer <API_KEY>`
+- **Endpoint:** `https://opencode.ai/inference/go/openai/v1/chat/completions` (OpenAI-compatible) con `Authorization: Bearer <API_KEY>` y header `x-opencode-session`
 - **API key:** consola en [opencode.ai/auth](https://opencode.ai/auth)
 - **Límites de la suscripción:** $12 / 5h · $30 / semana · **$60 / mes**
 
@@ -104,7 +104,7 @@ El deploy (Fase 3) va ANTES del auth (Fase 4): valida primero lo más riesgoso (
 ```bash
 # LLM (agnóstico de proveedor)
 LLM_API_KEY=sk-xxx
-LLM_BASE_URL=https://opencode.ai/zen/go/v1
+LLM_BASE_URL=https://opencode.ai/inference/go/openai/v1
 LLM_SQL_MODEL=kimi-k2.7-code
 LLM_ANSWER_MODEL=mimo-v2.5
 LLM_TIMEOUT=60

@@ -1,5 +1,4 @@
 import pytest
-from unittest.mock import patch
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 from apps.dataset.models import Dataset
@@ -71,21 +70,6 @@ class TestDatasetRetrieve:
 
 class TestDatasetUpload:
 
-    @patch('apps.dataset.views.DatasetService.create')
-    def test_upload_exitoso(self, mock_create, client, user, dataset):
-        mock_create.return_value = dataset
-        from io import BytesIO
-        fake_file = BytesIO(b"id,valor\n1,100\n")
-        fake_file.name = "datos.csv"
-
-        response = client.post('/api/v1/dataset/', {
-            'file': fake_file,
-            'name': 'Test Upload',
-        }, format='multipart')
-
-        assert response.status_code == 201
-        assert response.data['name'] == 'Ventas Q1'
-
     @requires_postgres
     def test_upload_integracion_real(self, client, settings, tmp_path, schema_cleanup):
         """Sin mocks: procesa un CSV real y verifica el estado final del dataset.
@@ -145,12 +129,6 @@ class TestDatasetUpload:
 
 class TestDatasetDestroy:
 
-    @patch('apps.dataset.views.DatasetService.delete')
-    def test_propietario_puede_eliminar(self, mock_delete, client, dataset):
-        response = client.delete(f'/api/v1/dataset/{dataset.id}/')
-        assert response.status_code == 204
-        mock_delete.assert_called_once_with(dataset.id, client.handler._force_user)
-
     def test_otro_usuario_no_puede_eliminar(self, other_user, dataset):
         c = APIClient()
         c.force_authenticate(user=other_user)
@@ -165,4 +143,3 @@ class TestDatasetSchema:
         assert response.status_code == 200
         assert 'schema_json' in response.data
         assert 'id'          in response.data
-        

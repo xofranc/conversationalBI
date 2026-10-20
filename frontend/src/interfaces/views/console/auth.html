@@ -1,0 +1,54 @@
+      <!-- ═══════════════ Auth View ═══════════════ -->
+      <section id="auth-view" class="relative z-40 flex items-center justify-center bg-paper flex-1">
+        <div class="auth-container mx-4">
+          <div class="text-center mb-8">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-paper rounded-full mb-4">
+              <span class="w-2 h-2 bg-petrol rounded-full animate-pulse"></span>
+              <span class="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-petrol">sistema activo</span>
+            </div>
+            <h1 class="font-display text-3xl font-semibold text-ink mb-3 tracking-tight">ConversationalBI</h1>
+            <p id="auth-subtitle" class="text-ink-soft text-sm leading-relaxed">Consulta tus datos en lenguaje natural.<br>Resultados verificables al instante.</p>
+          </div>
+          <form id="login-form" class="space-y-5">
+            <div>
+              <label for="email" class="block text-sm font-medium text-ink mb-2">Email</label>
+              <input type="email" id="email" class="auth-input" placeholder="tu@email.com" required>
+            </div>
+            <div>
+              <label for="password" class="block text-sm font-medium text-ink mb-2">Contraseña</label>
+              <input type="password" id="password" class="auth-input" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="auth-btn">Entrar</button>
+            <p class="text-center text-sm text-ink-soft mt-6">¿No tienes cuenta? <a href="#" id="show-register" class="text-petrol hover:text-petrol-dark font-medium transition-colors">Regístrate</a></p>
+          </form>
+          <form id="register-form" class="space-y-5 hidden">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="reg-first-name" class="block text-sm font-medium text-ink mb-2">Nombre</label>
+                <input type="text" id="reg-first-name" class="auth-input" placeholder="Nombre" required>
+              </div>
+              <div>
+                <label for="reg-last-name" class="block text-sm font-medium text-ink mb-2">Apellido</label>
+                <input type="text" id="reg-last-name" class="auth-input" placeholder="Apellido" required>
+              </div>
+            </div>
+            <div>
+              <label for="reg-email" class="block text-sm font-medium text-ink mb-2">Email</label>
+              <input type="email" id="reg-email" class="auth-input" placeholder="tu@email.com" required>
+            </div>
+            <div>
+              <label for="reg-password" class="block text-sm font-medium text-ink mb-2">Contraseña</label>
+              <input type="password" id="reg-password" class="auth-input" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="auth-btn">Crear cuenta</button>
+            <p class="text-center text-sm text-ink-soft mt-6">¿Ya tienes cuenta? <a href="#" id="show-login" class="text-petrol hover:text-petrol-dark font-medium transition-colors">Inicia sesión</a></p>
+          </form>
+          <div id="auth-error" class="hidden text-danger text-sm text-center mt-4 p-3 bg-danger/10 rounded-lg"></div>
+          <p class="text-center mt-8">
+            <a href="/" class="font-mono text-[0.7rem] text-ink-soft hover:text-petrol transition-colors inline-flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+              volver a la home
+            </a>
+          </p>
+        </div>
+      </section>
